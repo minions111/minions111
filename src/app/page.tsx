@@ -20,6 +20,15 @@ import { MoneyMarketMonitor } from "@/components/MoneyMarketMonitor";
 import { CurrencyMonitor } from "@/components/CurrencyMonitor";
 import { BloombergIntelligence } from "@/components/BloombergIntelligence";
 import { InstantBloomberg } from "@/components/InstantBloomberg";
+import { WorldEquityIndices } from "@/components/WorldEquityIndices";
+import { MostActive } from "@/components/MostActive";
+import { EarningsEstimates } from "@/components/EarningsEstimates";
+import { HoldingsOwnership } from "@/components/HoldingsOwnership";
+import { DividendHistory } from "@/components/DividendHistory";
+import { OptionMonitor } from "@/components/OptionMonitor";
+import { QuoteRecap } from "@/components/QuoteRecap";
+import { CompanyNews } from "@/components/CompanyNews";
+import { TechnicalIndicators } from "@/components/TechnicalIndicators";
 
 type ViewType =
   | 'MARKET'
@@ -34,7 +43,16 @@ type ViewType =
   | 'BTMM'
   | 'WFX'
   | 'BI'
-  | 'IB';
+  | 'IB'
+  | 'WEI'
+  | 'MOST'
+  | 'EE'
+  | 'HDS'
+  | 'DVD'
+  | 'OMON'
+  | 'QR'
+  | 'CN'
+  | 'TECH';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET',
@@ -57,6 +75,16 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'WFX': 'WFX',
   'BI': 'BI',
   'IB': 'IB',
+  'WEI': 'WEI',
+  'MOST': 'MOST',
+  'MOVERS': 'MOST',
+  'EE': 'EE',
+  'HDS': 'HDS',
+  'DVD': 'DVD',
+  'OMON': 'OMON',
+  'QR': 'QR',
+  'CN': 'CN',
+  'TECH': 'TECH',
 };
 
 export default function Home() {
@@ -80,7 +108,7 @@ export default function Home() {
     } else if (command.length <= 5 && /^[A-Z0-9]+$/.test(command)) {
       setSelectedTicker(command);
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
-      const stockSpecificViews: ViewType[] = ['DES', 'FA', 'ANR', 'TRADE'];
+      const stockSpecificViews: ViewType[] = ['DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH'];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
       }
@@ -133,6 +161,24 @@ export default function Home() {
         return <BloombergIntelligence />;
       case 'IB':
         return <InstantBloomberg />;
+      case 'WEI':
+        return <WorldEquityIndices />;
+      case 'MOST':
+        return <MostActive />;
+      case 'EE':
+        return <EarningsEstimates ticker={selectedTicker} />;
+      case 'HDS':
+        return <HoldingsOwnership ticker={selectedTicker} />;
+      case 'DVD':
+        return <DividendHistory ticker={selectedTicker} />;
+      case 'OMON':
+        return <OptionMonitor ticker={selectedTicker} />;
+      case 'QR':
+        return <QuoteRecap ticker={selectedTicker} />;
+      case 'CN':
+        return <CompanyNews ticker={selectedTicker} />;
+      case 'TECH':
+        return <TechnicalIndicators ticker={selectedTicker} />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
