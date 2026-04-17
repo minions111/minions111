@@ -13,7 +13,51 @@ import { Watchlist } from "@/components/Watchlist";
 import { EconomicsNews } from "@/components/EconomicsNews";
 import { Clock } from "lucide-react";
 
-type ViewType = 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS';
+// New modules to be created
+import { FinancialAnalysis } from "@/components/FinancialAnalysis";
+import { AnalystRecommendations } from "@/components/AnalystRecommendations";
+import { MoneyMarketMonitor } from "@/components/MoneyMarketMonitor";
+import { CurrencyMonitor } from "@/components/CurrencyMonitor";
+import { BloombergIntelligence } from "@/components/BloombergIntelligence";
+import { InstantBloomberg } from "@/components/InstantBloomberg";
+
+type ViewType =
+  | 'MARKET'
+  | 'PORTFOLIO'
+  | 'TRADE'
+  | 'ECO'
+  | 'DES'
+  | 'WL'
+  | 'ECON_NEWS'
+  | 'FA'
+  | 'ANR'
+  | 'BTMM'
+  | 'WFX'
+  | 'BI'
+  | 'IB';
+
+const COMMAND_MAP: Record<string, ViewType> = {
+  'MARKET': 'MARKET',
+  'MKT': 'MARKET',
+  'TOP': 'MARKET',
+  'PORTFOLIO': 'PORTFOLIO',
+  'PF': 'PORTFOLIO',
+  'TRADE': 'TRADE',
+  'TR': 'TRADE',
+  'ECO': 'ECO',
+  'CAL': 'ECO',
+  'DES': 'DES',
+  'WL': 'WL',
+  'WATCH': 'WL',
+  'ECON': 'ECON_NEWS',
+  'EN': 'ECON_NEWS',
+  'FA': 'FA',
+  'ANR': 'ANR',
+  'BTMM': 'BTMM',
+  'WFX': 'WFX',
+  'BI': 'BI',
+  'IB': 'IB',
+};
 
 export default function Home() {
   const [time, setTime] = useState<string | null>(null);
@@ -30,16 +74,67 @@ export default function Home() {
 
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
-    if (command === 'MARKET' || command === 'MKT') setView('MARKET');
-    else if (command === 'PORTFOLIO' || command === 'PF') setView('PORTFOLIO');
-    else if (command === 'TRADE' || command === 'TR') setView('TRADE');
-    else if (command === 'ECO' || command === 'CAL') setView('ECO');
-    else if (command === 'DES') setView('DES');
-    else if (command === 'WL' || command === 'WATCH') setView('WL');
-    else if (command === 'ECON' || command === 'EN') setView('ECON_NEWS');
-    else if (command.length <= 5) {
+
+    if (COMMAND_MAP[command]) {
+      setView(COMMAND_MAP[command]);
+    } else if (command.length <= 5 && /^[A-Z0-9]+$/.test(command)) {
       setSelectedTicker(command);
-      if (view !== 'TRADE') setView('MARKET');
+      // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
+      const stockSpecificViews: ViewType[] = ['DES', 'FA', 'ANR', 'TRADE'];
+      if (!stockSpecificViews.includes(view)) {
+        setView('MARKET');
+      }
+    }
+  };
+
+  const renderView = () => {
+    switch (view) {
+      case 'MARKET':
+        return (
+          <>
+            <div className="flex-1 overflow-hidden">
+              <StockChart ticker={selectedTicker} />
+            </div>
+            <div className="h-1/3 min-h-[200px]">
+              <NewsFeed />
+            </div>
+          </>
+        );
+      case 'PORTFOLIO':
+        return <Portfolio />;
+      case 'TRADE':
+        return (
+          <div className="flex-1 grid grid-cols-3 overflow-hidden">
+            <div className="col-span-2">
+              <StockChart ticker={selectedTicker} />
+            </div>
+            <div className="col-span-1 border-l border-[#333]">
+              <OrderEntry />
+            </div>
+          </div>
+        );
+      case 'ECO':
+        return <EconomicCalendar />;
+      case 'DES':
+        return <SecurityDescription ticker={selectedTicker} />;
+      case 'WL':
+        return <Watchlist />;
+      case 'ECON_NEWS':
+        return <EconomicsNews />;
+      case 'FA':
+        return <FinancialAnalysis ticker={selectedTicker} />;
+      case 'ANR':
+        return <AnalystRecommendations ticker={selectedTicker} />;
+      case 'BTMM':
+        return <MoneyMarketMonitor />;
+      case 'WFX':
+        return <CurrencyMonitor />;
+      case 'BI':
+        return <BloombergIntelligence />;
+      case 'IB':
+        return <InstantBloomberg />;
+      default:
+        return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
   };
 
@@ -69,57 +164,7 @@ export default function Home() {
 
         {/* Center/Right Panel: Dynamic View */}
         <div className="col-span-9 flex flex-col h-full overflow-hidden">
-          {view === 'MARKET' && (
-            <>
-              <div className="flex-1 overflow-hidden">
-                <StockChart ticker={selectedTicker} />
-              </div>
-              <div className="h-1/3 min-h-[200px]">
-                <NewsFeed />
-              </div>
-            </>
-          )}
-
-          {view === 'PORTFOLIO' && (
-            <div className="flex-1 overflow-hidden">
-              <Portfolio />
-            </div>
-          )}
-
-          {view === 'TRADE' && (
-            <div className="flex-1 grid grid-cols-3 overflow-hidden">
-              <div className="col-span-2">
-                <StockChart ticker={selectedTicker} />
-              </div>
-              <div className="col-span-1 border-l border-[#333]">
-                <OrderEntry />
-              </div>
-            </div>
-          )}
-
-          {view === 'ECO' && (
-            <div className="flex-1 overflow-hidden">
-              <EconomicCalendar />
-            </div>
-          )}
-
-          {view === 'DES' && (
-            <div className="flex-1 overflow-hidden">
-              <SecurityDescription ticker={selectedTicker} />
-            </div>
-          )}
-
-          {view === 'WL' && (
-            <div className="flex-1 overflow-hidden">
-              <Watchlist />
-            </div>
-          )}
-
-          {view === 'ECON_NEWS' && (
-            <div className="flex-1 overflow-hidden">
-              <EconomicsNews />
-            </div>
-          )}
+          {renderView()}
         </div>
       </div>
 
@@ -127,10 +172,12 @@ export default function Home() {
       <div className="bg-[#222] border-t border-[#333] p-1 px-4 text-[10px] flex justify-between text-gray-400">
         <div className="flex gap-4">
           <span className="text-[#00ff00]">CONN OK</span>
-          <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF {view === 'PORTFOLIO' ? "ACTIVE" : ""}</span>
-          <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR {view === 'TRADE' ? "ACTIVE" : ""}</span>
-          <span className={view === 'ECO' ? "text-[#ffb900]" : ""}>ECO {view === 'ECO' ? "ACTIVE" : ""}</span>
-          <span className={view === 'ECON_NEWS' ? "text-[#ffb900]" : ""}>ECON {view === 'ECON_NEWS' ? "ACTIVE" : ""}</span>
+          <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
+          <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
+          <span className={view === 'ECO' ? "text-[#ffb900]" : ""}>ECO</span>
+          <span className={view === 'ECON_NEWS' ? "text-[#ffb900]" : ""}>ECON</span>
+          <span className={view === 'FA' ? "text-[#ffb900]" : ""}>FA</span>
+          <span className={view === 'BTMM' ? "text-[#ffb900]" : ""}>BTMM</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>

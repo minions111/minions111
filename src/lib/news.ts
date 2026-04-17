@@ -12,7 +12,7 @@ export async function fetchTopHeadlines(): Promise<NewsItem[]> {
   }
 
   try {
-    const response = await fetch(\`\${NEWS_API_BASE}/top-headlines?category=business&apiKey=\${apiKey}\`);
+    const response = await fetch(`${NEWS_API_BASE}/top-headlines?category=business&apiKey=${apiKey}`);
     if (!response.ok) throw new Error('NewsAPI fetch failed');
 
     const data = await response.json();
@@ -42,7 +42,7 @@ export async function fetchStockNews(symbol: string): Promise<NewsItem[]> {
     const to = new Date().toISOString().split('T')[0];
     const from = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-    const response = await fetch(\`\${FINNHUB_BASE}/company-news?symbol=\${symbol}&from=\${from}&to=\${to}&token=\${finnhubKey}\`);
+    const response = await fetch(`${FINNHUB_BASE}/company-news?symbol=${symbol}&from=${from}&to=${to}&token=${finnhubKey}`);
     if (!response.ok) throw new Error('Finnhub fetch failed');
 
     const data = await response.json();

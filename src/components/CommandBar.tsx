@@ -30,7 +30,7 @@ export const CommandBar = ({ onCommand }: CommandBarProps) => {
           value={command}
           onChange={(e) => setCommand(e.target.value.toUpperCase())}
           className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
-          placeholder="Enter command (e.g., MARKET, PF, TRADE, AAPL)..."
+          placeholder="Enter command (e.g., MARKET, PF, TRADE, FA, BTMM, BI)..."
         />
       </form>
       <div className="flex gap-2 px-2 text-[10px] font-mono text-gray-400">
