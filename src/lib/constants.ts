@@ -8,14 +8,14 @@ export const COLORS = {
   white: "#ffffff",
 };
 
-export const MOCK_STOCKS = [
-  { symbol: "AAPL", name: "Apple Inc.", price: 185.92, change: +1.24, pct: +0.67 },
-  { symbol: "MSFT", name: "Microsoft Corp.", price: 415.10, change: -2.45, pct: -0.59 },
-  { symbol: "GOOGL", name: "Alphabet Inc.", price: 147.60, change: +0.85, pct: +0.58 },
-  { symbol: "AMZN", name: "Amazon.com Inc.", price: 178.22, change: +3.12, pct: +1.78 },
-  { symbol: "TSLA", name: "Tesla, Inc.", price: 193.57, change: -5.40, pct: -2.71 },
-  { symbol: "META", name: "Meta Platforms", price: 484.03, change: +12.50, pct: +2.65 },
-  { symbol: "NVDA", name: "NVIDIA Corp", price: 726.13, change: +15.20, pct: +2.14 },
+export const STOCKS = [
+  { ticker: "AAPL", name: "Apple Inc.", price: 185.92, change: +1.24, pct: +0.67 },
+  { ticker: "MSFT", name: "Microsoft Corp.", price: 415.10, change: -2.45, pct: -0.59 },
+  { ticker: "GOOGL", name: "Alphabet Inc.", price: 147.60, change: +0.85, pct: +0.58 },
+  { ticker: "AMZN", name: "Amazon.com Inc.", price: 178.22, change: +3.12, pct: +1.78 },
+  { ticker: "TSLA", name: "Tesla, Inc.", price: 193.57, change: -5.40, pct: -2.71 },
+  { ticker: "META", name: "Meta Platforms", price: 484.03, change: +12.50, pct: +2.65 },
+  { ticker: "NVDA", name: "NVIDIA Corp", price: 726.13, change: +15.20, pct: +2.14 },
 ];
 
 export interface NewsItem {

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { MOCK_STOCKS } from '@/lib/constants';
+import { STOCKS as MOCK_STOCKS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 export const Watchlist = () => {
@@ -26,8 +26,8 @@ export const Watchlist = () => {
           </thead>
           <tbody>
             {MOCK_STOCKS.map((stock) => (
-              <tr key={stock.symbol} className="border-b border-[#222] hover:bg-[#111] cursor-pointer">
-                <td className="p-2 text-[#ffb900] font-bold">{stock.symbol} US</td>
+              <tr key={stock.ticker} className="border-b border-[#222] hover:bg-[#111] cursor-pointer">
+                <td className="p-2 text-[#ffb900] font-bold">{stock.ticker} US</td>
                 <td className="p-2 text-right text-white font-bold">{stock.price.toFixed(2)}</td>
                 <td className={cn(
                   "p-2 text-right",
