@@ -29,6 +29,14 @@ import { OptionMonitor } from "@/components/OptionMonitor";
 import { QuoteRecap } from "@/components/QuoteRecap";
 import { CompanyNews } from "@/components/CompanyNews";
 import { TechnicalIndicators } from "@/components/TechnicalIndicators";
+import { HistoricalPrices } from "@/components/HistoricalPrices";
+import { PeerAnalysis } from "@/components/PeerAnalysis";
+import { ManagementProfile } from "@/components/ManagementProfile";
+import { SupplyChain } from "@/components/SupplyChain";
+import { ESGScore } from "@/components/ESGScore";
+import { MarketDrivers } from "@/components/MarketDrivers";
+import { AlertManager } from "@/components/AlertManager";
+import { FullNewsSearch } from "@/components/FullNewsSearch";
 
 type ViewType =
   | 'MARKET'
@@ -52,7 +60,15 @@ type ViewType =
   | 'OMON'
   | 'QR'
   | 'CN'
-  | 'TECH';
+  | 'TECH'
+  | 'HP'
+  | 'PEER'
+  | 'MGMT'
+  | 'SUPP'
+  | 'ESG'
+  | 'DRIV'
+  | 'ALRT'
+  | 'NEWS';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET',
@@ -85,6 +101,16 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'QR': 'QR',
   'CN': 'CN',
   'TECH': 'TECH',
+  'HP': 'HP',
+  'HIST': 'HP',
+  'PEER': 'PEER',
+  'COMP': 'PEER',
+  'MGMT': 'MGMT',
+  'SUPP': 'SUPP',
+  'ESG': 'ESG',
+  'DRIV': 'DRIV',
+  'ALRT': 'ALRT',
+  'NEWS': 'NEWS',
 };
 
 export default function Home() {
@@ -108,7 +134,10 @@ export default function Home() {
     } else if (command.length <= 5 && /^[A-Z0-9]+$/.test(command)) {
       setSelectedTicker(command);
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
-      const stockSpecificViews: ViewType[] = ['DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH'];
+      const stockSpecificViews: ViewType[] = [
+        'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
+        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG'
+      ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
       }
@@ -179,6 +208,22 @@ export default function Home() {
         return <CompanyNews ticker={selectedTicker} />;
       case 'TECH':
         return <TechnicalIndicators ticker={selectedTicker} />;
+      case 'HP':
+        return <HistoricalPrices ticker={selectedTicker} />;
+      case 'PEER':
+        return <PeerAnalysis ticker={selectedTicker} />;
+      case 'MGMT':
+        return <ManagementProfile ticker={selectedTicker} />;
+      case 'SUPP':
+        return <SupplyChain ticker={selectedTicker} />;
+      case 'ESG':
+        return <ESGScore ticker={selectedTicker} />;
+      case 'DRIV':
+        return <MarketDrivers />;
+      case 'ALRT':
+        return <AlertManager />;
+      case 'NEWS':
+        return <FullNewsSearch />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
