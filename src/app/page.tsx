@@ -13,7 +13,7 @@ import { Watchlist } from "@/components/Watchlist";
 import { EconomicsNews } from "@/components/EconomicsNews";
 import { Clock } from "lucide-react";
 
-// New modules to be created
+// Module Imports
 import { FinancialAnalysis } from "@/components/FinancialAnalysis";
 import { AnalystRecommendations } from "@/components/AnalystRecommendations";
 import { MoneyMarketMonitor } from "@/components/MoneyMarketMonitor";
@@ -37,86 +37,71 @@ import { ESGScore } from "@/components/ESGScore";
 import { MarketDrivers } from "@/components/MarketDrivers";
 import { AlertManager } from "@/components/AlertManager";
 import { FullNewsSearch } from "@/components/FullNewsSearch";
+import { Launchpad } from "@/components/Launchpad";
+import { YieldSpreadAnalysis } from "@/components/YieldSpreadAnalysis";
+import { RevenueMap } from "@/components/RevenueMap";
+import { EarningsEvents } from "@/components/EarningsEvents";
+import { CorporateActions } from "@/components/CorporateActions";
+import { InflationMonitor } from "@/components/InflationMonitor";
+import { CentralBankTracker } from "@/components/CentralBankTracker";
+import { CurrencyConverter } from "@/components/CurrencyConverter";
+import { CommodityMonitor } from "@/components/CommodityMonitor";
 
 type ViewType =
-  | 'MARKET'
-  | 'PORTFOLIO'
-  | 'TRADE'
-  | 'ECO'
-  | 'DES'
-  | 'WL'
-  | 'ECON_NEWS'
-  | 'FA'
-  | 'ANR'
-  | 'BTMM'
-  | 'WFX'
-  | 'BI'
-  | 'IB'
-  | 'WEI'
-  | 'MOST'
-  | 'EE'
-  | 'HDS'
-  | 'DVD'
-  | 'OMON'
-  | 'QR'
-  | 'CN'
-  | 'TECH'
-  | 'HP'
-  | 'PEER'
-  | 'MGMT'
-  | 'SUPP'
-  | 'ESG'
-  | 'DRIV'
-  | 'ALRT'
-  | 'NEWS';
+  | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
+  | 'FA' | 'ANR' | 'BTMM' | 'WFX' | 'BI' | 'IB' | 'WEI' | 'MOST' | 'EE'
+  | 'HDS' | 'DVD' | 'OMON' | 'QR' | 'CN' | 'TECH' | 'HP' | 'PEER' | 'MGMT'
+  | 'SUPP' | 'ESG' | 'DRIV' | 'ALRT' | 'NEWS' | 'LPAD' | 'YAS' | 'MAP' | 'EVT'
+  | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM';
 
 const COMMAND_MAP: Record<string, ViewType> = {
-  'MARKET': 'MARKET',
-  'MKT': 'MARKET',
-  'TOP': 'MARKET',
-  'PORTFOLIO': 'PORTFOLIO',
-  'PF': 'PORTFOLIO',
-  'TRADE': 'TRADE',
-  'TR': 'TRADE',
-  'ECO': 'ECO',
-  'CAL': 'ECO',
-  'DES': 'DES',
-  'WL': 'WL',
-  'WATCH': 'WL',
-  'ECON': 'ECON_NEWS',
-  'EN': 'ECON_NEWS',
-  'FA': 'FA',
-  'ANR': 'ANR',
-  'BTMM': 'BTMM',
-  'WFX': 'WFX',
-  'BI': 'BI',
-  'IB': 'IB',
-  'WEI': 'WEI',
-  'MOST': 'MOST',
-  'MOVERS': 'MOST',
-  'EE': 'EE',
-  'HDS': 'HDS',
-  'DVD': 'DVD',
-  'OMON': 'OMON',
-  'QR': 'QR',
-  'CN': 'CN',
-  'TECH': 'TECH',
-  'HP': 'HP',
-  'HIST': 'HP',
-  'PEER': 'PEER',
-  'COMP': 'PEER',
-  'MGMT': 'MGMT',
-  'SUPP': 'SUPP',
-  'ESG': 'ESG',
-  'DRIV': 'DRIV',
-  'ALRT': 'ALRT',
-  'NEWS': 'NEWS',
+  'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
+  'PORTFOLIO': 'PORTFOLIO', 'PF': 'PORTFOLIO',
+  'TRADE': 'TRADE', 'TR': 'TRADE',
+  'ECO': 'ECO', 'CAL': 'ECO',
+  'DES': 'DES', 'WL': 'WL', 'WATCH': 'WL',
+  'ECON': 'ECON_NEWS', 'EN': 'ECON_NEWS',
+  'FA': 'FA', 'ANR': 'ANR', 'BTMM': 'BTMM', 'WFX': 'WFX', 'BI': 'BI', 'IB': 'IB',
+  'WEI': 'WEI', 'MOST': 'MOST', 'MOVERS': 'MOST',
+  'EE': 'EE', 'HDS': 'HDS', 'DVD': 'DVD', 'OMON': 'OMON', 'QR': 'QR', 'CN': 'CN', 'TECH': 'TECH',
+  'HP': 'HP', 'HIST': 'HP', 'PEER': 'PEER', 'COMP': 'PEER', 'MGMT': 'MGMT', 'SUPP': 'SUPP', 'ESG': 'ESG',
+  'DRIV': 'DRIV', 'ALRT': 'ALRT', 'NEWS': 'NEWS', 'LPAD': 'LPAD', 'YAS': 'YAS', 'MAP': 'MAP',
+  'EVT': 'EVT', 'EARN': 'EVT',
+  'CACS': 'CACS', 'CORP': 'CACS', 'IECO': 'IECO', 'INFL': 'IECO', 'CBR': 'CBR', 'RATE': 'CBR',
+  'FXCA': 'FXCA', 'CONV': 'FXCA', 'COMM': 'COMM',
 };
+
+interface TerminalState {
+  view: ViewType;
+  ticker: string;
+}
 
 export default function Home() {
   const [time, setTime] = useState<string | null>(null);
-  const [view, setView] = useState<ViewType>('MARKET');
-  const [selectedTicker, setSelectedTicker] = useState('AAPL');
+  const [activeTerminal, setActiveTerminal] = useState(1);
+  const [terminals, setTerminals] = useState<Record<number, TerminalState>>({
+    1: { view: 'MARKET', ticker: 'AAPL' },
+    2: { view: 'LPAD', ticker: 'MSFT' },
+    3: { view: 'ECO', ticker: 'TSLA' },
+    4: { view: 'PORTFOLIO', ticker: 'NVDA' },
+  });
+
+  const view = terminals[activeTerminal].view;
+  const selectedTicker = terminals[activeTerminal].ticker;
+
+  const setView = (v: ViewType) => {
+    setTerminals(prev => ({
+      ...prev,
+      [activeTerminal]: { ...prev[activeTerminal], view: v }
+    }));
+  };
+
+  const setSelectedTicker = (t: string) => {
+    setTerminals(prev => ({
+      ...prev,
+      [activeTerminal]: { ...prev[activeTerminal], ticker: t }
+    }));
+  };
 
   useEffect(() => {
     setTime(new Date().toLocaleTimeString() + " NY");
@@ -129,6 +114,11 @@ export default function Home() {
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
 
+    if (['T1', 'T2', 'T3', 'T4'].includes(command)) {
+      setActiveTerminal(parseInt(command.substring(1)));
+      return;
+    }
+
     if (COMMAND_MAP[command]) {
       setView(COMMAND_MAP[command]);
     } else if (command.length <= 5 && /^[A-Z0-9]+$/.test(command)) {
@@ -136,7 +126,7 @@ export default function Home() {
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
-        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG'
+        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -157,8 +147,7 @@ export default function Home() {
             </div>
           </>
         );
-      case 'PORTFOLIO':
-        return <Portfolio />;
+      case 'PORTFOLIO': return <Portfolio />;
       case 'TRADE':
         return (
           <div className="flex-1 grid grid-cols-3 overflow-hidden">
@@ -170,60 +159,42 @@ export default function Home() {
             </div>
           </div>
         );
-      case 'ECO':
-        return <EconomicCalendar />;
-      case 'DES':
-        return <SecurityDescription ticker={selectedTicker} />;
-      case 'WL':
-        return <Watchlist />;
-      case 'ECON_NEWS':
-        return <EconomicsNews />;
-      case 'FA':
-        return <FinancialAnalysis ticker={selectedTicker} />;
-      case 'ANR':
-        return <AnalystRecommendations ticker={selectedTicker} />;
-      case 'BTMM':
-        return <MoneyMarketMonitor />;
-      case 'WFX':
-        return <CurrencyMonitor />;
-      case 'BI':
-        return <BloombergIntelligence />;
-      case 'IB':
-        return <InstantBloomberg />;
-      case 'WEI':
-        return <WorldEquityIndices />;
-      case 'MOST':
-        return <MostActive />;
-      case 'EE':
-        return <EarningsEstimates ticker={selectedTicker} />;
-      case 'HDS':
-        return <HoldingsOwnership ticker={selectedTicker} />;
-      case 'DVD':
-        return <DividendHistory ticker={selectedTicker} />;
-      case 'OMON':
-        return <OptionMonitor ticker={selectedTicker} />;
-      case 'QR':
-        return <QuoteRecap ticker={selectedTicker} />;
-      case 'CN':
-        return <CompanyNews ticker={selectedTicker} />;
-      case 'TECH':
-        return <TechnicalIndicators ticker={selectedTicker} />;
-      case 'HP':
-        return <HistoricalPrices ticker={selectedTicker} />;
-      case 'PEER':
-        return <PeerAnalysis ticker={selectedTicker} />;
-      case 'MGMT':
-        return <ManagementProfile ticker={selectedTicker} />;
-      case 'SUPP':
-        return <SupplyChain ticker={selectedTicker} />;
-      case 'ESG':
-        return <ESGScore ticker={selectedTicker} />;
-      case 'DRIV':
-        return <MarketDrivers />;
-      case 'ALRT':
-        return <AlertManager />;
-      case 'NEWS':
-        return <FullNewsSearch />;
+      case 'ECO': return <EconomicCalendar />;
+      case 'DES': return <SecurityDescription ticker={selectedTicker} />;
+      case 'WL': return <Watchlist />;
+      case 'ECON_NEWS': return <EconomicsNews />;
+      case 'FA': return <FinancialAnalysis ticker={selectedTicker} />;
+      case 'ANR': return <AnalystRecommendations ticker={selectedTicker} />;
+      case 'BTMM': return <MoneyMarketMonitor />;
+      case 'WFX': return <CurrencyMonitor />;
+      case 'BI': return <BloombergIntelligence />;
+      case 'IB': return <InstantBloomberg />;
+      case 'WEI': return <WorldEquityIndices />;
+      case 'MOST': return <MostActive />;
+      case 'EE': return <EarningsEstimates ticker={selectedTicker} />;
+      case 'HDS': return <HoldingsOwnership ticker={selectedTicker} />;
+      case 'DVD': return <DividendHistory ticker={selectedTicker} />;
+      case 'OMON': return <OptionMonitor ticker={selectedTicker} />;
+      case 'QR': return <QuoteRecap ticker={selectedTicker} />;
+      case 'CN': return <CompanyNews ticker={selectedTicker} />;
+      case 'TECH': return <TechnicalIndicators ticker={selectedTicker} />;
+      case 'HP': return <HistoricalPrices ticker={selectedTicker} />;
+      case 'PEER': return <PeerAnalysis ticker={selectedTicker} />;
+      case 'MGMT': return <ManagementProfile ticker={selectedTicker} />;
+      case 'SUPP': return <SupplyChain ticker={selectedTicker} />;
+      case 'ESG': return <ESGScore ticker={selectedTicker} />;
+      case 'DRIV': return <MarketDrivers />;
+      case 'ALRT': return <AlertManager />;
+      case 'NEWS': return <FullNewsSearch />;
+      case 'LPAD': return <Launchpad />;
+      case 'YAS': return <YieldSpreadAnalysis />;
+      case 'MAP': return <RevenueMap ticker={selectedTicker} />;
+      case 'EVT': return <EarningsEvents />;
+      case 'CACS': return <CorporateActions ticker={selectedTicker} />;
+      case 'IECO': return <InflationMonitor />;
+      case 'CBR': return <CentralBankTracker />;
+      case 'FXCA': return <CurrencyConverter />;
+      case 'COMM': return <CommodityMonitor />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -235,7 +206,7 @@ export default function Home() {
       <div className="bg-[#1a1a1a] flex justify-between items-center px-4 py-1 border-b border-[#333] text-[10px] text-gray-400">
         <div className="flex gap-4">
           <span className="text-[#ffb900] font-bold">BLOOMBERG TERMINAL</span>
-          <span className="uppercase">TERMINAL 1: {view} MONITOR</span>
+          <span className="uppercase">TERMINAL {activeTerminal}: {view} MONITOR</span>
         </div>
         <div className="flex items-center gap-2">
           <Clock className="w-3 h-3" />
@@ -243,37 +214,30 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Command Bar */}
       <CommandBar onCommand={handleCommand} />
 
-      {/* Main Grid Layout */}
       <div className="flex-1 grid grid-cols-12 overflow-hidden">
-        {/* Left Panel: Market Data */}
         <div className="col-span-3 h-full border-r border-[#333]">
           <MarketGrid />
         </div>
-
-        {/* Center/Right Panel: Dynamic View */}
         <div className="col-span-9 flex flex-col h-full overflow-hidden">
           {renderView()}
         </div>
       </div>
 
-      {/* Footer / Status Bar */}
       <div className="bg-[#222] border-t border-[#333] p-1 px-4 text-[10px] flex justify-between text-gray-400">
         <div className="flex gap-4">
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
           <span className={view === 'ECO' ? "text-[#ffb900]" : ""}>ECO</span>
-          <span className={view === 'ECON_NEWS' ? "text-[#ffb900]" : ""}>ECON</span>
-          <span className={view === 'FA' ? "text-[#ffb900]" : ""}>FA</span>
-          <span className={view === 'BTMM' ? "text-[#ffb900]" : ""}>BTMM</span>
+          <span className={view === 'IECO' ? "text-[#ffb900]" : ""}>INFL</span>
+          <span className={view === 'CBR' ? "text-[#ffb900]" : ""}>CBR</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
-          <span>DOW: 38,627.99 <span className="text-[#ff0000]">-0.14%</span></span>
-          <span>NASDAQ: 15,990.66 <span className="text-[#00ff00]">+1.25%</span></span>
+          <span>GOLD: 2,385.40 <span className="text-[#00ff00]">+0.64%</span></span>
+          <span>WTI: 85.45 <span className="text-[#00ff00]">+1.47%</span></span>
         </div>
       </div>
     </main>
