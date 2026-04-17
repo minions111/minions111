@@ -46,13 +46,20 @@ import { InflationMonitor } from "@/components/InflationMonitor";
 import { CentralBankTracker } from "@/components/CentralBankTracker";
 import { CurrencyConverter } from "@/components/CurrencyConverter";
 import { CommodityMonitor } from "@/components/CommodityMonitor";
+import { DCFModel } from "@/components/DCFModel";
+import { WACCCalculator } from "@/components/WACCCalculator";
+import { InsiderTransactions } from "@/components/InsiderTransactions";
+import { SocialSentiment } from "@/components/SocialSentiment";
+import { BondSearch } from "@/components/BondSearch";
+import { UserPreferences } from "@/components/UserPreferences";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
   | 'FA' | 'ANR' | 'BTMM' | 'WFX' | 'BI' | 'IB' | 'WEI' | 'MOST' | 'EE'
   | 'HDS' | 'DVD' | 'OMON' | 'QR' | 'CN' | 'TECH' | 'HP' | 'PEER' | 'MGMT'
   | 'SUPP' | 'ESG' | 'DRIV' | 'ALRT' | 'NEWS' | 'LPAD' | 'YAS' | 'MAP' | 'EVT'
-  | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM';
+  | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM' | 'DCF' | 'WACC' | 'INS' | 'SENT'
+  | 'SRCH' | 'USER';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -69,6 +76,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'EVT': 'EVT', 'EARN': 'EVT',
   'CACS': 'CACS', 'CORP': 'CACS', 'IECO': 'IECO', 'INFL': 'IECO', 'CBR': 'CBR', 'RATE': 'CBR',
   'FXCA': 'FXCA', 'CONV': 'FXCA', 'COMM': 'COMM',
+  'DCF': 'DCF', 'WACC': 'WACC', 'INS': 'INS', 'SENT': 'SENT', 'SRCH': 'SRCH', 'USER': 'USER',
 };
 
 interface TerminalState {
@@ -126,7 +134,7 @@ export default function Home() {
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
-        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS'
+        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -195,6 +203,12 @@ export default function Home() {
       case 'CBR': return <CentralBankTracker />;
       case 'FXCA': return <CurrencyConverter />;
       case 'COMM': return <CommodityMonitor />;
+      case 'DCF': return <DCFModel ticker={selectedTicker} />;
+      case 'WACC': return <WACCCalculator ticker={selectedTicker} />;
+      case 'INS': return <InsiderTransactions ticker={selectedTicker} />;
+      case 'SENT': return <SocialSentiment />;
+      case 'SRCH': return <BondSearch />;
+      case 'USER': return <UserPreferences />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -232,7 +246,8 @@ export default function Home() {
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
           <span className={view === 'ECO' ? "text-[#ffb900]" : ""}>ECO</span>
           <span className={view === 'IECO' ? "text-[#ffb900]" : ""}>INFL</span>
-          <span className={view === 'CBR' ? "text-[#ffb900]" : ""}>CBR</span>
+          <span className={view === 'DCF' ? "text-[#ffb900]" : ""}>DCF</span>
+          <span className={view === 'USER' ? "text-[#ffb900]" : ""}>USER</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
