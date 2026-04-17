@@ -18,12 +18,23 @@ export const MOCK_STOCKS = [
   { symbol: "NVDA", name: "NVIDIA Corp", price: 726.13, change: +15.20, pct: +2.14 },
 ];
 
-export const MOCK_NEWS = [
-  { id: 1, time: "14:20", headline: "FED'S POWELL SAYS INFLATION PROGRESS NOT ASSURED", source: "BN" },
-  { id: 2, time: "14:15", headline: "ECB TO KEEP RATES STEADY AS PRICE PRESSURES LINGER", source: "BBG" },
-  { id: 3, time: "14:02", headline: "OIL RISES AS MIDDLE EAST TENSIONS OFFSET SUPPLY DATA", source: "REU" },
-  { id: 4, time: "13:55", headline: "APPLE EXPLORES RENEWABLE ENERGY PARTNERSHIP IN ASIA", source: "BN" },
-  { id: 5, time: "13:40", headline: "S&P 500 HITS NEW RECORD HIGH ON TECH RALLY", source: "BN" },
+export interface NewsItem {
+  id: number;
+  time: string;
+  headline: string;
+  source: string;
+  category: string;
+  sentiment: 'pos' | 'neg' | 'neu';
+}
+
+export const MOCK_NEWS: NewsItem[] = [
+  { id: 1, time: "14:20", headline: "FED'S POWELL SAYS INFLATION PROGRESS NOT ASSURED", source: "BN", category: "ECON", sentiment: "neg" },
+  { id: 2, time: "14:15", headline: "ECB TO KEEP RATES STEADY AS PRICE PRESSURES LINGER", source: "BBG", category: "ECON", sentiment: "neu" },
+  { id: 3, time: "14:02", headline: "OIL RISES AS MIDDLE EAST TENSIONS OFFSET SUPPLY DATA", source: "REU", category: "MARKETS", sentiment: "pos" },
+  { id: 4, time: "13:55", headline: "APPLE EXPLORES RENEWABLE ENERGY PARTNERSHIP IN ASIA", source: "BN", category: "TECH", sentiment: "pos" },
+  { id: 5, time: "13:40", headline: "S&P 500 HITS NEW RECORD HIGH ON TECH RALLY", source: "BN", category: "TOP", sentiment: "pos" },
+  { id: 6, time: "13:30", headline: "JPMORGAN FORECASTS MODEST GROWTH IN Q3", source: "BBG", category: "MARKETS", sentiment: "neu" },
+  { id: 7, time: "13:15", headline: "CHINA MANUFACTURING DATA MISSES ESTIMATES", source: "REU", category: "ECON", sentiment: "neg" },
 ];
 
 export const MOCK_CHART_DATA = [

@@ -10,9 +10,10 @@ import { OrderEntry } from "@/components/OrderEntry";
 import { EconomicCalendar } from "@/components/EconomicCalendar";
 import { SecurityDescription } from "@/components/SecurityDescription";
 import { Watchlist } from "@/components/Watchlist";
+import { EconomicsNews } from "@/components/EconomicsNews";
 import { Clock } from "lucide-react";
 
-type ViewType = 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL';
+type ViewType = 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS';
 
 export default function Home() {
   const [time, setTime] = useState<string | null>(null);
@@ -28,15 +29,16 @@ export default function Home() {
   }, []);
 
   const handleCommand = (cmd: string) => {
-    if (cmd === 'MARKET' || cmd === 'MKT') setView('MARKET');
-    else if (cmd === 'PORTFOLIO' || cmd === 'PF') setView('PORTFOLIO');
-    else if (cmd === 'TRADE' || cmd === 'TR') setView('TRADE');
-    else if (cmd === 'ECO' || cmd === 'CAL') setView('ECO');
-    else if (cmd === 'DES') setView('DES');
-    else if (cmd === 'WL' || cmd === 'WATCH') setView('WL');
-    else if (cmd.length <= 5) {
-      setSelectedTicker(cmd);
-      // Auto switch to chart if a ticker is entered
+    const command = cmd.toUpperCase();
+    if (command === 'MARKET' || command === 'MKT') setView('MARKET');
+    else if (command === 'PORTFOLIO' || command === 'PF') setView('PORTFOLIO');
+    else if (command === 'TRADE' || command === 'TR') setView('TRADE');
+    else if (command === 'ECO' || command === 'CAL') setView('ECO');
+    else if (command === 'DES') setView('DES');
+    else if (command === 'WL' || command === 'WATCH') setView('WL');
+    else if (command === 'ECON' || command === 'EN') setView('ECON_NEWS');
+    else if (command.length <= 5) {
+      setSelectedTicker(command);
       if (view !== 'TRADE') setView('MARKET');
     }
   };
@@ -112,6 +114,12 @@ export default function Home() {
               <Watchlist />
             </div>
           )}
+
+          {view === 'ECON_NEWS' && (
+            <div className="flex-1 overflow-hidden">
+              <EconomicsNews />
+            </div>
+          )}
         </div>
       </div>
 
@@ -122,6 +130,7 @@ export default function Home() {
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF {view === 'PORTFOLIO' ? "ACTIVE" : ""}</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR {view === 'TRADE' ? "ACTIVE" : ""}</span>
           <span className={view === 'ECO' ? "text-[#ffb900]" : ""}>ECO {view === 'ECO' ? "ACTIVE" : ""}</span>
+          <span className={view === 'ECON_NEWS' ? "text-[#ffb900]" : ""}>ECON {view === 'ECON_NEWS' ? "ACTIVE" : ""}</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
