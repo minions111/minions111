@@ -1,14 +1,24 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bloomberg-amber: #ffb900;
+  --color-bloomberg-green: #00ff00;
+  --color-bloomberg-red: #ff0000;
+}
+
 :root {
   --background: #000000;
   --foreground: #ffffff;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+/* Force dark theme and monospace font globally */
+html, body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Bloomberg scrollbar style */
@@ -28,4 +38,9 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #444;
+}
+
+/* Ensure all elements inherit background and text color where needed for the terminal feel */
+main, div, section, table, tr, td, th {
+  border-color: #333;
 }
