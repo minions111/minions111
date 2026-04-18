@@ -117,6 +117,12 @@ import { CentralBankAssets } from "@/components/CentralBankAssets";
 import { StockScreener } from "@/components/StockScreener";
 import { TerminalMessenger } from "@/components/TerminalMessenger";
 import { MarketStories } from "@/components/MarketStories";
+import { MonteCarloSimulation } from "@/components/MonteCarloSimulation";
+import { CorrelationClustering } from "@/components/CorrelationClustering";
+import { LiquidityAnalysis } from "@/components/LiquidityAnalysis";
+import { TechMetrics } from "@/components/TechMetrics";
+import { BankMetrics } from "@/components/BankMetrics";
+import { EnergyMetrics } from "@/components/EnergyMetrics";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -131,7 +137,8 @@ type ViewType =
   | 'MMAP' | 'CORR' | 'CONF' | 'MA' | 'SI' | 'SEAS' | 'ANRH' | 'EV' | 'RV'
   | 'MARB' | 'CSAD' | 'OPT' | 'ECOD' | 'SPEE' | 'SCDS' | 'CCUR' | 'WIRP' | 'WB'
   | 'IFRC' | 'FWD' | 'OWN' | 'BUYB' | 'REV' | 'REL' | 'REBAL' | 'SWAP' | 'GDP'
-  | 'CBAS' | 'SCRN' | 'MSG' | 'READ';
+  | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
+  | 'ENRG';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -162,6 +169,8 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'SPEE': 'SPEE', 'SCDS': 'SCDS', 'CCUR': 'CCUR', 'WIRP': 'WIRP', 'WB': 'WB', 'IFRC': 'IFRC',
   'FWD': 'FWD', 'OWN': 'OWN', 'BUYB': 'BUYB', 'REV': 'REV', 'REL': 'REL', 'REBAL': 'REBAL',
   'SWAP': 'SWAP', 'GDP': 'GDP', 'CBAS': 'CBAS', 'SCRN': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
+  'MCS': 'MCS', 'PROB': 'MCS', 'CLUS': 'CLUS', 'LIQ': 'LIQ', 'TMT': 'TMT', 'BNK': 'BNK',
+  'ENRG': 'ENRG',
 };
 
 interface TerminalState {
@@ -239,7 +248,8 @@ export default function Home() {
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
         'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX',
-        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM', 'SI', 'ANRH', 'EV', 'RV', 'OWN', 'BUYB', 'REV'
+        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM', 'SI', 'ANRH', 'EV', 'RV', 'OWN', 'BUYB', 'REV',
+        'TMT', 'BNK', 'ENRG'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -379,6 +389,12 @@ export default function Home() {
       case 'SCRN': return <StockScreener />;
       case 'MSG': return <TerminalMessenger />;
       case 'READ': return <MarketStories />;
+      case 'MCS': return <MonteCarloSimulation />;
+      case 'CLUS': return <CorrelationClustering />;
+      case 'LIQ': return <LiquidityAnalysis />;
+      case 'TMT': return <TechMetrics ticker={selectedTicker} />;
+      case 'BNK': return <BankMetrics ticker={selectedTicker} />;
+      case 'ENRG': return <EnergyMetrics ticker={selectedTicker} />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -418,9 +434,8 @@ export default function Home() {
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'MSG' ? "text-[#ffb900]" : ""}>MSG</span>
-          <span className={view === 'GDP' ? "text-[#ffb900]" : ""}>GDP</span>
-          <span className={view === 'SCRN' ? "text-[#ffb900]" : ""}>SCRN</span>
+          <span className={view === 'MCS' ? "text-[#ffb900]" : ""}>MCS</span>
+          <span className={view === 'TMT' ? "text-[#ffb900]" : ""}>TMT</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
           <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
