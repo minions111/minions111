@@ -22,7 +22,7 @@ export async function fetchTopHeadlines(): Promise<NewsItem[]> {
       headline: art.title.toUpperCase(),
       source: art.source.name.substring(0, 3).toUpperCase(),
       category: 'TOP',
-      sentiment: 'neu', // Default to neutral as Sentiment API usually requires separate key
+      sentiment: 'neu',
     }));
   } catch (error) {
     console.error('Error fetching headlines:', error);
@@ -60,10 +60,32 @@ export async function fetchStockNews(symbol: string): Promise<NewsItem[]> {
   }
 }
 
-/**
- * World Bank API - Indicators
- * No API key required for basic queries
- */
+export async function fetchHistoricalData(symbol: string, resolution: string = 'D') {
+  const finnhubKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
+  if (!finnhubKey) return null;
+
+  try {
+    const to = Math.floor(Date.now() / 1000);
+    const from = to - (365 * 24 * 60 * 60); // 1 year
+    const response = await fetch(`${FINNHUB_BASE}/stock/candle?symbol=${symbol}&resolution=${resolution}&from=${from}&to=${to}&token=${finnhubKey}`);
+    if (!response.ok) throw new Error('Historical data fetch failed');
+    const data = await response.json();
+    if (data.s !== 'ok') return null;
+
+    return data.t.map((time: number, i: number) => ({
+      time: new Date(time * 1000).toISOString().split('T')[0],
+      price: data.c[i],
+      open: data.o[i],
+      high: data.h[i],
+      low: data.l[i],
+      volume: data.v[i]
+    }));
+  } catch (error) {
+    console.error('Error fetching historical data:', error);
+    return null;
+  }
+}
+
 export async function fetchEconomicIndicators() {
   try {
     const response = await fetch('https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=1');

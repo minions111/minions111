@@ -6,6 +6,8 @@ import {
   ComposedChart, Line, Bar
 } from 'recharts';
 import { PriceSimulationEngine } from '@/lib/priceEngine';
+import { fetchHistoricalData } from '@/lib/news';
+import { calculateSMA, calculateRSI } from '@/lib/indicators';
 
 interface StockChartProps {
   ticker: string;
@@ -13,48 +15,63 @@ interface StockChartProps {
 
 export const StockChart = ({ ticker }: StockChartProps) => {
   const [livePrice, setLivePrice] = useState<number | null>(null);
+  const [histData, setHistData] = useState<any[]>([]);
 
   useEffect(() => {
+    const loadHist = async () => {
+      const data = await fetchHistoricalData(ticker);
+      if (data) setHistData(data);
+    };
+    loadHist();
+
     const engine = PriceSimulationEngine.getInstance();
     const unsubscribe = engine.subscribe((updates) => {
       if (updates[ticker]) {
         setLivePrice(updates[ticker].price);
       }
     });
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [ticker]);
 
   const data = useMemo(() => {
-    const basePrice = livePrice || 185;
-    return Array.from({ length: 40 }).map((_, i) => {
-      const p = basePrice + (Math.random() * 10 - 5);
-      const sma = p + (Math.random() * 2 - 1);
-      const rsi = 40 + Math.random() * 40;
+    // If no real historical data, generate high-quality fallback data
+    const sourceData = histData.length > 0 ? histData : Array.from({ length: 100 }).map((_, i) => {
+      const base = 180 + Math.sin(i / 10) * 5;
       return {
-        time: `${10 + Math.floor(i/4)}:${(i%4)*15}`,
-        price: p,
-        sma: sma,
-        rsi: rsi,
-        volume: 1000 + Math.random() * 5000
+        time: `2024-01-${i + 1}`,
+        price: base + Math.random() * 2,
+        open: base,
+        high: base + 2,
+        low: base - 1,
+        volume: 1000000 + Math.random() * 500000
       };
     });
-  }, [ticker, livePrice]);
+
+    const prices = sourceData.map(d => d.price);
+    const sma50 = calculateSMA(prices, 50);
+    const rsi = calculateRSI(prices, 14);
+
+    return sourceData.map((d, i) => ({
+      ...d,
+      sma50: sma50[i],
+      rsi: rsi[i],
+    }));
+  }, [histData]);
+
+  const currentPriceDisplay = livePrice || (data.length > 0 ? data[data.length - 1].price : 0);
 
   return (
     <div className="flex flex-col h-full bg-black p-2 font-mono">
       <div className="flex justify-between items-center mb-1 px-2 border-b border-[#333] pb-1">
         <div className="flex items-center gap-3">
           <span className="text-[#ffb900] font-bold text-lg">{ticker} US Equity</span>
-          <span className="text-white text-xl font-bold">{livePrice?.toFixed(2) || '185.92'}</span>
+          <span className="text-white text-xl font-bold tabular-nums">{currentPriceDisplay.toFixed(2)}</span>
           <span className="text-[#00ff00] font-bold text-xs">+1.24 (+0.67%)</span>
         </div>
-        <div className="text-[10px] text-gray-500 flex gap-4">
-          <span>O: 185.10</span>
-          <span>H: 186.50</span>
-          <span>L: 184.20</span>
-          <span>V: 38.2M</span>
+        <div className="text-[10px] text-gray-500 flex gap-4 uppercase">
+          <span>O: {data[data.length-1]?.open.toFixed(2) || '--'}</span>
+          <span>H: {data[data.length-1]?.high.toFixed(2) || '--'}</span>
+          <span>L: {data[data.length-1]?.low.toFixed(2) || '--'}</span>
         </div>
       </div>
 
@@ -68,7 +85,7 @@ export const StockChart = ({ ticker }: StockChartProps) => {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
-            <XAxis dataKey="time" stroke="#666" fontSize={10} tickLine={false} axisLine={false} />
+            <XAxis dataKey="time" stroke="#666" fontSize={10} tickLine={false} axisLine={false} hide />
             <YAxis
               orientation="right"
               stroke="#666"
@@ -93,19 +110,23 @@ export const StockChart = ({ ticker }: StockChartProps) => {
             />
             <Line
               type="monotone"
-              dataKey="sma"
+              dataKey="sma50"
               stroke="#00ff00"
               dot={false}
               strokeWidth={1}
               strokeDasharray="5 5"
               isAnimationActive={false}
+              name="SMA 50"
             />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
 
       <div className="h-1/4 border-t border-[#222] mt-2 pt-1">
-        <div className="text-[9px] text-gray-500 mb-1">RSI (14): 62.45</div>
+        <div className="flex justify-between px-2 text-[9px] text-gray-500 mb-1">
+          <span>RSI (14): {data[data.length-1]?.rsi?.toFixed(2) || '--'}</span>
+          <span>VOLUME: {data[data.length-1]?.volume.toLocaleString() || '--'}</span>
+        </div>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
