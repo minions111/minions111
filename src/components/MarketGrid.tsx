@@ -4,12 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { PriceSimulationEngine, PriceUpdate } from '@/lib/priceEngine';
 import { cn } from '@/lib/utils';
 import { STOCKS } from '@/lib/constants';
+import { useAlerts } from './AlertToast';
 
 export const MarketGrid = () => {
   const [prices, setPrices] = useState<Record<string, PriceUpdate>>({});
   const [isLive, setIsLive] = useState(false);
+  const { showAlert } = useAlerts();
 
   useEffect(() => {
+    // Initial connection alert
+    setTimeout(() => {
+      showAlert("Terminal Connection Established", "success");
+    }, 2000);
+
     const engine = PriceSimulationEngine.getInstance();
     engine.start();
     const unsubscribe = engine.subscribe((updates) => {
