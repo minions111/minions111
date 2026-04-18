@@ -5,6 +5,7 @@ export interface PriceUpdate {
   price: number;
   change: number;
   pct: number;
+  isRealTime: boolean;
 }
 
 export class PriceSimulationEngine {
@@ -13,8 +14,11 @@ export class PriceSimulationEngine {
   private initialPrices: Record<string, number> = {};
   private listeners: Set<(updates: Record<string, PriceUpdate>) => void> = new Set();
   private interval: NodeJS.Timeout | null = null;
+  private socket: WebSocket | null = null;
+  private apiKey: string | undefined;
 
   private constructor() {
+    this.apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
     STOCKS.forEach(stock => {
       this.prices[stock.ticker] = stock.price;
       this.initialPrices[stock.ticker] = stock.price;
@@ -29,12 +33,60 @@ export class PriceSimulationEngine {
   }
 
   public start() {
+    if (this.apiKey) {
+      this.startRealTime();
+    } else {
+      this.startSimulation();
+    }
+  }
+
+  private startRealTime() {
+    if (this.socket) return;
+
+    // Connect to Finnhub WebSocket for real-time trades
+    this.socket = new WebSocket(`wss://ws.finnhub.io?token=${this.apiKey}`);
+
+    this.socket.addEventListener('open', () => {
+      STOCKS.forEach(stock => {
+        this.socket?.send(JSON.stringify({ 'type': 'subscribe', 'symbol': stock.ticker }));
+      });
+    });
+
+    this.socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'trade') {
+        const updates: Record<string, PriceUpdate> = {};
+        data.data.forEach((trade: any) => {
+          const ticker = trade.s;
+          const price = trade.p;
+
+          if (this.initialPrices[ticker]) {
+            const change = price - this.initialPrices[ticker];
+            const pct = (change / this.initialPrices[ticker]) * 100;
+
+            this.prices[ticker] = price;
+            updates[ticker] = { ticker, price, change, pct, isRealTime: true };
+          }
+        });
+        if (Object.keys(updates).length > 0) {
+          this.listeners.forEach(listener => listener(updates));
+        }
+      }
+    });
+
+    this.socket.addEventListener('error', (err) => {
+      console.error('WebSocket Error:', err);
+      this.startSimulation();
+    });
+  }
+
+  private startSimulation() {
     if (this.interval) return;
     this.interval = setInterval(() => {
       const updates: Record<string, PriceUpdate> = {};
       STOCKS.forEach(stock => {
         const currentPrice = this.prices[stock.ticker];
-        const volatility = 0.001; // 0.1% max move per tick
+        const volatility = 0.0005;
         const change = currentPrice * (Math.random() * volatility * 2 - volatility);
         const newPrice = currentPrice + change;
         this.prices[stock.ticker] = newPrice;
@@ -46,17 +98,22 @@ export class PriceSimulationEngine {
           ticker: stock.ticker,
           price: newPrice,
           change: totalChange,
-          pct: totalPct
+          pct: totalPct,
+          isRealTime: false
         };
       });
       this.listeners.forEach(listener => listener(updates));
-    }, 2000); // Update every 2 seconds
+    }, 2000);
   }
 
   public stop() {
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = null;
+    }
+    if (this.socket) {
+      this.socket.close();
+      this.socket = null;
     }
   }
 

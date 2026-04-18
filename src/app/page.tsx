@@ -56,6 +56,10 @@ import { ExecutiveBio } from "@/components/ExecutiveBio";
 import { CashFlowStatement } from "@/components/CashFlowStatement";
 import { FuturesMonitor } from "@/components/FuturesMonitor";
 import { HelpSystem } from "@/components/HelpSystem";
+import { BloombergGPT } from "@/components/BloombergGPT";
+import { PortfolioRisk } from "@/components/PortfolioRisk";
+import { TranscriptViewer } from "@/components/TranscriptViewer";
+import { SecurityLock } from "@/components/SecurityLock";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -63,7 +67,8 @@ type ViewType =
   | 'HDS' | 'DVD' | 'OMON' | 'QR' | 'CN' | 'TECH' | 'HP' | 'PEER' | 'MGMT'
   | 'SUPP' | 'ESG' | 'DRIV' | 'ALRT' | 'NEWS' | 'LPAD' | 'YAS' | 'MAP' | 'EVT'
   | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM' | 'DCF' | 'WACC' | 'INS' | 'SENT'
-  | 'SRCH' | 'USER' | 'BIO' | 'CASH' | 'DRV' | 'HELP';
+  | 'SRCH' | 'USER' | 'BIO' | 'CASH' | 'DRV' | 'HELP' | 'GPT' | 'RISK' | 'TX'
+  | 'LOCK';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -82,6 +87,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'FXCA': 'FXCA', 'CONV': 'FXCA', 'COMM': 'COMM',
   'DCF': 'DCF', 'WACC': 'WACC', 'INS': 'INS', 'SENT': 'SENT', 'SRCH': 'SRCH', 'USER': 'USER',
   'BIO': 'BIO', 'CASH': 'CASH', 'DRV': 'DRV', 'HELP': 'HELP',
+  'GPT': 'GPT', 'AI': 'GPT', 'RISK': 'RISK', 'TX': 'TX', 'LOCK': 'LOCK',
 };
 
 interface TerminalState {
@@ -139,7 +145,7 @@ export default function Home() {
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
-        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH'
+        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -218,6 +224,10 @@ export default function Home() {
       case 'CASH': return <CashFlowStatement ticker={selectedTicker} />;
       case 'DRV': return <FuturesMonitor />;
       case 'HELP': return <HelpSystem />;
+      case 'GPT': return <BloombergGPT />;
+      case 'RISK': return <PortfolioRisk />;
+      case 'TX': return <TranscriptViewer ticker={selectedTicker} />;
+      case 'LOCK': return <SecurityLock />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -240,22 +250,27 @@ export default function Home() {
       <CommandBar onCommand={handleCommand} />
 
       <div className="flex-1 grid grid-cols-12 overflow-hidden">
+        {/* Left Panel: Market Data */}
         <div className="col-span-3 h-full border-r border-[#333]">
           <MarketGrid />
         </div>
+
+        {/* Center/Right Panel: Dynamic View */}
         <div className="col-span-9 flex flex-col h-full overflow-hidden">
           {renderView()}
         </div>
       </div>
 
+      {/* Footer / Status Bar */}
       <div className="bg-[#222] border-t border-[#333] p-1 px-4 text-[10px] flex justify-between text-gray-400">
         <div className="flex gap-4">
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'ECO' ? "text-[#ffb900]" : ""}>ECO</span>
+          <span className={view === 'GPT' ? "text-[#ffb900]" : ""}>GPT</span>
+          <span className={view === 'RISK' ? "text-[#ffb900]" : ""}>RISK</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
-          <span className={view === 'USER' ? "text-[#ffb900]" : ""}>USER</span>
+          <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
