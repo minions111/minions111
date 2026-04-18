@@ -151,6 +151,10 @@ import { AdvancedPortfolioService } from "@/components/AdvancedPortfolioService"
 import { BusinessCycle } from "@/components/BusinessCycle";
 import { FinancialGlossary } from "@/components/FinancialGlossary";
 import { TerminalOnboarding } from "@/components/TerminalOnboarding";
+import { CentralBankCalendar } from "@/components/CentralBankCalendar";
+import { EarningsTranscriptSearch } from "@/components/EarningsTranscriptSearch";
+import { MarketWideHeatmap } from "@/components/MarketWideHeatmap";
+import { CurrencyMatrix } from "@/components/CurrencyMatrix";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -169,7 +173,8 @@ type ViewType =
   | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN'
   | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO'
   | 'CRYP' | 'CESI' | 'PFHM' | 'TOP' | 'DIR' | 'MSGS'
-  | 'PEOP' | 'BPS' | 'BCYC' | 'GLOS' | 'JOIN';
+  | 'PEOP' | 'BPS' | 'BCYC' | 'GLOS' | 'JOIN'
+  | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -206,6 +211,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH', 'WX': 'WX', 'TV': 'TV', 'TICK': 'TICK', 'MEMO': 'MEMO',
   'CRYP': 'CRYP', 'BTC': 'CRYP', 'CESI': 'CESI', 'PFHM': 'PFHM', 'DIR': 'DIR', 'MSGS': 'MSGS',
   'PEOP': 'PEOP', 'BPS': 'BPS', 'BCYC': 'BCYC', 'GLOS': 'GLOS', 'JOIN': 'JOIN', 'START': 'JOIN',
+  'CENB': 'CenB', 'EVTS': 'EVTS', 'SHTM': 'SHTM', 'FXIP': 'FXIP',
 };
 
 interface TerminalState {
@@ -478,6 +484,10 @@ export default function Home() {
       case 'BCYC': return <BusinessCycle />;
       case 'GLOS': return <FinancialGlossary />;
       case 'JOIN': return <TerminalOnboarding />;
+      case 'CenB': return <CentralBankCalendar />;
+      case 'EVTS': return <EarningsTranscriptSearch />;
+      case 'SHTM': return <MarketWideHeatmap />;
+      case 'FXIP': return <CurrencyMatrix />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }

@@ -20,6 +20,10 @@ export const TerminalDirectory = () => {
     {
       title: "WORKSTATION & LIFESTYLE",
       items: ["HELP (User Manual)", "DIR (Directory)", "USER (Preferences)", "LOCK (Security)", "MSG (Messaging)", "DIN (Dining)", "POSH (Luxury)", "RICH (Billionaires)"]
+    },
+    {
+      title: "SOVEREIGN & MACRO",
+      items: ["CenB (CB Calendar)", "EVTS (Earnings Srch)", "SHTM (Wide Heatmap)", "FXIP (Curr Matrix)", "BCYC (Cycle)", "PEOP (People)", "BPS (Portfolio Svcs)", "JOIN (Onboarding)"]
     }
   ];
 

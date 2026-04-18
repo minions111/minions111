@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bloomberg Terminal Pro - Absolute Sovereign Edition
 
-## Getting Started
+An institutional-grade replication of the Bloomberg Terminal workstation, built with Next.js 15, React 19, and Tailwind CSS.
 
-First, run the development server:
+## 🚀 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This project is a high-fidelity web simulation of the world's most powerful financial tool. It features a command-driven interface with over **230 functional mnemonics** covering Equities, Fixed Income, Derivatives, Macroeconomics, Crypto, and Intelligence.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Command Navigation:** Institutional-style command bar for ticker entry and function routing.
+- **Real-Time Data:** `PriceSimulationEngine` (Finnhub WS/REST) and `NewsStreamingService` (NewsAPI/World Bank).
+- **Multi-Terminal:** Independent workflow states across 4 virtual terminals (T1-T4).
+- **Advanced Analytics:** Dynamic RSI, SMA, and Bollinger Bands with Wilder's smoothing logic.
+- **Master Directory:** Searchable index (DIR) of all 230+ terminal functions.
+- **Institutional Ecosystem:** Electronic Trading (EMSX), BloombergGPT AI, and Instant Bloomberg messaging.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Framework:** Next.js 15 (App Router)
+- **UI:** React 19, Tailwind CSS v3.4.19
+- **Visuals:** Recharts, Framer Motion, Lucide Icons
+- **State:** LocalStorage persistence, Singleton Service patterns
 
-To learn more about Next.js, take a look at the following resources:
+## 📖 Command Guide (Highlights)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `FA`: Financial Analysis
+- `CenB`: Central Bank Calendar
+- `FXIP`: Currency Cross-Rate Matrix
+- `SHTM`: Market-Wide Sector Heatmap
+- `EVTS`: Earnings Transcript Search
+- `PEOP`: People & Biographies
+- `BPS`: Advanced Portfolio Attribution
+- `JOIN`: Terminal Onboarding Tour
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚦 Getting Started
 
-## Deploy on Vercel
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Environment Variables:**
+   Create a `.env.local` file:
+   ```
+   NEXT_PUBLIC_FINNHUB_API_KEY=your_key
+   NEXT_PUBLIC_NEWS_API_KEY=your_key
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Run Dev Server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Access Terminal:**
+   Open `http://localhost:3000`. Use `F1` for HELP or `DIR` for the directory.
+
+## ⚖️ License
+
+Proprietary Simulation - For Educational & Research Purposes.
