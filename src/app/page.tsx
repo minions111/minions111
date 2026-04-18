@@ -144,6 +144,8 @@ import { CryptoMonitor } from "@/components/CryptoMonitor";
 import { EconomicSurpriseIndex } from "@/components/EconomicSurpriseIndex";
 import { PortfolioHeatmap } from "@/components/PortfolioHeatmap";
 import { AlertProvider } from "@/components/AlertToast";
+import { TerminalDirectory } from "@/components/TerminalDirectory";
+import { TerminalMessagingService } from "@/components/TerminalMessagingService";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -161,7 +163,7 @@ type ViewType =
   | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
   | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN'
   | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO'
-  | 'CRYP' | 'CESI' | 'PFHM' | 'TOP';
+  | 'CRYP' | 'CESI' | 'PFHM' | 'TOP' | 'DIR' | 'MSGS';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -191,12 +193,12 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'EV': 'EV', 'RV': 'RV', 'MARB': 'MARB', 'CSAD': 'CSAD', 'OPT': 'OPT', 'ECOD': 'ECOD',
   'SPEE': 'SPEE', 'SCDS': 'SCDS', 'CCUR': 'CCUR', 'WIRP': 'WIRP', 'WB': 'WB', 'IFRC': 'IFRC',
   'FWD': 'FWD', 'OWN': 'OWN', 'BUYB': 'BUYB', 'REV': 'REV', 'REL': 'REL', 'REBAL': 'REBAL',
-  'CBAS': 'CBAS', 'SCRN': 'SCRN', 'SR': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
+  'SWAP': 'SWAP', 'GDP': 'GDP', 'CBAS': 'CBAS', 'SCRN': 'SCRN', 'SR': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
   'MCS': 'MCS', 'PROB': 'MCS', 'CLUS': 'CLUS', 'LIQ': 'LIQ', 'TMT': 'TMT', 'BNK': 'BNK',
   'ENRG': 'ENRG', 'BVAL': 'BVAL', 'CMOV': 'CMOV', 'INV': 'INV', 'FACT': 'FACT', 'SCEN': 'SCEN',
   'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN', 'BETA': 'VCA', 'VAP': 'TA', 'GIP': 'IGC',
   'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH', 'WX': 'WX', 'TV': 'TV', 'TICK': 'TICK', 'MEMO': 'MEMO',
-  'CRYP': 'CRYP', 'BTC': 'CRYP', 'CESI': 'CESI', 'PFHM': 'PFHM',
+  'CRYP': 'CRYP', 'BTC': 'CRYP', 'CESI': 'CESI', 'PFHM': 'PFHM', 'DIR': 'DIR', 'MSGS': 'MSGS',
 };
 
 interface TerminalState {
@@ -463,6 +465,8 @@ export default function Home() {
       case 'CRYP': return <CryptoMonitor />;
       case 'CESI': return <EconomicSurpriseIndex />;
       case 'PFHM': return <PortfolioHeatmap />;
+      case 'DIR': return <TerminalDirectory />;
+      case 'MSGS': return <TerminalMessagingService />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
