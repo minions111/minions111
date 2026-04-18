@@ -66,6 +66,13 @@ import { EconomicStatistics } from "@/components/EconomicStatistics";
 import { PortfolioAttribution } from "@/components/PortfolioAttribution";
 import { TechnicalStudy } from "@/components/TechnicalStudy";
 import { TerminalDiagnostics } from "@/components/TerminalDiagnostics";
+import { FixedIncomeMonitor } from "@/components/FixedIncomeMonitor";
+import { OptionValuation } from "@/components/OptionValuation";
+import { GovBondPricing } from "@/components/GovBondPricing";
+import { VolatilityAnalysis } from "@/components/VolatilityAnalysis";
+import { PortfolioService } from "@/components/PortfolioService";
+import { GraphicsBuilder } from "@/components/GraphicsBuilder";
+import { IntradayGraph } from "@/components/IntradayGraph";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -74,7 +81,8 @@ type ViewType =
   | 'SUPP' | 'ESG' | 'DRIV' | 'ALRT' | 'NEWS' | 'LPAD' | 'YAS' | 'MAP' | 'EVT'
   | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM' | 'DCF' | 'WACC' | 'INS' | 'SENT'
   | 'SRCH' | 'USER' | 'BIO' | 'CASH' | 'DRV' | 'HELP' | 'GPT' | 'RISK' | 'TX'
-  | 'LOCK' | 'YC' | 'HEAT' | 'ECST' | 'PORT' | 'TA' | 'DIAG';
+  | 'LOCK' | 'YC' | 'HEAT' | 'ECST' | 'PORT' | 'TA' | 'DIAG' | 'FICM' | 'OVME'
+  | 'GOVP' | 'VCA' | 'BPS' | 'G' | 'IGC';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -95,6 +103,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'BIO': 'BIO', 'CASH': 'CASH', 'DRV': 'DRV', 'HELP': 'HELP',
   'GPT': 'GPT', 'AI': 'GPT', 'RISK': 'RISK', 'TX': 'TX', 'LOCK': 'LOCK',
   'YC': 'YC', 'CURVE': 'YC', 'HEAT': 'HEAT', 'ECST': 'ECST', 'PORT': 'PORT', 'TA': 'TA', 'DIAG': 'DIAG',
+  'FICM': 'FICM', 'OVME': 'OVME', 'GOVP': 'GOVP', 'VCA': 'VCA', 'BPS': 'BPS', 'G': 'G', 'IGC': 'IGC',
 };
 
 interface TerminalState {
@@ -152,7 +161,8 @@ export default function Home() {
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
-        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX'
+        'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX',
+        'OVME'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -241,6 +251,13 @@ export default function Home() {
       case 'PORT': return <PortfolioAttribution />;
       case 'TA': return <TechnicalStudy />;
       case 'DIAG': return <TerminalDiagnostics />;
+      case 'FICM': return <FixedIncomeMonitor />;
+      case 'OVME': return <OptionValuation ticker={selectedTicker} />;
+      case 'GOVP': return <GovBondPricing />;
+      case 'VCA': return <VolatilityAnalysis />;
+      case 'BPS': return <PortfolioService />;
+      case 'G': return <GraphicsBuilder />;
+      case 'IGC': return <IntradayGraph />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -280,10 +297,10 @@ export default function Home() {
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'GPT' ? "text-[#ffb900]" : ""}>GPT</span>
-          <span className={view === 'HEAT' ? "text-[#ffb900]" : ""}>HEAT</span>
-          <span className={view === 'YC' ? "text-[#ffb900]" : ""}>YC</span>
-          <span className={view === 'DIAG' ? "text-[#ffb900]" : ""}>DIAG</span>
+          <span className={view === 'G' ? "text-[#ffb900]" : ""}>G</span>
+          <span className={view === 'BPS' ? "text-[#ffb900]" : ""}>BPS</span>
+          <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
+          <span className={view === 'USER' ? "text-[#ffb900]" : ""}>USER</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
