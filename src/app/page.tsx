@@ -132,6 +132,9 @@ import { ScenarioManager } from "@/components/ScenarioManager";
 import { VolatilitySurface } from "@/components/VolatilitySurface";
 import { AnalystNews } from "@/components/AnalystNews";
 import { MacroNews } from "@/components/MacroNews";
+import { LifestyleDIN } from "@/components/LifestyleDIN";
+import { PoshMarket } from "@/components/PoshMarket";
+import { BillionairesIndex } from "@/components/BillionairesIndex";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -147,7 +150,8 @@ type ViewType =
   | 'MARB' | 'CSAD' | 'OPT' | 'ECOD' | 'SPEE' | 'SCDS' | 'CCUR' | 'WIRP' | 'WB'
   | 'IFRC' | 'FWD' | 'OWN' | 'BUYB' | 'REV' | 'REL' | 'REBAL' | 'SWAP' | 'GDP'
   | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
-  | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN';
+  | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN'
+  | 'DIN' | 'POSH' | 'RICH';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -177,10 +181,11 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'EV': 'EV', 'RV': 'RV', 'MARB': 'MARB', 'CSAD': 'CSAD', 'OPT': 'OPT', 'ECOD': 'ECOD',
   'SPEE': 'SPEE', 'SCDS': 'SCDS', 'CCUR': 'CCUR', 'WIRP': 'WIRP', 'WB': 'WB', 'IFRC': 'IFRC',
   'FWD': 'FWD', 'OWN': 'OWN', 'BUYB': 'BUYB', 'REV': 'REV', 'REL': 'REL', 'REBAL': 'REBAL',
-  'SWAP': 'SWAP', 'GDP': 'GDP', 'CBAS': 'CBAS', 'SCRN': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
+  'CBAS': 'CBAS', 'SCRN': 'SCRN', 'SR': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
   'MCS': 'MCS', 'PROB': 'MCS', 'CLUS': 'CLUS', 'LIQ': 'LIQ', 'TMT': 'TMT', 'BNK': 'BNK',
   'ENRG': 'ENRG', 'BVAL': 'BVAL', 'CMOV': 'CMOV', 'INV': 'INV', 'FACT': 'FACT', 'SCEN': 'SCEN',
-  'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN',
+  'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN', 'BETA': 'VCA', 'VAP': 'TA', 'GIP': 'IGC',
+  'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH',
 };
 
 interface TerminalState {
@@ -413,6 +418,9 @@ export default function Home() {
       case 'SURF': return <VolatilitySurface />;
       case 'AN': return <AnalystNews />;
       case 'MN': return <MacroNews />;
+      case 'DIN': return <LifestyleDIN />;
+      case 'POSH': return <PoshMarket />;
+      case 'RICH': return <BillionairesIndex />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
