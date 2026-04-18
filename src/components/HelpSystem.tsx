@@ -13,12 +13,12 @@ export const HelpSystem = () => {
     { cmd: "WEI", desc: "World equity indices monitor" },
     { cmd: "BTMM", desc: "Treasury and money market monitor" },
     { cmd: "YC", desc: "Treasury yield curve plotting" },
-    { cmd: "ALRT", desc: "Manage price and news alerts" },
     { cmd: "GPT", desc: "AI-driven market intelligence assistant" },
     { cmd: "L2", desc: "Level II market depth / order book" },
-    { cmd: "CDS", desc: "Credit default swap spread monitor" },
-    { cmd: "ETF", desc: "Global fund and ETF flow monitor" },
     { cmd: "ALGO", desc: "Systematic strategy execution engine" },
+    { cmd: "OPT", desc: "Portfolio optimizer and frontier" },
+    { cmd: "RV", desc: "Historical relative valuation ranges" },
+    { cmd: "SCDS", desc: "Sovereign credit default swaps" },
   ];
 
   return (
@@ -29,7 +29,7 @@ export const HelpSystem = () => {
         </div>
         <div>
           <h1 className="text-2xl font-bold text-white uppercase">Bloomberg Terminal Help</h1>
-          <p className="text-gray-500 uppercase text-[10px]">Command Guide & User Manual (120+ Modules)</p>
+          <p className="text-gray-500 uppercase text-[10px]">Command Guide & User Manual (150+ Modules)</p>
         </div>
       </div>
 
@@ -46,7 +46,7 @@ export const HelpSystem = () => {
         </div>
 
         <section>
-          <h2 className="text-[#ffb900] font-bold border-b border-[#333] mb-4 uppercase">Popular Commands</h2>
+          <h2 className="text-[#ffb900] font-bold border-b border-[#333] mb-4 uppercase">Institutional Commands</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
             {commonCommands.map((item, i) => (
               <div key={i} className="flex gap-4 group cursor-pointer border-b border-[#111] pb-2">
@@ -58,19 +58,15 @@ export const HelpSystem = () => {
         </section>
 
         <section className="mt-12">
-          <h2 className="text-[#ffb900] font-bold border-b border-[#333] mb-4 uppercase">Navigation Basics</h2>
+          <h2 className="text-[#ffb900] font-bold border-b border-[#333] mb-4 uppercase">Persistence & Workflow</h2>
           <div className="space-y-4 text-gray-300">
             <p>
-              <span className="text-white font-bold mr-2">Tickers:</span>
-              Type a security ticker (e.g., <span className="text-[#ffb900]">AAPL</span>) to load data for that security.
+              <span className="text-white font-bold mr-2">Auto-Save:</span>
+              Your terminal layout and selected securities are automatically saved to <span className="text-blue-400">localStorage</span>.
             </p>
             <p>
-              <span className="text-white font-bold mr-2">Functions:</span>
-              Type a mnemonic (e.g., <span className="text-[#ffb900]">DES</span>) to navigate to a specific functional module.
-            </p>
-            <p>
-              <span className="text-white font-bold mr-2">Terminals:</span>
-              Use <span className="text-[#ffb900]">T1</span> through <span className="text-[#ffb900]">T4</span> to switch between workstation screens.
+              <span className="text-white font-bold mr-2">Multi-Task:</span>
+              Type <span className="text-[#ffb900]">T1-T4</span> to manage independent analytical environments.
             </p>
           </div>
         </section>

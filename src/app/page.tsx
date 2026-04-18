@@ -89,6 +89,19 @@ import { TradingHistory } from "@/components/TradingHistory";
 import { MarketTreemap } from "@/components/MarketTreemap";
 import { CorrelationMatrix } from "@/components/CorrelationMatrix";
 import { AnalystConfidence } from "@/components/AnalystConfidence";
+import { MergersAcquisitions } from "@/components/MergersAcquisitions";
+import { ShortInterest } from "@/components/ShortInterest";
+import { Seasonality } from "@/components/Seasonality";
+import { AnalystHistory } from "@/components/AnalystHistory";
+import { EnterpriseValue } from "@/components/EnterpriseValue";
+import { RelativeValuation } from "@/components/RelativeValuation";
+import { MergerArbitrage } from "@/components/MergerArbitrage";
+import { CreditSpreadAnalysis } from "@/components/CreditSpreadAnalysis";
+import { PortfolioOptimization } from "@/components/PortfolioOptimization";
+import { EconomicReleasesDetail } from "@/components/EconomicReleasesDetail";
+import { CentralBankSpeeches } from "@/components/CentralBankSpeeches";
+import { SovereignCDS } from "@/components/SovereignCDS";
+import { CommodityCurve } from "@/components/CommodityCurve";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -100,7 +113,8 @@ type ViewType =
   | 'LOCK' | 'YC' | 'HEAT' | 'ECST' | 'PORT' | 'TA' | 'DIAG' | 'FICM' | 'OVME'
   | 'GOVP' | 'VCA' | 'BPS' | 'G' | 'IGC' | 'FILP' | 'L2' | 'DP' | 'ALGO'
   | 'BTST' | 'CDS' | 'CRPR' | 'RECO' | 'ETF' | 'FUND' | 'CLIM' | 'XL' | 'BLOT'
-  | 'MMAP' | 'CORR' | 'CONF';
+  | 'MMAP' | 'CORR' | 'CONF' | 'MA' | 'SI' | 'SEAS' | 'ANRH' | 'EV' | 'RV'
+  | 'MARB' | 'CSAD' | 'OPT' | 'ECOD' | 'SPEE' | 'SCDS' | 'CCUR';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -126,6 +140,9 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'BTST': 'BTST', 'CDS': 'CDS', 'CRPR': 'CRPR', 'RECO': 'RECO', 'ETF': 'ETF', 'FUND': 'FUND',
   'CLIM': 'CLIM', 'XL': 'XL', 'EXCEL': 'XL', 'BLOT': 'BLOT', 'HIST_TRADE': 'BLOT',
   'MMAP': 'MMAP', 'TREE': 'MMAP', 'CORR': 'CORR', 'CONF': 'CONF',
+  'MA': 'MA', 'DEAL': 'MA', 'SI': 'SI', 'SHORT': 'SI', 'SEAS': 'SEAS', 'ANRH': 'ANRH',
+  'EV': 'EV', 'RV': 'RV', 'MARB': 'MARB', 'CSAD': 'CSAD', 'OPT': 'OPT', 'ECOD': 'ECOD',
+  'SPEE': 'SPEE', 'SCDS': 'SCDS', 'CCUR': 'CCUR',
 };
 
 interface TerminalState {
@@ -136,12 +153,31 @@ interface TerminalState {
 export default function Home() {
   const [time, setTime] = useState<string | null>(null);
   const [activeTerminal, setActiveTerminal] = useState(1);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [terminals, setTerminals] = useState<Record<number, TerminalState>>({
     1: { view: 'MARKET', ticker: 'AAPL' },
     2: { view: 'LPAD', ticker: 'MSFT' },
     3: { view: 'ECO', ticker: 'TSLA' },
     4: { view: 'PORTFOLIO', ticker: 'NVDA' },
   });
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('terminal_state');
+    if (saved) {
+      try {
+        setTerminals(JSON.parse(saved));
+      } catch (e) { console.error("Failed to load terminal state", e); }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('terminal_state', JSON.stringify(terminals));
+    }
+  }, [terminals, isLoaded]);
 
   const view = terminals[activeTerminal].view;
   const selectedTicker = terminals[activeTerminal].ticker;
@@ -184,7 +220,7 @@ export default function Home() {
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
         'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX',
-        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM'
+        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM', 'SI', 'ANRH', 'EV', 'RV'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -296,6 +332,19 @@ export default function Home() {
       case 'MMAP': return <MarketTreemap />;
       case 'CORR': return <CorrelationMatrix />;
       case 'CONF': return <AnalystConfidence />;
+      case 'MA': return <MergersAcquisitions />;
+      case 'SI': return <ShortInterest ticker={selectedTicker} />;
+      case 'SEAS': return <Seasonality />;
+      case 'ANRH': return <AnalystHistory ticker={selectedTicker} />;
+      case 'EV': return <EnterpriseValue ticker={selectedTicker} />;
+      case 'RV': return <RelativeValuation ticker={selectedTicker} />;
+      case 'MARB': return <MergerArbitrage />;
+      case 'CSAD': return <CreditSpreadAnalysis />;
+      case 'OPT': return <PortfolioOptimization />;
+      case 'ECOD': return <EconomicReleasesDetail />;
+      case 'SPEE': return <CentralBankSpeeches />;
+      case 'SCDS': return <SovereignCDS />;
+      case 'CCUR': return <CommodityCurve />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -335,9 +384,9 @@ export default function Home() {
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'GPT' ? "text-[#ffb900]" : ""}>GPT</span>
-          <span className={view === 'L2' ? "text-[#ffb900]" : ""}>L2</span>
-          <span className={view === 'MMAP' ? "text-[#ffb900]" : ""}>MAP</span>
+          <span className={view === 'OPT' ? "text-[#ffb900]" : ""}>OPT</span>
+          <span className={view === 'RV' ? "text-[#ffb900]" : ""}>RV</span>
+          <span className={view === 'ECOD' ? "text-[#ffb900]" : ""}>ECOD</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
           <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
