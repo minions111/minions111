@@ -137,6 +137,7 @@ import { PoshMarket } from "@/components/PoshMarket";
 import { BillionairesIndex } from "@/components/BillionairesIndex";
 import { WeatherMonitor } from "@/components/WeatherMonitor";
 import { BloombergTV } from "@/components/BloombergTV";
+import { TopStories } from "@/components/TopStories";
 import { TradeTicks } from "@/components/TradeTicks";
 import { TickerMemo } from "@/components/TickerMemo";
 import { CryptoMonitor } from "@/components/CryptoMonitor";
@@ -160,10 +161,10 @@ type ViewType =
   | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
   | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN'
   | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO'
-  | 'CRYP' | 'CESI' | 'PFHM';
+  | 'CRYP' | 'CESI' | 'PFHM' | 'TOP';
 
 const COMMAND_MAP: Record<string, ViewType> = {
-  'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
+  'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
   'PORTFOLIO': 'PORTFOLIO', 'PF': 'PORTFOLIO',
   'TRADE': 'TRADE', 'TR': 'TRADE',
   'ECO': 'ECO', 'CAL': 'ECO',
@@ -454,6 +455,7 @@ export default function Home() {
       case 'DIN': return <LifestyleDIN />;
       case 'POSH': return <PoshMarket />;
       case 'RICH': return <BillionairesIndex />;
+      case 'TOP': return <TopStories />;
       case 'WX': return <WeatherMonitor />;
       case 'TV': return <BloombergTV />;
       case 'TICK': return <TradeTicks />;

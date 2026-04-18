@@ -57,6 +57,16 @@ const ALL_COMMANDS = [
   { cmd: "SURF", desc: "Volatility surface and skew" },
   { cmd: "AN", desc: "Analyst News and ratings changes" },
   { cmd: "MN", desc: "Macro News and economic policy" },
+  { cmd: "TOP", desc: "Main landing for top news stories" },
+  { cmd: "WX", desc: "Global weather impact monitor" },
+  { cmd: "TV", desc: "Bloomberg Live media player" },
+  { cmd: "CRYP", desc: "Digital asset / Crypto monitor" },
+  { cmd: "CESI", desc: "Economic surprise index" },
+  { cmd: "PFHM", desc: "Portfolio sector heatmap" },
+  { cmd: "RICH", desc: "Global Billionaires ranking" },
+  { cmd: "DIN", desc: "Bloomberg lifestyle/dining guide" },
+  { cmd: "TICK", desc: "High-frequency trade tick logger" },
+  { cmd: "MEMO", desc: "Security-specific analyst journal" },
 ];
 
 export const HelpSystem = () => {
