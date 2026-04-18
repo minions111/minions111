@@ -139,6 +139,10 @@ import { WeatherMonitor } from "@/components/WeatherMonitor";
 import { BloombergTV } from "@/components/BloombergTV";
 import { TradeTicks } from "@/components/TradeTicks";
 import { TickerMemo } from "@/components/TickerMemo";
+import { CryptoMonitor } from "@/components/CryptoMonitor";
+import { EconomicSurpriseIndex } from "@/components/EconomicSurpriseIndex";
+import { PortfolioHeatmap } from "@/components/PortfolioHeatmap";
+import { AlertProvider } from "@/components/AlertToast";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -155,7 +159,8 @@ type ViewType =
   | 'IFRC' | 'FWD' | 'OWN' | 'BUYB' | 'REV' | 'REL' | 'REBAL' | 'SWAP' | 'GDP'
   | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
   | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN'
-  | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO';
+  | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO'
+  | 'CRYP' | 'CESI' | 'PFHM';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -190,6 +195,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'ENRG': 'ENRG', 'BVAL': 'BVAL', 'CMOV': 'CMOV', 'INV': 'INV', 'FACT': 'FACT', 'SCEN': 'SCEN',
   'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN', 'BETA': 'VCA', 'VAP': 'TA', 'GIP': 'IGC',
   'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH', 'WX': 'WX', 'TV': 'TV', 'TICK': 'TICK', 'MEMO': 'MEMO',
+  'CRYP': 'CRYP', 'BTC': 'CRYP', 'CESI': 'CESI', 'PFHM': 'PFHM',
 };
 
 interface TerminalState {
@@ -248,8 +254,31 @@ export default function Home() {
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString() + " NY");
     }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      switch (e.key) {
+        case 'F1': e.preventDefault(); handleCommand('HELP'); break;
+        case 'F2': e.preventDefault(); handleCommand('GOVP'); break;
+        case 'F3': e.preventDefault(); handleCommand('CRPR'); break;
+        case 'F4': e.preventDefault(); handleCommand('MKT'); break;
+        case 'F5': e.preventDefault(); handleCommand('WL'); break;
+        case 'F8': e.preventDefault(); handleCommand('TICK'); break;
+        case 'F9': e.preventDefault(); handleCommand('MSG'); break;
+        case '1': if (e.altKey) handleCommand('T1'); break;
+        case '2': if (e.altKey) handleCommand('T2'); break;
+        case '3': if (e.altKey) handleCommand('T3'); break;
+        case '4': if (e.altKey) handleCommand('T4'); break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeTerminal, view]);
 
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
@@ -429,12 +458,16 @@ export default function Home() {
       case 'TV': return <BloombergTV />;
       case 'TICK': return <TradeTicks />;
       case 'MEMO': return <TickerMemo ticker={selectedTicker} />;
+      case 'CRYP': return <CryptoMonitor />;
+      case 'CESI': return <EconomicSurpriseIndex />;
+      case 'PFHM': return <PortfolioHeatmap />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
   };
 
   return (
+    <AlertProvider>
     <main className="flex flex-col h-screen bg-black text-white font-mono overflow-hidden">
       {/* Top Header */}
       <div className="bg-[#1a1a1a] flex justify-between items-center px-4 py-1 border-b border-[#333] text-[10px] text-gray-400">
@@ -483,5 +516,6 @@ export default function Home() {
         </div>
       </div>
     </main>
+    </AlertProvider>
   );
 }
