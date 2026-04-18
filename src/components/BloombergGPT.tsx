@@ -18,9 +18,17 @@ export const BloombergGPT = () => {
 
     // Mock AI Response
     setTimeout(() => {
+      let response = `Analysis for "${query}": Institutional positioning remains focused on yield curve normalization. Cross-asset correlations (CORR) indicate risk-on sentiment in Tech, while WX modules show potential tailwinds for Ag-commodities. Consult FA and DCF for fundamental valuation support.`;
+
+      if (query.toUpperCase().includes('AAPL') || query.toUpperCase().includes('APPLE')) {
+        response = "AAPL Analysis: Current price support at $175 level. RSI indicators in TECH module suggest near-oversold conditions. Institutional ownership (OWN) has stabilized after recent buyback (BUYB) announcements. Projected 12M upside remains 15% based on services growth metrics in REV module.";
+      } else if (query.toUpperCase().includes('FED') || query.toUpperCase().includes('RATES')) {
+        response = "MACRO Insight: WIRP module implies a 65% probability of a rate cut in September. Central bank asset tracker (CBAS) shows continued balance sheet tapering. Fixed income monitors (FICM) are pricing in a pivot by Q4.";
+      }
+
       setMessages(prev => [...prev, {
         role: 'assistant',
-        text: `Analysis for "${query}": Institutional positioning in semiconductor Equities (NVDA, ARM) remains bullish despite short-term macro volatility. Technical indicators on T1 suggest a rotation into defensive sectors if yield curve inversion persists in the YAS module.`
+        text: response
       }]);
     }, 1000);
   };

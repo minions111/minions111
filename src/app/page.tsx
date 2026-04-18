@@ -135,6 +135,10 @@ import { MacroNews } from "@/components/MacroNews";
 import { LifestyleDIN } from "@/components/LifestyleDIN";
 import { PoshMarket } from "@/components/PoshMarket";
 import { BillionairesIndex } from "@/components/BillionairesIndex";
+import { WeatherMonitor } from "@/components/WeatherMonitor";
+import { BloombergTV } from "@/components/BloombergTV";
+import { TradeTicks } from "@/components/TradeTicks";
+import { TickerMemo } from "@/components/TickerMemo";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -151,7 +155,7 @@ type ViewType =
   | 'IFRC' | 'FWD' | 'OWN' | 'BUYB' | 'REV' | 'REL' | 'REBAL' | 'SWAP' | 'GDP'
   | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
   | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN'
-  | 'DIN' | 'POSH' | 'RICH';
+  | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -185,7 +189,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'MCS': 'MCS', 'PROB': 'MCS', 'CLUS': 'CLUS', 'LIQ': 'LIQ', 'TMT': 'TMT', 'BNK': 'BNK',
   'ENRG': 'ENRG', 'BVAL': 'BVAL', 'CMOV': 'CMOV', 'INV': 'INV', 'FACT': 'FACT', 'SCEN': 'SCEN',
   'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN', 'BETA': 'VCA', 'VAP': 'TA', 'GIP': 'IGC',
-  'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH',
+  'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH', 'WX': 'WX', 'TV': 'TV', 'TICK': 'TICK', 'MEMO': 'MEMO',
 };
 
 interface TerminalState {
@@ -421,6 +425,10 @@ export default function Home() {
       case 'DIN': return <LifestyleDIN />;
       case 'POSH': return <PoshMarket />;
       case 'RICH': return <BillionairesIndex />;
+      case 'WX': return <WeatherMonitor />;
+      case 'TV': return <BloombergTV />;
+      case 'TICK': return <TradeTicks />;
+      case 'MEMO': return <TickerMemo ticker={selectedTicker} />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
