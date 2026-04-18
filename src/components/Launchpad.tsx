@@ -37,7 +37,7 @@ export const Launchpad = () => {
       <div className="mt-12 bg-[#1a1a1a] p-4 border border-[#333] rounded">
         <div className="text-white font-bold mb-2 uppercase text-[10px]">Quick Start Commands</div>
         <div className="grid grid-cols-4 gap-2">
-          {['WEI', 'FA', 'BTMM', 'OMON', 'TECH', 'ALRT', 'PF', 'MOST'].map(cmd => (
+          {['WEI', 'FA', 'BTMM', 'OMON', 'TECH', 'ALRT', 'PF', 'MOST', 'NI', 'YC', 'GPT', 'BI', 'AN', 'MN', 'GDP', 'SCRN'].map(cmd => (
             <div key={cmd} className="bg-black border border-[#444] p-2 text-center text-[#ffb900] font-bold hover:bg-[#222]">
               {cmd}
             </div>

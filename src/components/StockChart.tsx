@@ -30,7 +30,9 @@ export const StockChart = ({ ticker }: StockChartProps) => {
         setLivePrice(updates[ticker].price);
       }
     });
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, [ticker]);
 
   const data = useMemo(() => {

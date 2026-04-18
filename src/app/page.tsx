@@ -11,6 +11,7 @@ import { EconomicCalendar } from "@/components/EconomicCalendar";
 import { SecurityDescription } from "@/components/SecurityDescription";
 import { Watchlist } from "@/components/Watchlist";
 import { EconomicsNews } from "@/components/EconomicsNews";
+import { NewsTicker } from "@/components/NewsTicker";
 import { Clock } from "lucide-react";
 
 // Module Imports
@@ -129,6 +130,8 @@ import { InventoryMonitor } from "@/components/InventoryMonitor";
 import { FactorAnalysis } from "@/components/FactorAnalysis";
 import { ScenarioManager } from "@/components/ScenarioManager";
 import { VolatilitySurface } from "@/components/VolatilitySurface";
+import { AnalystNews } from "@/components/AnalystNews";
+import { MacroNews } from "@/components/MacroNews";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -144,7 +147,7 @@ type ViewType =
   | 'MARB' | 'CSAD' | 'OPT' | 'ECOD' | 'SPEE' | 'SCDS' | 'CCUR' | 'WIRP' | 'WB'
   | 'IFRC' | 'FWD' | 'OWN' | 'BUYB' | 'REV' | 'REL' | 'REBAL' | 'SWAP' | 'GDP'
   | 'CBAS' | 'SCRN' | 'MSG' | 'READ' | 'MCS' | 'CLUS' | 'LIQ' | 'TMT' | 'BNK'
-  | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF';
+  | 'ENRG' | 'BVAL' | 'CMOV' | 'INV' | 'FACT' | 'SCEN' | 'SURF' | 'AN' | 'MN';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -157,7 +160,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'WEI': 'WEI', 'MOST': 'MOST', 'MOVERS': 'MOST',
   'EE': 'EE', 'HDS': 'HDS', 'DVD': 'DVD', 'OMON': 'OMON', 'QR': 'QR', 'CN': 'CN', 'TECH': 'TECH',
   'HP': 'HP', 'HIST': 'HP', 'PEER': 'PEER', 'COMP': 'PEER', 'MGMT': 'MGMT', 'SUPP': 'SUPP', 'ESG': 'ESG',
-  'DRIV': 'DRIV', 'ALRT': 'ALRT', 'NEWS': 'NEWS', 'LPAD': 'LPAD', 'YAS': 'YAS', 'MAP': 'MAP',
+  'DRIV': 'DRIV', 'ALRT': 'ALRT', 'NEWS': 'NEWS', 'NI': 'NEWS', 'LPAD': 'LPAD', 'YAS': 'YAS', 'MAP': 'MAP',
   'EVT': 'EVT', 'EARN': 'EVT',
   'CACS': 'CACS', 'CORP': 'CACS', 'IECO': 'IECO', 'INFL': 'IECO', 'CBR': 'CBR', 'RATE': 'CBR',
   'FXCA': 'FXCA', 'CONV': 'FXCA', 'COMM': 'COMM',
@@ -177,7 +180,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'SWAP': 'SWAP', 'GDP': 'GDP', 'CBAS': 'CBAS', 'SCRN': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
   'MCS': 'MCS', 'PROB': 'MCS', 'CLUS': 'CLUS', 'LIQ': 'LIQ', 'TMT': 'TMT', 'BNK': 'BNK',
   'ENRG': 'ENRG', 'BVAL': 'BVAL', 'CMOV': 'CMOV', 'INV': 'INV', 'FACT': 'FACT', 'SCEN': 'SCEN',
-  'SURF': 'SURF',
+  'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN',
 };
 
 interface TerminalState {
@@ -343,7 +346,7 @@ export default function Home() {
       case 'HEAT': return <MarketHeatmap />;
       case 'ECST': return <EconomicStatistics />;
       case 'PORT': return <PortfolioAttribution />;
-      case 'TA': return <TechnicalStudy />;
+      case 'TA': return <TechnicalStudy ticker={selectedTicker} />;
       case 'DIAG': return <TerminalDiagnostics />;
       case 'FICM': return <FixedIncomeMonitor />;
       case 'OVME': return <OptionValuation ticker={selectedTicker} />;
@@ -408,6 +411,8 @@ export default function Home() {
       case 'FACT': return <FactorAnalysis />;
       case 'SCEN': return <ScenarioManager />;
       case 'SURF': return <VolatilitySurface />;
+      case 'AN': return <AnalystNews />;
+      case 'MN': return <MacroNews />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -441,18 +446,21 @@ export default function Home() {
         </div>
       </div>
 
+      {/* News Ticker */}
+      <NewsTicker />
+
       {/* Footer / Status Bar */}
       <div className="bg-[#222] border-t border-[#333] p-1 px-4 text-[10px] flex justify-between text-gray-400">
         <div className="flex gap-4">
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'FACT' ? "text-[#ffb900]" : ""}>FACT</span>
-          <span className={view === 'SURF' ? "text-[#ffb900]" : ""}>SURF</span>
+          <span className={view === 'AN' ? "text-[#ffb900]" : ""}>AN</span>
+          <span className={view === 'MN' ? "text-[#ffb900]" : ""}>MN</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
           <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
           <span>GOLD: 2,385.40 <span className="text-[#00ff00]">+0.64%</span></span>
           <span>WTI: 85.45 <span className="text-[#00ff00]">+1.47%</span></span>
