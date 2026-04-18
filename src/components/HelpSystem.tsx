@@ -12,9 +12,13 @@ export const HelpSystem = () => {
     { cmd: "OMON", desc: "Option monitor and chains" },
     { cmd: "WEI", desc: "World equity indices monitor" },
     { cmd: "BTMM", desc: "Treasury and money market monitor" },
-    { cmd: "WFX", desc: "World currency monitor" },
-    { cmd: "DCF", desc: "Discounted cash flow valuation model" },
+    { cmd: "YC", desc: "Treasury yield curve plotting" },
     { cmd: "ALRT", desc: "Manage price and news alerts" },
+    { cmd: "GPT", desc: "AI-driven market intelligence assistant" },
+    { cmd: "L2", desc: "Level II market depth / order book" },
+    { cmd: "CDS", desc: "Credit default swap spread monitor" },
+    { cmd: "ETF", desc: "Global fund and ETF flow monitor" },
+    { cmd: "ALGO", desc: "Systematic strategy execution engine" },
   ];
 
   return (
@@ -25,7 +29,7 @@ export const HelpSystem = () => {
         </div>
         <div>
           <h1 className="text-2xl font-bold text-white uppercase">Bloomberg Terminal Help</h1>
-          <p className="text-gray-500 uppercase text-[10px]">Command Guide & User Manual</p>
+          <p className="text-gray-500 uppercase text-[10px]">Command Guide & User Manual (120+ Modules)</p>
         </div>
       </div>
 

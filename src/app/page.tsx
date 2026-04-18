@@ -78,6 +78,17 @@ import { Level2Depth } from "@/components/Level2Depth";
 import { DarkPoolMonitor } from "@/components/DarkPoolMonitor";
 import { AlgoTrading } from "@/components/AlgoTrading";
 import { BacktestResults } from "@/components/BacktestResults";
+import { CDSMonitor } from "@/components/CDSMonitor";
+import { CreditRatings } from "@/components/CreditRatings";
+import { RegionalEconomics } from "@/components/RegionalEconomics";
+import { ETFMonitor } from "@/components/ETFMonitor";
+import { FundHoldings } from "@/components/FundHoldings";
+import { ClimateRisk } from "@/components/ClimateRisk";
+import { ExcelLink } from "@/components/ExcelLink";
+import { TradingHistory } from "@/components/TradingHistory";
+import { MarketTreemap } from "@/components/MarketTreemap";
+import { CorrelationMatrix } from "@/components/CorrelationMatrix";
+import { AnalystConfidence } from "@/components/AnalystConfidence";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -88,7 +99,8 @@ type ViewType =
   | 'SRCH' | 'USER' | 'BIO' | 'CASH' | 'DRV' | 'HELP' | 'GPT' | 'RISK' | 'TX'
   | 'LOCK' | 'YC' | 'HEAT' | 'ECST' | 'PORT' | 'TA' | 'DIAG' | 'FICM' | 'OVME'
   | 'GOVP' | 'VCA' | 'BPS' | 'G' | 'IGC' | 'FILP' | 'L2' | 'DP' | 'ALGO'
-  | 'BTST';
+  | 'BTST' | 'CDS' | 'CRPR' | 'RECO' | 'ETF' | 'FUND' | 'CLIM' | 'XL' | 'BLOT'
+  | 'MMAP' | 'CORR' | 'CONF';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -111,7 +123,9 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'YC': 'YC', 'CURVE': 'YC', 'HEAT': 'HEAT', 'ECST': 'ECST', 'PORT': 'PORT', 'TA': 'TA', 'DIAG': 'DIAG',
   'FICM': 'FICM', 'OVME': 'OVME', 'GOVP': 'GOVP', 'VCA': 'VCA', 'BPS': 'BPS', 'G': 'G', 'IGC': 'IGC',
   'FILP': 'FILP', 'SEC': 'FILP', 'L2': 'L2', 'DEPTH': 'L2', 'DP': 'DP', 'DARK': 'DP', 'ALGO': 'ALGO',
-  'BTST': 'BTST',
+  'BTST': 'BTST', 'CDS': 'CDS', 'CRPR': 'CRPR', 'RECO': 'RECO', 'ETF': 'ETF', 'FUND': 'FUND',
+  'CLIM': 'CLIM', 'XL': 'XL', 'EXCEL': 'XL', 'BLOT': 'BLOT', 'HIST_TRADE': 'BLOT',
+  'MMAP': 'MMAP', 'TREE': 'MMAP', 'CORR': 'CORR', 'CONF': 'CONF',
 };
 
 interface TerminalState {
@@ -170,7 +184,7 @@ export default function Home() {
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
         'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX',
-        'OVME', 'FILP'
+        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -271,6 +285,17 @@ export default function Home() {
       case 'DP': return <DarkPoolMonitor />;
       case 'ALGO': return <AlgoTrading />;
       case 'BTST': return <BacktestResults />;
+      case 'CDS': return <CDSMonitor />;
+      case 'CRPR': return <CreditRatings ticker={selectedTicker} />;
+      case 'RECO': return <RegionalEconomics />;
+      case 'ETF': return <ETFMonitor />;
+      case 'FUND': return <FundHoldings ticker={selectedTicker} />;
+      case 'CLIM': return <ClimateRisk ticker={selectedTicker} />;
+      case 'XL': return <ExcelLink />;
+      case 'BLOT': return <TradingHistory />;
+      case 'MMAP': return <MarketTreemap />;
+      case 'CORR': return <CorrelationMatrix />;
+      case 'CONF': return <AnalystConfidence />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -310,8 +335,9 @@ export default function Home() {
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'ALGO' ? "text-[#ffb900]" : ""}>ALGO</span>
+          <span className={view === 'GPT' ? "text-[#ffb900]" : ""}>GPT</span>
           <span className={view === 'L2' ? "text-[#ffb900]" : ""}>L2</span>
+          <span className={view === 'MMAP' ? "text-[#ffb900]" : ""}>MAP</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
           <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
