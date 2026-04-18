@@ -4,10 +4,10 @@ const NEWS_API_BASE = 'https://newsapi.org/v2';
 const FINNHUB_BASE = 'https://finnhub.io/api/v1';
 
 export async function fetchTopHeadlines(): Promise<NewsItem[]> {
-  const apiKey = process.env.NEWS_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
 
   if (!apiKey) {
-    console.warn('NEWS_API_KEY not found, returning mock data');
+    console.warn('NEXT_PUBLIC_NEWS_API_KEY not found, returning mock data');
     return MOCK_NEWS;
   }
 
@@ -31,10 +31,10 @@ export async function fetchTopHeadlines(): Promise<NewsItem[]> {
 }
 
 export async function fetchStockNews(symbol: string): Promise<NewsItem[]> {
-  const finnhubKey = process.env.FINNHUB_API_KEY;
+  const finnhubKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
 
   if (!finnhubKey) {
-    console.warn('FINNHUB_API_KEY not found, returning mock data');
+    console.warn('NEXT_PUBLIC_FINNHUB_API_KEY not found, returning mock data');
     return MOCK_NEWS.filter(n => n.category === 'MARKETS');
   }
 

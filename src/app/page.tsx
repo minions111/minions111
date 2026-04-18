@@ -73,6 +73,11 @@ import { VolatilityAnalysis } from "@/components/VolatilityAnalysis";
 import { PortfolioService } from "@/components/PortfolioService";
 import { GraphicsBuilder } from "@/components/GraphicsBuilder";
 import { IntradayGraph } from "@/components/IntradayGraph";
+import { RegulatoryFilings } from "@/components/RegulatoryFilings";
+import { Level2Depth } from "@/components/Level2Depth";
+import { DarkPoolMonitor } from "@/components/DarkPoolMonitor";
+import { AlgoTrading } from "@/components/AlgoTrading";
+import { BacktestResults } from "@/components/BacktestResults";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -82,7 +87,8 @@ type ViewType =
   | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM' | 'DCF' | 'WACC' | 'INS' | 'SENT'
   | 'SRCH' | 'USER' | 'BIO' | 'CASH' | 'DRV' | 'HELP' | 'GPT' | 'RISK' | 'TX'
   | 'LOCK' | 'YC' | 'HEAT' | 'ECST' | 'PORT' | 'TA' | 'DIAG' | 'FICM' | 'OVME'
-  | 'GOVP' | 'VCA' | 'BPS' | 'G' | 'IGC';
+  | 'GOVP' | 'VCA' | 'BPS' | 'G' | 'IGC' | 'FILP' | 'L2' | 'DP' | 'ALGO'
+  | 'BTST';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -104,6 +110,8 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'GPT': 'GPT', 'AI': 'GPT', 'RISK': 'RISK', 'TX': 'TX', 'LOCK': 'LOCK',
   'YC': 'YC', 'CURVE': 'YC', 'HEAT': 'HEAT', 'ECST': 'ECST', 'PORT': 'PORT', 'TA': 'TA', 'DIAG': 'DIAG',
   'FICM': 'FICM', 'OVME': 'OVME', 'GOVP': 'GOVP', 'VCA': 'VCA', 'BPS': 'BPS', 'G': 'G', 'IGC': 'IGC',
+  'FILP': 'FILP', 'SEC': 'FILP', 'L2': 'L2', 'DEPTH': 'L2', 'DP': 'DP', 'DARK': 'DP', 'ALGO': 'ALGO',
+  'BTST': 'BTST',
 };
 
 interface TerminalState {
@@ -162,7 +170,7 @@ export default function Home() {
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
         'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX',
-        'OVME'
+        'OVME', 'FILP'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -258,6 +266,11 @@ export default function Home() {
       case 'BPS': return <PortfolioService />;
       case 'G': return <GraphicsBuilder />;
       case 'IGC': return <IntradayGraph />;
+      case 'FILP': return <RegulatoryFilings ticker={selectedTicker} />;
+      case 'L2': return <Level2Depth />;
+      case 'DP': return <DarkPoolMonitor />;
+      case 'ALGO': return <AlgoTrading />;
+      case 'BTST': return <BacktestResults />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -297,10 +310,10 @@ export default function Home() {
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'G' ? "text-[#ffb900]" : ""}>G</span>
-          <span className={view === 'BPS' ? "text-[#ffb900]" : ""}>BPS</span>
+          <span className={view === 'ALGO' ? "text-[#ffb900]" : ""}>ALGO</span>
+          <span className={view === 'L2' ? "text-[#ffb900]" : ""}>L2</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
-          <span className={view === 'USER' ? "text-[#ffb900]" : ""}>USER</span>
+          <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
