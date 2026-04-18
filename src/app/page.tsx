@@ -60,6 +60,12 @@ import { BloombergGPT } from "@/components/BloombergGPT";
 import { PortfolioRisk } from "@/components/PortfolioRisk";
 import { TranscriptViewer } from "@/components/TranscriptViewer";
 import { SecurityLock } from "@/components/SecurityLock";
+import { YieldCurve } from "@/components/YieldCurve";
+import { MarketHeatmap } from "@/components/MarketHeatmap";
+import { EconomicStatistics } from "@/components/EconomicStatistics";
+import { PortfolioAttribution } from "@/components/PortfolioAttribution";
+import { TechnicalStudy } from "@/components/TechnicalStudy";
+import { TerminalDiagnostics } from "@/components/TerminalDiagnostics";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -68,7 +74,7 @@ type ViewType =
   | 'SUPP' | 'ESG' | 'DRIV' | 'ALRT' | 'NEWS' | 'LPAD' | 'YAS' | 'MAP' | 'EVT'
   | 'CACS' | 'IECO' | 'CBR' | 'FXCA' | 'COMM' | 'DCF' | 'WACC' | 'INS' | 'SENT'
   | 'SRCH' | 'USER' | 'BIO' | 'CASH' | 'DRV' | 'HELP' | 'GPT' | 'RISK' | 'TX'
-  | 'LOCK';
+  | 'LOCK' | 'YC' | 'HEAT' | 'ECST' | 'PORT' | 'TA' | 'DIAG';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -88,6 +94,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'DCF': 'DCF', 'WACC': 'WACC', 'INS': 'INS', 'SENT': 'SENT', 'SRCH': 'SRCH', 'USER': 'USER',
   'BIO': 'BIO', 'CASH': 'CASH', 'DRV': 'DRV', 'HELP': 'HELP',
   'GPT': 'GPT', 'AI': 'GPT', 'RISK': 'RISK', 'TX': 'TX', 'LOCK': 'LOCK',
+  'YC': 'YC', 'CURVE': 'YC', 'HEAT': 'HEAT', 'ECST': 'ECST', 'PORT': 'PORT', 'TA': 'TA', 'DIAG': 'DIAG',
 };
 
 interface TerminalState {
@@ -228,6 +235,12 @@ export default function Home() {
       case 'RISK': return <PortfolioRisk />;
       case 'TX': return <TranscriptViewer ticker={selectedTicker} />;
       case 'LOCK': return <SecurityLock />;
+      case 'YC': return <YieldCurve />;
+      case 'HEAT': return <MarketHeatmap />;
+      case 'ECST': return <EconomicStatistics />;
+      case 'PORT': return <PortfolioAttribution />;
+      case 'TA': return <TechnicalStudy />;
+      case 'DIAG': return <TerminalDiagnostics />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -268,9 +281,9 @@ export default function Home() {
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
           <span className={view === 'GPT' ? "text-[#ffb900]" : ""}>GPT</span>
-          <span className={view === 'RISK' ? "text-[#ffb900]" : ""}>RISK</span>
-          <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
-          <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
+          <span className={view === 'HEAT' ? "text-[#ffb900]" : ""}>HEAT</span>
+          <span className={view === 'YC' ? "text-[#ffb900]" : ""}>YC</span>
+          <span className={view === 'DIAG' ? "text-[#ffb900]" : ""}>DIAG</span>
         </div>
         <div className="flex gap-4">
           <span>S&P 500: 5,026.61 <span className="text-[#00ff00]">+0.58%</span></span>
