@@ -102,6 +102,21 @@ import { EconomicReleasesDetail } from "@/components/EconomicReleasesDetail";
 import { CentralBankSpeeches } from "@/components/CentralBankSpeeches";
 import { SovereignCDS } from "@/components/SovereignCDS";
 import { CommodityCurve } from "@/components/CommodityCurve";
+import { WorldInterestRateProbabilities } from "@/components/WorldInterestRateProbabilities";
+import { WorldBondMonitor } from "@/components/WorldBondMonitor";
+import { InflationForecasts } from "@/components/InflationForecasts";
+import { ForwardRates } from "@/components/ForwardRates";
+import { OwnershipSummary } from "@/components/OwnershipSummary";
+import { ShareBuybacks } from "@/components/ShareBuybacks";
+import { RevenueSegmentation } from "@/components/RevenueSegmentation";
+import { RelativeStrength } from "@/components/RelativeStrength";
+import { PortfolioRebalancing } from "@/components/PortfolioRebalancing";
+import { InterestRateSwaps } from "@/components/InterestRateSwaps";
+import { GlobalGDPRanking } from "@/components/GlobalGDPRanking";
+import { CentralBankAssets } from "@/components/CentralBankAssets";
+import { StockScreener } from "@/components/StockScreener";
+import { TerminalMessenger } from "@/components/TerminalMessenger";
+import { MarketStories } from "@/components/MarketStories";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -114,7 +129,9 @@ type ViewType =
   | 'GOVP' | 'VCA' | 'BPS' | 'G' | 'IGC' | 'FILP' | 'L2' | 'DP' | 'ALGO'
   | 'BTST' | 'CDS' | 'CRPR' | 'RECO' | 'ETF' | 'FUND' | 'CLIM' | 'XL' | 'BLOT'
   | 'MMAP' | 'CORR' | 'CONF' | 'MA' | 'SI' | 'SEAS' | 'ANRH' | 'EV' | 'RV'
-  | 'MARB' | 'CSAD' | 'OPT' | 'ECOD' | 'SPEE' | 'SCDS' | 'CCUR';
+  | 'MARB' | 'CSAD' | 'OPT' | 'ECOD' | 'SPEE' | 'SCDS' | 'CCUR' | 'WIRP' | 'WB'
+  | 'IFRC' | 'FWD' | 'OWN' | 'BUYB' | 'REV' | 'REL' | 'REBAL' | 'SWAP' | 'GDP'
+  | 'CBAS' | 'SCRN' | 'MSG' | 'READ';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'MARKET',
@@ -142,7 +159,9 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'MMAP': 'MMAP', 'TREE': 'MMAP', 'CORR': 'CORR', 'CONF': 'CONF',
   'MA': 'MA', 'DEAL': 'MA', 'SI': 'SI', 'SHORT': 'SI', 'SEAS': 'SEAS', 'ANRH': 'ANRH',
   'EV': 'EV', 'RV': 'RV', 'MARB': 'MARB', 'CSAD': 'CSAD', 'OPT': 'OPT', 'ECOD': 'ECOD',
-  'SPEE': 'SPEE', 'SCDS': 'SCDS', 'CCUR': 'CCUR',
+  'SPEE': 'SPEE', 'SCDS': 'SCDS', 'CCUR': 'CCUR', 'WIRP': 'WIRP', 'WB': 'WB', 'IFRC': 'IFRC',
+  'FWD': 'FWD', 'OWN': 'OWN', 'BUYB': 'BUYB', 'REV': 'REV', 'REL': 'REL', 'REBAL': 'REBAL',
+  'SWAP': 'SWAP', 'GDP': 'GDP', 'CBAS': 'CBAS', 'SCRN': 'SCRN', 'MSG': 'MSG', 'READ': 'READ',
 };
 
 interface TerminalState {
@@ -220,7 +239,7 @@ export default function Home() {
       const stockSpecificViews: ViewType[] = [
         'DES', 'FA', 'ANR', 'TRADE', 'EE', 'HDS', 'DVD', 'OMON', 'QR', 'CN', 'TECH',
         'HP', 'PEER', 'MGMT', 'SUPP', 'ESG', 'MAP', 'CACS', 'DCF', 'WACC', 'INS', 'BIO', 'CASH', 'TX',
-        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM', 'SI', 'ANRH', 'EV', 'RV'
+        'OVME', 'FILP', 'CRPR', 'FUND', 'CLIM', 'SI', 'ANRH', 'EV', 'RV', 'OWN', 'BUYB', 'REV'
       ];
       if (!stockSpecificViews.includes(view)) {
         setView('MARKET');
@@ -345,6 +364,21 @@ export default function Home() {
       case 'SPEE': return <CentralBankSpeeches />;
       case 'SCDS': return <SovereignCDS />;
       case 'CCUR': return <CommodityCurve />;
+      case 'WIRP': return <WorldInterestRateProbabilities />;
+      case 'WB': return <WorldBondMonitor />;
+      case 'IFRC': return <InflationForecasts />;
+      case 'FWD': return <ForwardRates />;
+      case 'OWN': return <OwnershipSummary ticker={selectedTicker} />;
+      case 'BUYB': return <ShareBuybacks ticker={selectedTicker} />;
+      case 'REV': return <RevenueSegmentation ticker={selectedTicker} />;
+      case 'REL': return <RelativeStrength />;
+      case 'REBAL': return <PortfolioRebalancing />;
+      case 'SWAP': return <InterestRateSwaps />;
+      case 'GDP': return <GlobalGDPRanking />;
+      case 'CBAS': return <CentralBankAssets />;
+      case 'SCRN': return <StockScreener />;
+      case 'MSG': return <TerminalMessenger />;
+      case 'READ': return <MarketStories />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -384,9 +418,9 @@ export default function Home() {
           <span className="text-[#00ff00]">CONN OK</span>
           <span className={view === 'PORTFOLIO' ? "text-[#ffb900]" : ""}>PF</span>
           <span className={view === 'TRADE' ? "text-[#ffb900]" : ""}>TR</span>
-          <span className={view === 'OPT' ? "text-[#ffb900]" : ""}>OPT</span>
-          <span className={view === 'RV' ? "text-[#ffb900]" : ""}>RV</span>
-          <span className={view === 'ECOD' ? "text-[#ffb900]" : ""}>ECOD</span>
+          <span className={view === 'MSG' ? "text-[#ffb900]" : ""}>MSG</span>
+          <span className={view === 'GDP' ? "text-[#ffb900]" : ""}>GDP</span>
+          <span className={view === 'SCRN' ? "text-[#ffb900]" : ""}>SCRN</span>
           <span className={view === 'HELP' ? "text-[#ffb900]" : ""}>HELP</span>
           <span className={view === 'LOCK' ? "text-[#ffb900]" : ""}>LOCK</span>
         </div>
