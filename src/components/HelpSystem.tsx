@@ -82,6 +82,7 @@ const ALL_COMMANDS = [
   { cmd: "BCYC", desc: "Global business cycle monitor" },
   { cmd: "GLOS", desc: "Financial glossary and dictionary" },
   { cmd: "JOIN", desc: "Terminal onboarding and tour" },
+  { cmd: "CONN", desc: "Real-time data connectivity center" },
   { cmd: "SKEW", desc: "Implied volatility skew chart" },
   { cmd: "CDSS", desc: "CDS term structure and surface" },
   { cmd: "WCAP", desc: "World equity market cap map" },

@@ -161,6 +161,7 @@ import { CommodityPriceGrid } from "@/components/CommodityPriceGrid";
 import { ESGDetail } from "@/components/ESGDetail";
 import { GlobalYieldCurves } from "@/components/GlobalYieldCurves";
 import { ShipTracking } from "@/components/ShipTracking";
+import { ConnectData } from "@/components/ConnectData";
 import { OptionAnalytics } from "@/components/OptionAnalytics";
 import { HistoricalEvents } from "@/components/HistoricalEvents";
 import { MaturityWall } from "@/components/MaturityWall";
@@ -193,7 +194,7 @@ type ViewType =
   | 'PEOP' | 'BPS' | 'BCYC' | 'GLOS' | 'JOIN'
   | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP'
   | 'EQS' | 'CPG' | 'ESGD' | 'GCUR' | 'SHIP' | 'OA' | 'HEV'
-  | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD'
+  | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD' | 'CONN'
   | 'SKEW' | 'CDSS' | 'WCAP' | 'TIC';
 
 const COMMAND_MAP: Record<string, ViewType> = {
@@ -233,7 +234,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'PEOP': 'PEOP', 'BPS': 'BPS', 'BCYC': 'BCYC', 'GLOS': 'GLOS', 'JOIN': 'JOIN', 'START': 'JOIN',
   'CENB': 'CenB', 'EVTS': 'EVTS', 'SHTM': 'SHTM', 'FXIP': 'FXIP',
   'EQS': 'EQS', 'CPG': 'CPG', 'ESGD': 'ESGD', 'GCUR': 'GCUR', 'SHIP': 'SHIP',
-  'OA': 'OA', 'HEV': 'HEV', 'MATW': 'MATW', 'CAST': 'CAST', 'FLOW': 'FLOW',
+  'OA': 'OA', 'HEV': 'HEV', 'MATW': 'MATW', 'CAST': 'CAST', 'FLOW': 'FLOW', 'CONN': 'CONN',
   'EMAP': 'EMAP', 'CMD': 'CMD', 'PROMPT': 'CMD',
   'SKEW': 'SKEW', 'CDSS': 'CDSS', 'WCAP': 'WCAP', 'TIC': 'TIC',
 };
@@ -567,6 +568,7 @@ export default function Home() {
       case 'CDSS': return <CreditDefaultSwapSurface />;
       case 'WCAP': return <WorldEquityMarketCap />;
       case 'TIC': return <IntradayTickChart ticker={selectedTicker} />;
+      case 'CONN': return <ConnectData />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }

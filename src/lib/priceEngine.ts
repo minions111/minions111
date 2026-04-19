@@ -18,7 +18,8 @@ export class PriceSimulationEngine {
   private apiKey: string | undefined;
 
   private constructor() {
-    this.apiKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
+    // Priority: LocalStorage (User entered) -> Environment Variable
+    this.apiKey = (typeof window !== 'undefined' && localStorage.getItem('user_finnhub_key')) || process.env.NEXT_PUBLIC_FINNHUB_API_KEY || undefined;
     STOCKS.forEach(stock => {
       this.prices[stock.ticker] = stock.price;
       this.initialPrices[stock.ticker] = stock.price;

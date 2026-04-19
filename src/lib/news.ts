@@ -28,8 +28,9 @@ class NewsStreamingService {
   }
 
   private async fetchLatest() {
-    const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
-    const finnhubKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
+    // Priority: LocalStorage -> Environment Variable
+    const apiKey = (typeof window !== 'undefined' && localStorage.getItem('user_newsapi_key')) || process.env.NEXT_PUBLIC_NEWS_API_KEY;
+    const finnhubKey = (typeof window !== 'undefined' && localStorage.getItem('user_finnhub_key')) || process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
 
     let newHeadlines: NewsItem[] = [];
 
@@ -103,7 +104,7 @@ export async function fetchTopHeadlines() {
 }
 
 export async function fetchStockNews(symbol: string): Promise<NewsItem[]> {
-  const finnhubKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
+  const finnhubKey = (typeof window !== 'undefined' && localStorage.getItem('user_finnhub_key')) || process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
   if (!finnhubKey) return MOCK_NEWS.filter(n => n.category === 'MARKETS');
 
   try {
@@ -125,7 +126,7 @@ export async function fetchStockNews(symbol: string): Promise<NewsItem[]> {
 }
 
 export async function fetchHistoricalData(symbol: string, resolution: string = 'D') {
-  const finnhubKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
+  const finnhubKey = (typeof window !== 'undefined' && localStorage.getItem('user_finnhub_key')) || process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
   if (!finnhubKey) return null;
   try {
     const to = Math.floor(Date.now() / 1000);

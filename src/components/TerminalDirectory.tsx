@@ -31,7 +31,7 @@ export const TerminalDirectory = () => {
     },
     {
       title: "WORKSTATION & SYSTEM",
-      items: ["HELP (Manual)", "DIR (Directory)", "JOIN (Onboarding)", "USER (Prefs)", "LOCK (Security)", "MSG (Messenger)", "TICK (Tick Logger)", "CMD (Command History)", "DIAG (Diagnostics)"]
+      items: ["HELP (Manual)", "DIR (Directory)", "JOIN (Onboarding)", "USER (Prefs)", "CONN (Connect API)", "LOCK (Security)", "MSG (Messenger)", "TICK (Tick Logger)", "CMD (Command History)", "DIAG (Diagnostics)"]
     },
     {
       title: "SCREENING & LIFESTYLE",
