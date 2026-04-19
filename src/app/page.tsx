@@ -183,6 +183,11 @@ import { EconomicReleaseDrilldown } from "@/components/EconomicReleaseDrilldown"
 import { TradeIdeaAnalytics } from "@/components/TradeIdeaAnalytics";
 import { HedgeFundMonitor } from "@/components/HedgeFundMonitor";
 import { GlobalSentimentMap } from "@/components/GlobalSentimentMap";
+import { ExecutionManagementSystem } from "@/components/ExecutionManagementSystem";
+import { DataFieldFinder } from "@/components/DataFieldFinder";
+import { WebAPIIntegration } from "@/components/WebAPIIntegration";
+import { GlobalSupplyChainMap } from "@/components/GlobalSupplyChainMap";
+import { BloombergAnywhere } from "@/components/BloombergAnywhere";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -207,7 +212,8 @@ type ViewType =
   | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD' | 'CONN'
   | 'SKEW' | 'CDSS' | 'WCAP' | 'TIC'
   | 'OAS' | 'VAR' | 'MODL' | 'BICO' | 'APPS'
-  | 'ECDR' | 'IDEA' | '13F' | 'GSENT';
+  | 'ECDR' | 'IDEA' | '13F' | 'GSENT'
+  | 'EMSX' | 'FLDS' | 'WAPI' | 'BBA';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -251,6 +257,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'SKEW': 'SKEW', 'CDSS': 'CDSS', 'WCAP': 'WCAP', 'TIC': 'TIC',
   'OAS': 'OAS', 'VAR': 'VAR', 'MODL': 'MODL', 'BICO': 'BICO', 'APPS': 'APPS',
   'ECDR': 'ECDR', 'IDEA': 'IDEA', '13F': '13F', 'GSENT': 'GSENT', 'SENTIMENT': 'GSENT',
+  'EMSX': 'EMSX', 'FLDS': 'FLDS', 'WAPI': 'WAPI', 'BBA': 'BBA',
 };
 
 interface TerminalState {
@@ -456,7 +463,7 @@ export default function Home() {
       case 'NEWS': return <FullNewsSearch />;
       case 'LPAD': return <Launchpad />;
       case 'YAS': return <YieldSpreadAnalysis />;
-      case 'MAP': return <RevenueMap ticker={selectedTicker} />;
+      case 'MAP': return <GlobalSupplyChainMap ticker={selectedTicker} />;
       case 'EVT': return <EarningsEvents />;
       case 'CACS': return <CorporateActions ticker={selectedTicker} />;
       case 'IECO': return <InflationMonitor />;
@@ -595,6 +602,10 @@ export default function Home() {
       case 'IDEA': return <TradeIdeaAnalytics />;
       case '13F': return <HedgeFundMonitor />;
       case 'GSENT': return <GlobalSentimentMap />;
+      case 'EMSX': return <ExecutionManagementSystem />;
+      case 'FLDS': return <DataFieldFinder />;
+      case 'WAPI': return <WebAPIIntegration />;
+      case 'BBA': return <BloombergAnywhere />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }

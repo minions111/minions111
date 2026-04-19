@@ -44,6 +44,10 @@ export const TerminalDirectory = () => {
     {
       title: "ELITE STRATEGIES",
       items: ["ECDR (Macro Impact)", "IDEA (Trade Ideas)", "13F (Filing Mon)", "GSENT (Social Map)", "CDSS (CDS Surface)", "WCAP (Mkt Cap)", "BPS (Portfolio)", "G (Graphics)"]
+    },
+    {
+      title: "PROFESSIONAL TIER",
+      items: ["EMSX (Execution)", "FLDS (Field Finder)", "WAPI (Developer API)", "MAP (Supply Chain)", "BBA (Remote Access)", "PORT (Advanced Port)"]
     }
   ];
 

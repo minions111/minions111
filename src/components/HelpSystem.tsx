@@ -96,6 +96,10 @@ const ALL_COMMANDS = [
   { cmd: "IDEA", desc: "Quant-driven trade idea generator" },
   { cmd: "13F", desc: "Hedge fund filing and position tracker" },
   { cmd: "GSENT", desc: "Global social and news sentiment map" },
+  { cmd: "EMSX", desc: "Execution Management System for multi-broker orders" },
+  { cmd: "FLDS", desc: "Data field finder for API and Excel integration" },
+  { cmd: "WAPI", desc: "Bloomberg Web API and developer integration portal" },
+  { cmd: "BBA", desc: "Bloomberg Anywhere secure remote access portal" },
 ];
 
 export const HelpSystem = () => {
