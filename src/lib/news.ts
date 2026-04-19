@@ -126,6 +126,24 @@ export async function fetchStockNews(symbol: string): Promise<NewsItem[]> {
 }
 
 export async function fetchHistoricalData(symbol: string, resolution: string = 'D') {
+  // Try Python Data Bridge First (yfinance)
+  try {
+    const pyResp = await fetch(`http://localhost:8000/api/v1/history/${symbol}?period=1y`);
+    if (pyResp.ok) {
+      const pyData = await pyResp.json();
+      if (pyData.history && pyData.history.length > 0) {
+        return pyData.history.map((d: any) => ({
+          time: d.date,
+          price: d.close,
+          open: d.open,
+          high: d.high,
+          low: d.low,
+          volume: d.volume
+        }));
+      }
+    }
+  } catch (e) { /* Python bridge not available, fallback to Finnhub */ }
+
   const finnhubKey = (typeof window !== 'undefined' && localStorage.getItem('user_finnhub_key')) || process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
   if (!finnhubKey) return null;
   try {

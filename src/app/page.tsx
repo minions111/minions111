@@ -188,6 +188,7 @@ import { DataFieldFinder } from "@/components/DataFieldFinder";
 import { WebAPIIntegration } from "@/components/WebAPIIntegration";
 import { GlobalSupplyChainMap } from "@/components/GlobalSupplyChainMap";
 import { BloombergAnywhere } from "@/components/BloombergAnywhere";
+import { PythonAnalytics } from "@/components/PythonAnalytics";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -213,7 +214,7 @@ type ViewType =
   | 'SKEW' | 'CDSS' | 'WCAP' | 'TIC'
   | 'OAS' | 'VAR' | 'MODL' | 'BICO' | 'APPS'
   | 'ECDR' | 'IDEA' | '13F' | 'GSENT'
-  | 'EMSX' | 'FLDS' | 'WAPI' | 'BBA';
+  | 'EMSX' | 'FLDS' | 'WAPI' | 'BBA' | 'PY';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -257,7 +258,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'SKEW': 'SKEW', 'CDSS': 'CDSS', 'WCAP': 'WCAP', 'TIC': 'TIC',
   'OAS': 'OAS', 'VAR': 'VAR', 'MODL': 'MODL', 'BICO': 'BICO', 'APPS': 'APPS',
   'ECDR': 'ECDR', 'IDEA': 'IDEA', '13F': '13F', 'GSENT': 'GSENT', 'SENTIMENT': 'GSENT',
-  'EMSX': 'EMSX', 'FLDS': 'FLDS', 'WAPI': 'WAPI', 'BBA': 'BBA',
+  'EMSX': 'EMSX', 'FLDS': 'FLDS', 'WAPI': 'WAPI', 'BBA': 'BBA', 'PY': 'PY',
 };
 
 interface TerminalState {
@@ -606,6 +607,7 @@ export default function Home() {
       case 'FLDS': return <DataFieldFinder />;
       case 'WAPI': return <WebAPIIntegration />;
       case 'BBA': return <BloombergAnywhere />;
+      case 'PY': return <PythonAnalytics ticker={selectedTicker} />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }

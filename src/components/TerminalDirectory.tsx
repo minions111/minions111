@@ -47,7 +47,7 @@ export const TerminalDirectory = () => {
     },
     {
       title: "PROFESSIONAL TIER",
-      items: ["EMSX (Execution)", "FLDS (Field Finder)", "WAPI (Developer API)", "MAP (Supply Chain)", "BBA (Remote Access)", "PORT (Advanced Port)"]
+      items: ["EMSX (Execution)", "FLDS (Field Finder)", "WAPI (Developer API)", "MAP (Supply Chain)", "BBA (Remote Access)", "PY (Python Quant)"]
     }
   ];
 

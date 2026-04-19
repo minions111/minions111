@@ -100,6 +100,7 @@ const ALL_COMMANDS = [
   { cmd: "FLDS", desc: "Data field finder for API and Excel integration" },
   { cmd: "WAPI", desc: "Bloomberg Web API and developer integration portal" },
   { cmd: "BBA", desc: "Bloomberg Anywhere secure remote access portal" },
+  { cmd: "PY", desc: "Python Quantitative Analytics using yfinance and Pandas" },
 ];
 
 export const HelpSystem = () => {
