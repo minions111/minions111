@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 
 export const EconomicSurpriseIndex = () => {
   const data = [
@@ -29,11 +29,11 @@ export const EconomicSurpriseIndex = () => {
             <XAxis dataKey="period" stroke="#666" fontSize={10} />
             <YAxis stroke="#666" fontSize={10} domain={[-3, 3]} />
             <ReferenceLine y={0} stroke="#444" />
-            <Bar
-              dataKey="surprise"
-              fill={(d: any) => d.surprise >= 0 ? "#00ff00" : "#ff0000"}
-              isAnimationActive={false}
-            />
+            <Bar dataKey="surprise" isAnimationActive={false}>
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.surprise >= 0 ? "#00ff00" : "#ff0000"} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>

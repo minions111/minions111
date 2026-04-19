@@ -87,6 +87,15 @@ const ALL_COMMANDS = [
   { cmd: "CDSS", desc: "CDS term structure and surface" },
   { cmd: "WCAP", desc: "World equity market cap map" },
   { cmd: "TIC", desc: "Intraday tick-by-tick charting" },
+  { cmd: "OAS", desc: "Option adjusted spread analysis" },
+  { cmd: "VAR", desc: "Portfolio value at risk modeling" },
+  { cmd: "MODL", desc: "High-fidelity financial modeler" },
+  { cmd: "BICO", desc: "Institutional research primer" },
+  { cmd: "APPS", desc: "Workstation terminal app store" },
+  { cmd: "ECDR", desc: "Economic impact analysis drilldown" },
+  { cmd: "IDEA", desc: "Quant-driven trade idea generator" },
+  { cmd: "13F", desc: "Hedge fund filing and position tracker" },
+  { cmd: "GSENT", desc: "Global social and news sentiment map" },
 ];
 
 export const HelpSystem = () => {

@@ -36,6 +36,14 @@ export const TerminalDirectory = () => {
     {
       title: "SCREENING & LIFESTYLE",
       items: ["EQS (Equity Screen)", "SCRN (Screener)", "CPG (Commodity Grid)", "COMM (Commodity Mon)", "PEOP (People Directory)", "DIN (Dining Guide)", "POSH (Luxury Index)", "RICH (Billionaires)"]
+    },
+    {
+      title: "APEX ANALYTICS",
+      items: ["OAS (Opt Adj Spread)", "VAR (Value at Risk)", "MODL (Model Builder)", "BICO (Company Primer)", "APPS (App Store)", "TIC (Tick Chart)", "SKEW (Volatility)", "SHTM (Wide Heatmap)"]
+    },
+    {
+      title: "ELITE STRATEGIES",
+      items: ["ECDR (Macro Impact)", "IDEA (Trade Ideas)", "13F (Filing Mon)", "GSENT (Social Map)", "CDSS (CDS Surface)", "WCAP (Mkt Cap)", "BPS (Portfolio)", "G (Graphics)"]
     }
   ];
 
@@ -43,7 +51,7 @@ export const TerminalDirectory = () => {
     <div className="bg-black h-full flex flex-col font-mono text-xs p-6 overflow-y-auto">
       <div className="bg-[#1a1a1a] p-1 px-3 mb-8 text-[#ffb900] font-bold border border-[#333] flex justify-between uppercase">
         <span>DIR - BLOOMBERG TERMINAL DIRECTORY</span>
-        <span>FUNCTIONS: 220+</span>
+        <span>FUNCTIONS: 300+</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

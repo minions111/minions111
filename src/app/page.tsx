@@ -14,6 +14,7 @@ import { EconomicsNews } from "@/components/EconomicsNews";
 import { NewsTicker } from "@/components/NewsTicker";
 import { Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PriceSimulationEngine } from "@/lib/priceEngine";
 
 // Module Imports
 import { FinancialAnalysis } from "@/components/FinancialAnalysis";
@@ -169,10 +170,19 @@ import { CapitalStructure } from "@/components/CapitalStructure";
 import { GlobalFlows } from "@/components/GlobalFlows";
 import { EconomicMap } from "@/components/EconomicMap";
 import { TerminalCommandPrompt } from "@/components/TerminalCommandPrompt";
+import { OptionAdjustedSpread } from "@/components/OptionAdjustedSpread";
+import { ValueAtRisk } from "@/components/ValueAtRisk";
+import { FinancialModelBuilder } from "@/components/FinancialModelBuilder";
+import { CompanyPrimer } from "@/components/CompanyPrimer";
+import { TerminalAppStore } from "@/components/TerminalAppStore";
 import { OptionSkew } from "@/components/OptionSkew";
 import { CreditDefaultSwapSurface } from "@/components/CreditDefaultSwapSurface";
 import { WorldEquityMarketCap } from "@/components/WorldEquityMarketCap";
 import { IntradayTickChart } from "@/components/IntradayTickChart";
+import { EconomicReleaseDrilldown } from "@/components/EconomicReleaseDrilldown";
+import { TradeIdeaAnalytics } from "@/components/TradeIdeaAnalytics";
+import { HedgeFundMonitor } from "@/components/HedgeFundMonitor";
+import { GlobalSentimentMap } from "@/components/GlobalSentimentMap";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -195,7 +205,9 @@ type ViewType =
   | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP'
   | 'EQS' | 'CPG' | 'ESGD' | 'GCUR' | 'SHIP' | 'OA' | 'HEV'
   | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD' | 'CONN'
-  | 'SKEW' | 'CDSS' | 'WCAP' | 'TIC';
+  | 'SKEW' | 'CDSS' | 'WCAP' | 'TIC'
+  | 'OAS' | 'VAR' | 'MODL' | 'BICO' | 'APPS'
+  | 'ECDR' | 'IDEA' | '13F' | 'GSENT';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -231,12 +243,14 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'SURF': 'SURF', 'AN': 'AN', 'MN': 'MN', 'BETA': 'VCA', 'VAP': 'TA', 'GIP': 'IGC',
   'DIN': 'DIN', 'POSH': 'POSH', 'RICH': 'RICH', 'WX': 'WX', 'TV': 'TV', 'TICK': 'TICK', 'MEMO': 'MEMO',
   'CRYP': 'CRYP', 'BTC': 'CRYP', 'CESI': 'CESI', 'PFHM': 'PFHM', 'DIR': 'DIR', 'MSGS': 'MSGS',
-  'PEOP': 'PEOP', 'BPS': 'BPS', 'BCYC': 'BCYC', 'GLOS': 'GLOS', 'JOIN': 'JOIN', 'START': 'JOIN',
+  'PEOP': 'PEOP', 'BCYC': 'BCYC', 'GLOS': 'GLOS', 'JOIN': 'JOIN', 'START': 'JOIN',
   'CENB': 'CenB', 'EVTS': 'EVTS', 'SHTM': 'SHTM', 'FXIP': 'FXIP',
   'EQS': 'EQS', 'CPG': 'CPG', 'ESGD': 'ESGD', 'GCUR': 'GCUR', 'SHIP': 'SHIP',
   'OA': 'OA', 'HEV': 'HEV', 'MATW': 'MATW', 'CAST': 'CAST', 'FLOW': 'FLOW', 'CONN': 'CONN',
   'EMAP': 'EMAP', 'CMD': 'CMD', 'PROMPT': 'CMD',
   'SKEW': 'SKEW', 'CDSS': 'CDSS', 'WCAP': 'WCAP', 'TIC': 'TIC',
+  'OAS': 'OAS', 'VAR': 'VAR', 'MODL': 'MODL', 'BICO': 'BICO', 'APPS': 'APPS',
+  'ECDR': 'ECDR', 'IDEA': 'IDEA', '13F': '13F', 'GSENT': 'GSENT', 'SENTIMENT': 'GSENT',
 };
 
 interface TerminalState {
@@ -370,6 +384,9 @@ export default function Home() {
 
     if (COMMAND_MAP[command]) {
       setView(COMMAND_MAP[command]);
+    } else if (command.length >= 6 && !/^[A-Z0-9]+$/.test(command)) {
+      // Intelligent Search Routing: If it looks like a long sentence, route to News/Intelligence
+      setView('NEWS');
     } else if (command.length <= 5 && /^[A-Z0-9]+$/.test(command)) {
       setSelectedTicker(command);
       // If we are in a stock-specific view, stay there. Otherwise go to Market/Chart
@@ -564,11 +581,20 @@ export default function Home() {
       case 'FLOW': return <GlobalFlows />;
       case 'EMAP': return <EconomicMap />;
       case 'CMD': return <TerminalCommandPrompt />;
+      case 'OAS': return <OptionAdjustedSpread />;
+      case 'VAR': return <ValueAtRisk />;
+      case 'MODL': return <FinancialModelBuilder />;
+      case 'BICO': return <CompanyPrimer ticker={selectedTicker} />;
+      case 'APPS': return <TerminalAppStore />;
       case 'SKEW': return <OptionSkew ticker={selectedTicker} />;
       case 'CDSS': return <CreditDefaultSwapSurface />;
       case 'WCAP': return <WorldEquityMarketCap />;
       case 'TIC': return <IntradayTickChart ticker={selectedTicker} />;
       case 'CONN': return <ConnectData />;
+      case 'ECDR': return <EconomicReleaseDrilldown />;
+      case 'IDEA': return <TradeIdeaAnalytics />;
+      case '13F': return <HedgeFundMonitor />;
+      case 'GSENT': return <GlobalSentimentMap />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
