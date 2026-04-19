@@ -82,6 +82,10 @@ const ALL_COMMANDS = [
   { cmd: "BCYC", desc: "Global business cycle monitor" },
   { cmd: "GLOS", desc: "Financial glossary and dictionary" },
   { cmd: "JOIN", desc: "Terminal onboarding and tour" },
+  { cmd: "SKEW", desc: "Implied volatility skew chart" },
+  { cmd: "CDSS", desc: "CDS term structure and surface" },
+  { cmd: "WCAP", desc: "World equity market cap map" },
+  { cmd: "TIC", desc: "Intraday tick-by-tick charting" },
 ];
 
 export const HelpSystem = () => {

@@ -4,11 +4,11 @@ An institutional-grade replication of the Bloomberg Terminal workstation, built 
 
 ## 🚀 Overview
 
-This project is a high-fidelity web simulation of the world's most powerful financial tool. It features a command-driven interface with over **230 functional mnemonics** covering Equities, Fixed Income, Derivatives, Macroeconomics, Crypto, and Intelligence.
+This project is a high-fidelity web simulation of the world's most powerful financial tool. It features a command-driven interface with over **275 functional mnemonics** covering Equities, Fixed Income, Derivatives, Macroeconomics, Crypto, and Intelligence.
 
 ### Key Features
 
-- **Command Navigation:** Institutional-style command bar for ticker entry and function routing.
+- **Command Navigation:** Institutional-style command bar with **IntelliSense auto-suggestions** and persistent **Command History (CMD)**.
 - **Real-Time Data:** `PriceSimulationEngine` (Finnhub WS/REST) and `NewsStreamingService` (NewsAPI/World Bank).
 - **Multi-Terminal:** Independent workflow states across 4 virtual terminals (T1-T4).
 - **Advanced Analytics:** Dynamic RSI, SMA, and Bollinger Bands with Wilder's smoothing logic.
@@ -31,6 +31,10 @@ This project is a high-fidelity web simulation of the world's most powerful fina
 - `EVTS`: Earnings Transcript Search
 - `PEOP`: People & Biographies
 - `BPS`: Advanced Portfolio Attribution
+- `SKEW`: Implied Volatility Skew Chart
+- `TIC`: High-Frequency Tick Price Feed
+- `FLOW`: Global Capital Flow Monitor
+- `EMAP`: Interactive Economic Growth Map
 - `JOIN`: Terminal Onboarding Tour
 
 ## 🚦 Getting Started

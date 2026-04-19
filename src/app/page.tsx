@@ -168,6 +168,10 @@ import { CapitalStructure } from "@/components/CapitalStructure";
 import { GlobalFlows } from "@/components/GlobalFlows";
 import { EconomicMap } from "@/components/EconomicMap";
 import { TerminalCommandPrompt } from "@/components/TerminalCommandPrompt";
+import { OptionSkew } from "@/components/OptionSkew";
+import { CreditDefaultSwapSurface } from "@/components/CreditDefaultSwapSurface";
+import { WorldEquityMarketCap } from "@/components/WorldEquityMarketCap";
+import { IntradayTickChart } from "@/components/IntradayTickChart";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -189,7 +193,8 @@ type ViewType =
   | 'PEOP' | 'BPS' | 'BCYC' | 'GLOS' | 'JOIN'
   | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP'
   | 'EQS' | 'CPG' | 'ESGD' | 'GCUR' | 'SHIP' | 'OA' | 'HEV'
-  | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD';
+  | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD'
+  | 'SKEW' | 'CDSS' | 'WCAP' | 'TIC';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -230,6 +235,7 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'EQS': 'EQS', 'CPG': 'CPG', 'ESGD': 'ESGD', 'GCUR': 'GCUR', 'SHIP': 'SHIP',
   'OA': 'OA', 'HEV': 'HEV', 'MATW': 'MATW', 'CAST': 'CAST', 'FLOW': 'FLOW',
   'EMAP': 'EMAP', 'CMD': 'CMD', 'PROMPT': 'CMD',
+  'SKEW': 'SKEW', 'CDSS': 'CDSS', 'WCAP': 'WCAP', 'TIC': 'TIC',
 };
 
 interface TerminalState {
@@ -241,6 +247,7 @@ export default function Home() {
   const [time, setTime] = useState<string | null>(null);
   const [activeTerminal, setActiveTerminal] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLive, setIsLive] = useState(false);
   const [terminals, setTerminals] = useState<Record<number, TerminalState>>({
     1: { view: 'MARKET', ticker: 'AAPL' },
     2: { view: 'LPAD', ticker: 'MSFT' },
@@ -266,6 +273,31 @@ export default function Home() {
     }
   }, [terminals, isLoaded]);
 
+  if (!isLoaded) {
+    return (
+      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
+        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
+          BLOOMBERG
+        </div>
+        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
+          <div className="h-full bg-[#ffb900] animate-progress" />
+        </div>
+        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
+          Terminal Pro Workstation v2025.1 | Authenticating...
+        </div>
+        <style jsx>{`
+          @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          .animate-progress {
+            animation: progress 1.5s ease-in-out forwards;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   const view = terminals[activeTerminal].view;
   const selectedTicker = terminals[activeTerminal].ticker;
 
@@ -289,6 +321,12 @@ export default function Home() {
       setTime(new Date().toLocaleTimeString() + " NY");
     }, 1000);
 
+    const engine = PriceSimulationEngine.getInstance();
+    const unsubscribeLive = engine.subscribe((updates) => {
+      const first = Object.values(updates)[0];
+      if (first) setIsLive(first.isRealTime);
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 
@@ -311,6 +349,7 @@ export default function Home() {
     return () => {
       clearInterval(timer);
       window.removeEventListener('keydown', handleKeyDown);
+      unsubscribeLive();
     };
   }, [activeTerminal, view]);
 
@@ -524,6 +563,10 @@ export default function Home() {
       case 'FLOW': return <GlobalFlows />;
       case 'EMAP': return <EconomicMap />;
       case 'CMD': return <TerminalCommandPrompt />;
+      case 'SKEW': return <OptionSkew ticker={selectedTicker} />;
+      case 'CDSS': return <CreditDefaultSwapSurface />;
+      case 'WCAP': return <WorldEquityMarketCap />;
+      case 'TIC': return <IntradayTickChart ticker={selectedTicker} />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -534,13 +577,24 @@ export default function Home() {
     <main className="flex flex-col h-screen bg-black text-white font-mono overflow-hidden">
       {/* Top Header */}
       <div className="bg-[#1a1a1a] flex justify-between items-center px-4 py-1 border-b border-[#333] text-[10px] text-gray-400">
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <span className="text-[#ffb900] font-bold">BLOOMBERG TERMINAL</span>
-          <span className="uppercase">TERMINAL {activeTerminal}: {view} MONITOR</span>
+          <div className="w-[1px] h-3 bg-[#333] mx-2" />
+          <span className="uppercase tracking-tight">TERMINAL {activeTerminal}: {view} MONITOR</span>
+          <div className="flex items-center gap-1 ml-4 bg-black/40 px-2 py-0.5 rounded border border-[#333]">
+             <div className={cn("w-1.5 h-1.5 rounded-full animate-pulse", isLive ? "bg-[#00ff00]" : "bg-blue-500")} />
+             <span className="text-[8px] text-gray-500 uppercase">{isLive ? "SYS_OK_LIVE" : "SYS_SIMULATED"}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Clock className="w-3 h-3" />
-          <span>{time || "--:--:-- NY"}</span>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 border-r border-[#333] pr-4">
+             <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center text-[8px] text-white font-bold">P</div>
+             <span className="hover:text-white cursor-pointer transition-colors">TRADER_PRO_01</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-3 h-3" />
+            <span>{time || "--:--:-- NY"}</span>
+          </div>
         </div>
       </div>
 

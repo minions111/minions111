@@ -27,9 +27,31 @@ export const useAlerts = () => {
 export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
+  const playChime = () => {
+    try {
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+      oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1); // A4
+
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.2);
+    } catch (e) { /* ignore audio errors */ }
+  };
+
   const showAlert = (message: string, type: AlertType = 'info') => {
     const id = Math.random().toString(36).substr(2, 9);
     setAlerts(prev => [...prev, { id, message, type }]);
+    playChime();
     setTimeout(() => {
       setAlerts(prev => prev.filter(a => a.id !== id));
     }, 5000);

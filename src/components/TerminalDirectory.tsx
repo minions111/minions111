@@ -7,31 +7,35 @@ export const TerminalDirectory = () => {
   const sections = [
     {
       title: "EQUITY ANALYSIS",
-      items: ["FA (Financial Analysis)", "DES (Description)", "ANR (Analyst Recs)", "EE (Estimates)", "HDS (Holdings)", "DVD (Dividends)", "MAP (Rev Map)", "ESG (ESG Score)"]
+      items: ["FA (Financial Analysis)", "DES (Description)", "ANR (Analyst Recs)", "EE (Estimates)", "HDS (Holdings)", "DVD (Dividends)", "MAP (Rev Map)", "ESG (ESG Score)", "ESGD (ESG Deep Dive)"]
     },
     {
       title: "FIXED INCOME & MACRO",
-      items: ["BTMM (Money Markets)", "YC (Yield Curve)", "FICM (Fixed Income)", "YAS (Yield/Spread)", "IECO (Inflation)", "CBR (Central Bank Rates)", "GDP (Global GDP)", "WIRP (Interest Rate Prob)"]
+      items: ["BTMM (Money Markets)", "YC (Yield Curve)", "FICM (Fixed Income)", "YAS (Yield/Spread)", "IECO (Inflation)", "CBR (Central Bank Rates)", "GDP (Global GDP)", "WIRP (Interest Rate Prob)", "GCUR (Global Curves)"]
     },
     {
-      title: "INTELLIGENCE & AI",
-      items: ["GPT (BloombergGPT)", "BI (Intelligence)", "NEWS (News Search)", "TOP (Top Stories)", "AN (Analyst News)", "MN (Macro News)", "READ (Market Stories)"]
+      title: "INTELLIGENCE & MEDIA",
+      items: ["GPT (BloombergGPT)", "BI (Intelligence)", "NEWS (News Search)", "TOP (Top Stories)", "TV (Bloomberg TV)", "AN (Analyst News)", "MN (Macro News)", "READ (Market Stories)", "HEV (Hist Events)"]
     },
     {
-      title: "WORKSTATION & LIFESTYLE",
-      items: ["HELP (User Manual)", "DIR (Directory)", "USER (Preferences)", "LOCK (Security)", "MSG (Messaging)", "DIN (Dining)", "POSH (Luxury)", "RICH (Billionaires)"]
+      title: "DERIVATIVES & QUANT",
+      items: ["OMON (Monitor)", "OVME (Option Val)", "OA (Analytics)", "SKEW (Vol Skew)", "SURF (IV Surface)", "VCA (Vol Analysis)", "CDSS (CDS Surface)", "MCS (Monte Carlo)", "FACT (Factors)"]
     },
     {
-      title: "SOVEREIGN & MACRO",
-      items: ["CenB (CB Calendar)", "EVTS (Earnings Srch)", "SHTM (Wide Heatmap)", "FXIP (Curr Matrix)", "BCYC (Cycle)", "PEOP (People)", "BPS (Portfolio Svcs)", "JOIN (Onboarding)"]
+      title: "SOVEREIGN & FLOWS",
+      items: ["CenB (CB Calendar)", "EVTS (Earnings Srch)", "SHTM (Wide Heatmap)", "FXIP (Curr Matrix)", "BCYC (Cycle)", "FLOW (Capital Flows)", "EMAP (Economic Map)", "SHIP (Vessel Track)", "WX (Weather)"]
     },
     {
-      title: "ZENITH ANALYTICS",
-      items: ["EQS (Equity Screen)", "CPG (Commodity Grid)", "ESGD (ESG Deep Dive)", "GCUR (Global Curves)", "BVAL (Bond Val)", "SURF (Volatility)", "MCS (Monte Carlo)", "FACT (Factors)", "SHIP (Vessel Track)"]
+      title: "VALUATION & CREDIT",
+      items: ["DCF (DCF Model)", "WACC (WACC Calc)", "EV (Ent Value)", "RV (Relative Val)", "BVAL (Bond Val)", "MATW (Maturity Wall)", "CAST (Cap Structure)", "SCDS (Sovereign CDS)", "CRPR (Credit Ratings)"]
     },
     {
-      title: "MASTERY & STRUCTURE",
-      items: ["MATW (Maturity Wall)", "CAST (Cap Structure)", "FLOW (Capital Flows)", "EMAP (Economic Map)", "OA (Option Analytics)", "HEV (Hist Events)", "CMD (Cmd History)", "PROMPT (Terminal)"]
+      title: "WORKSTATION & SYSTEM",
+      items: ["HELP (Manual)", "DIR (Directory)", "JOIN (Onboarding)", "USER (Prefs)", "LOCK (Security)", "MSG (Messenger)", "TICK (Tick Logger)", "CMD (Command History)", "DIAG (Diagnostics)"]
+    },
+    {
+      title: "SCREENING & LIFESTYLE",
+      items: ["EQS (Equity Screen)", "SCRN (Screener)", "CPG (Commodity Grid)", "COMM (Commodity Mon)", "PEOP (People Directory)", "DIN (Dining Guide)", "POSH (Luxury Index)", "RICH (Billionaires)"]
     }
   ];
 
