@@ -155,6 +155,13 @@ import { CentralBankCalendar } from "@/components/CentralBankCalendar";
 import { EarningsTranscriptSearch } from "@/components/EarningsTranscriptSearch";
 import { MarketWideHeatmap } from "@/components/MarketWideHeatmap";
 import { CurrencyMatrix } from "@/components/CurrencyMatrix";
+import { EquityScreener } from "@/components/EquityScreener";
+import { CommodityPriceGrid } from "@/components/CommodityPriceGrid";
+import { ESGDetail } from "@/components/ESGDetail";
+import { GlobalYieldCurves } from "@/components/GlobalYieldCurves";
+import { ShipTracking } from "@/components/ShipTracking";
+import { OptionAnalytics } from "@/components/OptionAnalytics";
+import { HistoricalEvents } from "@/components/HistoricalEvents";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -174,7 +181,8 @@ type ViewType =
   | 'DIN' | 'POSH' | 'RICH' | 'WX' | 'TV' | 'TICK' | 'MEMO'
   | 'CRYP' | 'CESI' | 'PFHM' | 'TOP' | 'DIR' | 'MSGS'
   | 'PEOP' | 'BPS' | 'BCYC' | 'GLOS' | 'JOIN'
-  | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP';
+  | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP'
+  | 'EQS' | 'CPG' | 'ESGD' | 'GCUR' | 'SHIP' | 'OA' | 'HEV';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -212,6 +220,8 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'CRYP': 'CRYP', 'BTC': 'CRYP', 'CESI': 'CESI', 'PFHM': 'PFHM', 'DIR': 'DIR', 'MSGS': 'MSGS',
   'PEOP': 'PEOP', 'BPS': 'BPS', 'BCYC': 'BCYC', 'GLOS': 'GLOS', 'JOIN': 'JOIN', 'START': 'JOIN',
   'CENB': 'CenB', 'EVTS': 'EVTS', 'SHTM': 'SHTM', 'FXIP': 'FXIP',
+  'EQS': 'EQS', 'CPG': 'CPG', 'ESGD': 'ESGD', 'GCUR': 'GCUR', 'SHIP': 'SHIP',
+  'OA': 'OA', 'HEV': 'HEV',
 };
 
 interface TerminalState {
@@ -488,6 +498,13 @@ export default function Home() {
       case 'EVTS': return <EarningsTranscriptSearch />;
       case 'SHTM': return <MarketWideHeatmap />;
       case 'FXIP': return <CurrencyMatrix />;
+      case 'EQS': return <EquityScreener />;
+      case 'CPG': return <CommodityPriceGrid />;
+      case 'ESGD': return <ESGDetail ticker={selectedTicker} />;
+      case 'GCUR': return <GlobalYieldCurves />;
+      case 'SHIP': return <ShipTracking />;
+      case 'OA': return <OptionAnalytics ticker={selectedTicker} />;
+      case 'HEV': return <HistoricalEvents />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }

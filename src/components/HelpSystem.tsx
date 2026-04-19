@@ -67,6 +67,21 @@ const ALL_COMMANDS = [
   { cmd: "DIN", desc: "Bloomberg lifestyle/dining guide" },
   { cmd: "TICK", desc: "High-frequency trade tick logger" },
   { cmd: "MEMO", desc: "Security-specific analyst journal" },
+  { cmd: "CenB", desc: "Global central bank calendar" },
+  { cmd: "EVTS", desc: "Earnings transcript keyword search" },
+  { cmd: "SHTM", desc: "Market-wide performance heatmap" },
+  { cmd: "FXIP", desc: "Currency cross-rate matrix" },
+  { cmd: "EQS", desc: "Multi-factor equity screener" },
+  { cmd: "CPG", desc: "Global commodity price grid" },
+  { cmd: "ESGD", desc: "Deep-dive ESG pillar metrics" },
+  { cmd: "GCUR", desc: "Global yield curve comparison" },
+  { cmd: "SHIP", desc: "Global vessel and cargo tracker" },
+  { cmd: "OA", desc: "Advanced option greeks and analytics" },
+  { cmd: "HEV", desc: "Historical market events and impacts" },
+  { cmd: "PEOP", desc: "People and professional directory" },
+  { cmd: "BCYC", desc: "Global business cycle monitor" },
+  { cmd: "GLOS", desc: "Financial glossary and dictionary" },
+  { cmd: "JOIN", desc: "Terminal onboarding and tour" },
 ];
 
 export const HelpSystem = () => {

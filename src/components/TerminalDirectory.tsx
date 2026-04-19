@@ -24,6 +24,10 @@ export const TerminalDirectory = () => {
     {
       title: "SOVEREIGN & MACRO",
       items: ["CenB (CB Calendar)", "EVTS (Earnings Srch)", "SHTM (Wide Heatmap)", "FXIP (Curr Matrix)", "BCYC (Cycle)", "PEOP (People)", "BPS (Portfolio Svcs)", "JOIN (Onboarding)"]
+    },
+    {
+      title: "ZENITH ANALYTICS",
+      items: ["EQS (Equity Screen)", "CPG (Commodity Grid)", "ESGD (ESG Deep Dive)", "GCUR (Global Curves)", "BVAL (Bond Val)", "SURF (Volatility)", "MCS (Monte Carlo)", "FACT (Factors)", "SHIP (Vessel Track)"]
     }
   ];
 
