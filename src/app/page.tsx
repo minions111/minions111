@@ -13,6 +13,7 @@ import { Watchlist } from "@/components/Watchlist";
 import { EconomicsNews } from "@/components/EconomicsNews";
 import { NewsTicker } from "@/components/NewsTicker";
 import { Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Module Imports
 import { FinancialAnalysis } from "@/components/FinancialAnalysis";
@@ -162,6 +163,11 @@ import { GlobalYieldCurves } from "@/components/GlobalYieldCurves";
 import { ShipTracking } from "@/components/ShipTracking";
 import { OptionAnalytics } from "@/components/OptionAnalytics";
 import { HistoricalEvents } from "@/components/HistoricalEvents";
+import { MaturityWall } from "@/components/MaturityWall";
+import { CapitalStructure } from "@/components/CapitalStructure";
+import { GlobalFlows } from "@/components/GlobalFlows";
+import { EconomicMap } from "@/components/EconomicMap";
+import { TerminalCommandPrompt } from "@/components/TerminalCommandPrompt";
 
 type ViewType =
   | 'MARKET' | 'PORTFOLIO' | 'TRADE' | 'ECO' | 'DES' | 'WL' | 'ECON_NEWS'
@@ -182,7 +188,8 @@ type ViewType =
   | 'CRYP' | 'CESI' | 'PFHM' | 'TOP' | 'DIR' | 'MSGS'
   | 'PEOP' | 'BPS' | 'BCYC' | 'GLOS' | 'JOIN'
   | 'CenB' | 'EVTS' | 'SHTM' | 'FXIP'
-  | 'EQS' | 'CPG' | 'ESGD' | 'GCUR' | 'SHIP' | 'OA' | 'HEV';
+  | 'EQS' | 'CPG' | 'ESGD' | 'GCUR' | 'SHIP' | 'OA' | 'HEV'
+  | 'MATW' | 'CAST' | 'FLOW' | 'EMAP' | 'CMD';
 
 const COMMAND_MAP: Record<string, ViewType> = {
   'MARKET': 'MARKET', 'MKT': 'MARKET', 'TOP': 'TOP',
@@ -221,7 +228,8 @@ const COMMAND_MAP: Record<string, ViewType> = {
   'PEOP': 'PEOP', 'BPS': 'BPS', 'BCYC': 'BCYC', 'GLOS': 'GLOS', 'JOIN': 'JOIN', 'START': 'JOIN',
   'CENB': 'CenB', 'EVTS': 'EVTS', 'SHTM': 'SHTM', 'FXIP': 'FXIP',
   'EQS': 'EQS', 'CPG': 'CPG', 'ESGD': 'ESGD', 'GCUR': 'GCUR', 'SHIP': 'SHIP',
-  'OA': 'OA', 'HEV': 'HEV',
+  'OA': 'OA', 'HEV': 'HEV', 'MATW': 'MATW', 'CAST': 'CAST', 'FLOW': 'FLOW',
+  'EMAP': 'EMAP', 'CMD': 'CMD', 'PROMPT': 'CMD',
 };
 
 interface TerminalState {
@@ -308,6 +316,12 @@ export default function Home() {
 
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
+
+    // Track command history
+    const saved = localStorage.getItem('bloomberg_history');
+    const history = saved ? JSON.parse(saved) : [];
+    const newHistory = [command, ...history.filter((h: string) => h !== command)].slice(0, 50);
+    localStorage.setItem('bloomberg_history', JSON.stringify(newHistory));
 
     if (['T1', 'T2', 'T3', 'T4'].includes(command)) {
       setActiveTerminal(parseInt(command.substring(1)));
@@ -505,6 +519,11 @@ export default function Home() {
       case 'SHIP': return <ShipTracking />;
       case 'OA': return <OptionAnalytics ticker={selectedTicker} />;
       case 'HEV': return <HistoricalEvents />;
+      case 'MATW': return <MaturityWall ticker={selectedTicker} />;
+      case 'CAST': return <CapitalStructure ticker={selectedTicker} />;
+      case 'FLOW': return <GlobalFlows />;
+      case 'EMAP': return <EconomicMap />;
+      case 'CMD': return <TerminalCommandPrompt />;
       default:
         return <div className="p-4 text-red-500 font-bold uppercase">Function Not Found</div>;
     }
@@ -525,7 +544,7 @@ export default function Home() {
         </div>
       </div>
 
-      <CommandBar onCommand={handleCommand} />
+      <CommandBar onCommand={handleCommand} commands={Object.keys(COMMAND_MAP)} />
 
       <div className="flex-1 grid grid-cols-12 overflow-hidden">
         {/* Left Panel: Market Data */}

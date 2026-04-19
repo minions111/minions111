@@ -28,6 +28,10 @@ export const TerminalDirectory = () => {
     {
       title: "ZENITH ANALYTICS",
       items: ["EQS (Equity Screen)", "CPG (Commodity Grid)", "ESGD (ESG Deep Dive)", "GCUR (Global Curves)", "BVAL (Bond Val)", "SURF (Volatility)", "MCS (Monte Carlo)", "FACT (Factors)", "SHIP (Vessel Track)"]
+    },
+    {
+      title: "MASTERY & STRUCTURE",
+      items: ["MATW (Maturity Wall)", "CAST (Cap Structure)", "FLOW (Capital Flows)", "EMAP (Economic Map)", "OA (Option Analytics)", "HEV (Hist Events)", "CMD (Cmd History)", "PROMPT (Terminal)"]
     }
   ];
 
