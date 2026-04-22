@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { CommandBar } from "@/components/CommandBar";
 import { MarketGrid } from "@/components/MarketGrid";
 import { StockChart } from "@/components/StockChart";
@@ -338,6 +338,8 @@ export default function Home() {
     }));
   };
 
+  const commandList = useMemo(() => Object.keys(COMMAND_MAP), []);
+
   useEffect(() => {
     setTime(new Date().toLocaleTimeString() + " NY");
     const timer = setInterval(() => {
@@ -639,7 +641,7 @@ export default function Home() {
         </div>
       </div>
 
-      <CommandBar onCommand={handleCommand} commands={Object.keys(COMMAND_MAP)} />
+      <CommandBar onCommand={handleCommand} commands={commandList} />
 
       <div className="flex-1 grid grid-cols-12 overflow-hidden">
         {/* Left Panel: Market Data */}
