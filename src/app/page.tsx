@@ -339,6 +339,8 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!isLoaded) return;
+
     setTime(new Date().toLocaleTimeString() + " NY");
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString() + " NY");
@@ -374,7 +376,7 @@ export default function Home() {
       window.removeEventListener('keydown', handleKeyDown);
       unsubscribeLive();
     };
-  }, [activeTerminal, view]);
+  }, [activeTerminal, view, isLoaded]);
 
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
