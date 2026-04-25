@@ -1,0 +1,3 @@
+## 2025-05-15 - [CommandBar Accessibility and Hook Safety]
+**Learning:** In terminal-style applications with intelligent command bars, ensuring keyboard navigation (Arrow keys + Enter/Escape) and ARIA combobox synchronization is critical for institutional accessibility. Additionally, when using loading states (like `isLoaded` for splash screens) in Next.js, all hooks (useEffect, useCallback) must be declared before any conditional returns to avoid 'Rendered more hooks than during the previous render' errors.
+**Action:** Always implement `role="combobox"` with `aria-activedescendant` for suggestion lists, and ensure all React hooks are top-level and unconditional.
