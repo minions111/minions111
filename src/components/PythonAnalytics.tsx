@@ -19,20 +19,21 @@ export const PythonAnalytics = ({ ticker = "AAPL" }: { ticker?: string }) => {
 
   const runAnalysis = async () => {
     setLoading(true);
-    setLog(prev => [...prev, \`[RUN] Executing quantitative script for \${ticker}...\`]);
+    setLog(prev => [...prev, `[RUN] Executing quantitative script for ${ticker}...`]);
 
     try {
       // Simulate API call to backend/main.py
-      const response = await fetch(\`http://localhost:8000/api/v1/analysis/\${ticker}\`);
+      const response = await fetch(`http://localhost:8000/api/v1/analysis/${ticker}`);
       if (response.ok) {
         const result = await response.json();
         setData(result);
-        setLog(prev => [...prev, \`[SUCCESS] Analysis complete. Sharpe: \${result.sharpe.toFixed(2)}\`]);
+        setLog(prev => [...prev, `[SUCCESS] Analysis complete. Sharpe: ${result.sharpe.toFixed(2)}`]);
       } else {
         // Fallback simulation if backend not available in sandbox environment
         throw new Error("Backend connection failed");
       }
     } catch (e) {
+      console.error(e);
       setLog(prev => [...prev, "[ERROR] Backend bridge unavailable. Using high-fidelity Python simulation engine."]);
       setTimeout(() => {
         setData({
