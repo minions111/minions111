@@ -9,7 +9,12 @@ export const Watchlist = () => {
     <div className="bg-black h-full flex flex-col font-mono text-xs">
       <div className="bg-[#1a1a1a] p-2 border-b border-[#333] flex justify-between items-center">
         <span className="text-[#ffb900] font-bold text-base">WL - CUSTOM WATCHLIST</span>
-        <button className="text-gray-400 border border-[#444] px-2 hover:bg-[#222]">EDIT</button>
+        <button
+          aria-label="Edit watchlist"
+          className="text-gray-400 border border-[#444] px-2 hover:bg-[#222] focus-visible:ring-1 focus-visible:ring-[#ffb900] outline-none"
+        >
+          EDIT
+        </button>
       </div>
 
       <div className="flex-1 overflow-auto">

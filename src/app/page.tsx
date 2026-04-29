@@ -321,8 +321,8 @@ export default function Home() {
     );
   }
 
-  const view = terminals[activeTerminal].view;
-  const selectedTicker = terminals[activeTerminal].ticker;
+  const view = terminals[activeTerminal]?.view || 'MARKET';
+  const selectedTicker = terminals[activeTerminal]?.ticker || 'AAPL';
 
   const setView = (v: ViewType) => {
     setTerminals(prev => ({
