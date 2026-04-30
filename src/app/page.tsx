@@ -296,34 +296,6 @@ export default function Home() {
     }
   }, [terminals, isLoaded]);
 
-  if (!isLoaded) {
-    return (
-      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
-        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
-          BLOOMBERG
-        </div>
-        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
-          <div className="h-full bg-[#ffb900] animate-progress" />
-        </div>
-        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
-          Terminal Pro Workstation v2025.1 | Authenticating...
-        </div>
-        <style jsx>{`
-          @keyframes progress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-          }
-          .animate-progress {
-            animation: progress 1.5s ease-in-out forwards;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  const view = terminals[activeTerminal].view;
-  const selectedTicker = terminals[activeTerminal].ticker;
-
   const setView = (v: ViewType) => {
     setTerminals(prev => ({
       ...prev,
@@ -374,7 +346,35 @@ export default function Home() {
       window.removeEventListener('keydown', handleKeyDown);
       unsubscribeLive();
     };
-  }, [activeTerminal, view]);
+  }, [activeTerminal, terminals]);
+
+  if (!isLoaded) {
+    return (
+      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
+        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
+          BLOOMBERG
+        </div>
+        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
+          <div className="h-full bg-[#ffb900] animate-progress" />
+        </div>
+        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
+          Terminal Pro Workstation v2025.1 | Authenticating...
+        </div>
+        <style jsx>{`
+          @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          .animate-progress {
+            animation: progress 1.5s ease-in-out forwards;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  const view = terminals[activeTerminal].view;
+  const selectedTicker = terminals[activeTerminal].ticker;
 
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
