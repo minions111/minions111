@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { CommandBar } from "@/components/CommandBar";
 import { MarketGrid } from "@/components/MarketGrid";
 import { StockChart } from "@/components/StockChart";
@@ -296,31 +296,6 @@ export default function Home() {
     }
   }, [terminals, isLoaded]);
 
-  if (!isLoaded) {
-    return (
-      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
-        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
-          BLOOMBERG
-        </div>
-        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
-          <div className="h-full bg-[#ffb900] animate-progress" />
-        </div>
-        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
-          Terminal Pro Workstation v2025.1 | Authenticating...
-        </div>
-        <style jsx>{`
-          @keyframes progress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-          }
-          .animate-progress {
-            animation: progress 1.5s ease-in-out forwards;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
   const view = terminals[activeTerminal].view;
   const selectedTicker = terminals[activeTerminal].ticker;
 
@@ -376,7 +351,34 @@ export default function Home() {
     };
   }, [activeTerminal, view]);
 
-  const handleCommand = (cmd: string) => {
+  if (!isLoaded) {
+    return (
+      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
+        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
+          BLOOMBERG
+        </div>
+        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
+          <div className="h-full bg-[#ffb900] animate-progress" />
+        </div>
+        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
+          Terminal Pro Workstation v2025.1 | Authenticating...
+        </div>
+        <style jsx>{`
+          @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          .animate-progress {
+            animation: progress 1.5s ease-in-out forwards;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  const commandKeys = useMemo(() => Object.keys(COMMAND_MAP), []);
+
+  const handleCommand = useCallback((cmd: string) => {
     const command = cmd.toUpperCase();
 
     // Track command history
@@ -408,7 +410,7 @@ export default function Home() {
         setView('MARKET');
       }
     }
-  };
+  }, [view]);
 
   const renderView = () => {
     switch (view) {
@@ -639,7 +641,7 @@ export default function Home() {
         </div>
       </div>
 
-      <CommandBar onCommand={handleCommand} commands={Object.keys(COMMAND_MAP)} />
+      <CommandBar onCommand={handleCommand} commands={commandKeys} />
 
       <div className="flex-1 grid grid-cols-12 overflow-hidden">
         {/* Left Panel: Market Data */}
