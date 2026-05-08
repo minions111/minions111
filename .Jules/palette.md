@@ -1,0 +1,3 @@
+## 2025-05-14 - [CommandBar Keyboard Navigation & Accessibility]
+**Learning:** Terminal-style interfaces benefit greatly from "immediate-focus" keyboard patterns where the first ArrowDown simultaneously opens the list and selects the first item. Additionally, React Hook order violations (Error #310) in Next.js often occur when conditional returns (like loading screens) are placed before effect hooks that depend on data that only exists after loading.
+**Action:** Always declare hooks at the very top of the component, and use conditional logic *inside* the hooks or safe fallbacks for state access before early returns. Use ARIA attributes like `aria-activedescendant` to link input state to suggestion list selection for accessibility.
