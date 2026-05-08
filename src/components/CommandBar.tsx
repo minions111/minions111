@@ -12,6 +12,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
   const [command, setCommand] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     if (command.length > 0) {
@@ -20,18 +21,53 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
         .slice(0, 10);
       setSuggestions(filtered);
       setShowSuggestions(filtered.length > 0);
+      setSelectedIndex(-1);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+      setSelectedIndex(-1);
     }
   }, [command, commands]);
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (command.trim()) {
+    if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
+      handleSelectSuggestion(suggestions[selectedIndex]);
+    } else if (command.trim()) {
       onCommand(command.trim().toUpperCase());
       setCommand('');
       setShowSuggestions(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions) {
+      if (e.key === 'ArrowDown' && suggestions.length > 0) {
+        setShowSuggestions(true);
+        setSelectedIndex(0);
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev + 1) % suggestions.length);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev - 1 + suggestions.length) % suggestions.length);
+        break;
+      case 'Escape':
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        break;
+      case 'Tab':
+        if (selectedIndex >= 0) {
+          e.preventDefault();
+          handleSelectSuggestion(suggestions[selectedIndex]);
+        }
+        break;
     }
   };
 
@@ -39,6 +75,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
     onCommand(s);
     setCommand('');
     setShowSuggestions(false);
+    setSelectedIndex(-1);
   };
 
   return (
@@ -51,8 +88,16 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
           <Search className="w-3 h-3 text-[#ffb900] mr-2" />
           <input
             type="text"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={showSuggestions}
+            aria-haspopup="listbox"
+            aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
+            autoComplete="off"
+            spellCheck="false"
             value={command}
             onChange={(e) => setCommand(e.target.value.toUpperCase())}
+            onKeyDown={handleKeyDown}
             onFocus={() => setShowSuggestions(suggestions.length > 0)}
             className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
             placeholder="Enter command or ticker..."
@@ -60,12 +105,21 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
         </form>
 
         {showSuggestions && (
-          <div className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1">
+          <div
+            role="listbox"
+            className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1"
+          >
             {suggestions.map((s, i) => (
               <div
                 key={i}
+                id={`suggestion-${i}`}
+                role="option"
+                aria-selected={i === selectedIndex}
                 onClick={() => handleSelectSuggestion(s)}
-                className="p-2 text-[#ffb900] font-mono text-xs hover:bg-[#ffb900] hover:text-black cursor-pointer border-b border-[#111]"
+                onMouseEnter={() => setSelectedIndex(i)}
+                className={`p-2 font-mono text-xs cursor-pointer border-b border-[#111] transition-colors ${
+                  i === selectedIndex ? 'bg-[#ffb900] text-black' : 'text-[#ffb900] hover:bg-[#ffb900]/10'
+                }`}
               >
                 {s}
               </div>

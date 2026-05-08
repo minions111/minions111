@@ -1,0 +1,3 @@
+## 2025-05-14 - [React Hook Order & Template Literals]
+**Learning:** In Next.js 15/React 19, an early return for a loading state (e.g., `!isLoaded`) can easily lead to "Minified React error #310" (Hook Order Violation) if state derived from hooks is defined *after* the return but used in hooks *before* it. Also, unnecessary backslash escapes in template literals (\`) trigger Next.js build errors (invalid unicode escapes).
+**Action:** Ensure derived state has sensible defaults and is declared before any early returns. Always audit template literals for redundant escapes when porting code from other environments (like Python strings).
