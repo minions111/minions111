@@ -12,6 +12,11 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
   const [command, setCommand] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  useEffect(() => {
+    setSelectedIndex(-1);
+  }, [suggestions]);
 
   useEffect(() => {
     if (command.length > 0) {
@@ -39,6 +44,32 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
     onCommand(s);
     setCommand('');
     setShowSuggestions(false);
+    setSelectedIndex(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : prev));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev > -1 ? prev - 1 : prev));
+        break;
+      case 'Enter':
+        if (selectedIndex >= 0) {
+          e.preventDefault();
+          handleSelectSuggestion(suggestions[selectedIndex]);
+        }
+        break;
+      case 'Escape':
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        break;
+    }
   };
 
   return (
@@ -54,18 +85,36 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
             value={command}
             onChange={(e) => setCommand(e.target.value.toUpperCase())}
             onFocus={() => setShowSuggestions(suggestions.length > 0)}
+            onKeyDown={handleKeyDown}
+            role="combobox"
+            aria-expanded={showSuggestions}
+            aria-haspopup="listbox"
+            aria-controls="command-suggestions"
+            aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
             className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
             placeholder="Enter command or ticker..."
           />
         </form>
 
         {showSuggestions && (
-          <div className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1">
+          <div
+            id="command-suggestions"
+            role="listbox"
+            className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1"
+          >
             {suggestions.map((s, i) => (
               <div
                 key={i}
+                id={`suggestion-${i}`}
+                role="option"
+                aria-selected={i === selectedIndex}
                 onClick={() => handleSelectSuggestion(s)}
-                className="p-2 text-[#ffb900] font-mono text-xs hover:bg-[#ffb900] hover:text-black cursor-pointer border-b border-[#111]"
+                onMouseEnter={() => setSelectedIndex(i)}
+                className={`p-2 font-mono text-xs cursor-pointer border-b border-[#111] transition-colors ${
+                  i === selectedIndex
+                    ? 'bg-[#ffb900] text-black'
+                    : 'text-[#ffb900] hover:bg-[#ffb900] hover:text-black'
+                }`}
               >
                 {s}
               </div>
