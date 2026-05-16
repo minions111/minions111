@@ -296,33 +296,8 @@ export default function Home() {
     }
   }, [terminals, isLoaded]);
 
-  if (!isLoaded) {
-    return (
-      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
-        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
-          BLOOMBERG
-        </div>
-        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
-          <div className="h-full bg-[#ffb900] animate-progress" />
-        </div>
-        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
-          Terminal Pro Workstation v2025.1 | Authenticating...
-        </div>
-        <style jsx>{`
-          @keyframes progress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-          }
-          .animate-progress {
-            animation: progress 1.5s ease-in-out forwards;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  const view = terminals[activeTerminal].view;
-  const selectedTicker = terminals[activeTerminal].ticker;
+  const view = terminals[activeTerminal]?.view || 'MARKET';
+  const selectedTicker = terminals[activeTerminal]?.ticker || 'AAPL';
 
   const setView = (v: ViewType) => {
     setTerminals(prev => ({
@@ -380,10 +355,12 @@ export default function Home() {
     const command = cmd.toUpperCase();
 
     // Track command history
-    const saved = localStorage.getItem('bloomberg_history');
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('bloomberg_history') : null;
     const history = saved ? JSON.parse(saved) : [];
     const newHistory = [command, ...history.filter((h: string) => h !== command)].slice(0, 50);
-    localStorage.setItem('bloomberg_history', JSON.stringify(newHistory));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('bloomberg_history', JSON.stringify(newHistory));
+    }
 
     if (['T1', 'T2', 'T3', 'T4'].includes(command)) {
       setActiveTerminal(parseInt(command.substring(1)));
@@ -409,6 +386,31 @@ export default function Home() {
       }
     }
   };
+
+  if (!isLoaded) {
+    return (
+      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
+        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
+          BLOOMBERG
+        </div>
+        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
+          <div className="h-full bg-[#ffb900] animate-progress" />
+        </div>
+        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
+          Terminal Pro Workstation v2025.1 | Authenticating...
+        </div>
+        <style jsx>{`
+          @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          .animate-progress {
+            animation: progress 1.5s ease-in-out forwards;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   const renderView = () => {
     switch (view) {
