@@ -1,0 +1,3 @@
+## 2026-05-21 - [Keyboard Navigation & Build Stability]
+**Learning:** Institutional terminal users prioritize keyboard efficiency; ArrowUp/Down navigation for command suggestions is a high-impact micro-UX win. Also, Next.js 15 production builds fail on escaped backticks in TSX template literals (`\``), and React 19 is strict about Hook order even before early returns.
+**Action:** Always implement standard ARIA combobox patterns for command inputs. Ensure derived state hooks are declared before ANY conditional returns in the main App component. Avoid escaping backticks in template literals within TSX.

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { Terminal, Database, Play, BarChart2, Shield, Activity, Cpu } from 'lucide-react';
+import React, { useState } from 'react';
+import { Database, Play, BarChart2, Shield, Activity, Cpu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PythonResult {
@@ -19,15 +19,15 @@ export const PythonAnalytics = ({ ticker = "AAPL" }: { ticker?: string }) => {
 
   const runAnalysis = async () => {
     setLoading(true);
-    setLog(prev => [...prev, \`[RUN] Executing quantitative script for \${ticker}...\`]);
+    setLog(prev => [...prev, `[RUN] Executing quantitative script for ${ticker}...`]);
 
     try {
       // Simulate API call to backend/main.py
-      const response = await fetch(\`http://localhost:8000/api/v1/analysis/\${ticker}\`);
+      const response = await fetch(`http://localhost:8000/api/v1/analysis/${ticker}`);
       if (response.ok) {
         const result = await response.json();
         setData(result);
-        setLog(prev => [...prev, \`[SUCCESS] Analysis complete. Sharpe: \${result.sharpe.toFixed(2)}\`]);
+        setLog(prev => [...prev, `[SUCCESS] Analysis complete. Sharpe: ${result.sharpe.toFixed(2)}`]);
       } else {
         // Fallback simulation if backend not available in sandbox environment
         throw new Error("Backend connection failed");
