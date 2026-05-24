@@ -80,7 +80,7 @@ export const WebAPIIntegration = () => {
               <section>
                 <h2 className="text-[#ffb900] font-bold border-b border-[#333] pb-1 mb-4 uppercase">Authentication</h2>
                 <div className="bg-[#111] p-4 border border-[#222] text-gray-300 font-mono text-[10px]">
-                  <p className="text-[#00ff00] mb-2">// Authorize session via Bloomberg Terminal Token</p>
+                  <p className="text-[#00ff00] mb-2">{`// Authorize session via Bloomberg Terminal Token`}</p>
                   <p className="text-white">Authorization: Bearer {'<BBG_SESSION_TOKEN>'}</p>
                 </div>
               </section>
