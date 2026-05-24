@@ -81,6 +81,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
               <button
                 onClick={() => setAlerts(prev => prev.filter(a => a.id !== alert.id))}
                 className="hover:text-gray-300"
+                aria-label="Close alert"
               >
                 <X size={14} />
               </button>
