@@ -36,7 +36,7 @@ export const ConnectData = () => {
         <section className="bg-[#111] border border-[#222] p-6 space-y-6">
            <div className="flex items-center gap-3 text-white font-bold mb-4">
               <Database size={20} className="text-[#ffb900]" />
-              <h2 className="uppercase">Market Data Provider (Finnhub)</h2>
+              <h2 className="uppercase" id="finnhub-title">Market Data Provider (Finnhub)</h2>
            </div>
            <p className="text-gray-500 uppercase text-[10px] leading-relaxed">
              Enter your Finnhub API Key to enable real-time WebSocket pricing for all Equities and Crypto modules.
@@ -44,8 +44,10 @@ export const ConnectData = () => {
            </p>
            <div className="flex gap-4">
               <div className="flex-1 bg-black border border-[#444] flex items-center px-3 gap-3">
-                 <Key size={14} className="text-gray-600" />
+                 <label htmlFor="finnhub-key" className="sr-only">Finnhub API Key</label>
+                 <Key size={14} className="text-gray-600" aria-hidden="true" />
                  <input
+                   id="finnhub-key"
                    type="password"
                    value={finnhubKey}
                    onChange={(e) => setFinnhubKey(e.target.value)}
@@ -59,7 +61,7 @@ export const ConnectData = () => {
         <section className="bg-[#111] border border-[#222] p-6 space-y-6">
            <div className="flex items-center gap-3 text-white font-bold mb-4">
               <ShieldCheck size={20} className="text-blue-500" />
-              <h2 className="uppercase">Institutional News Provider (NewsAPI)</h2>
+              <h2 className="uppercase" id="newsapi-title">Institutional News Provider (NewsAPI)</h2>
            </div>
            <p className="text-gray-500 uppercase text-[10px] leading-relaxed">
              Enable global macro news streaming by connecting your NewsAPI credentials.
@@ -67,8 +69,10 @@ export const ConnectData = () => {
            </p>
            <div className="flex gap-4">
               <div className="flex-1 bg-black border border-[#444] flex items-center px-3 gap-3">
-                 <Key size={14} className="text-gray-600" />
+                 <label htmlFor="newsapi-key" className="sr-only">NewsAPI Key</label>
+                 <Key size={14} className="text-gray-600" aria-hidden="true" />
                  <input
+                   id="newsapi-key"
                    type="password"
                    value={newsApiKey}
                    onChange={(e) => setNewsApiKey(e.target.value)}

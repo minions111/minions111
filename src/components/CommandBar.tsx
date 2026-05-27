@@ -48,7 +48,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
       </div>
       <div className="flex-1 relative">
         <form onSubmit={handleSubmit} className="flex items-center bg-black border border-[#444] px-2 py-0.5">
-          <Search className="w-3 h-3 text-[#ffb900] mr-2" />
+          <Search className="w-3 h-3 text-[#ffb900] mr-2" aria-hidden="true" />
           <input
             type="text"
             value={command}
@@ -56,6 +56,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
             onFocus={() => setShowSuggestions(suggestions.length > 0)}
             className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
             placeholder="Enter command or ticker..."
+            aria-label="Terminal command or ticker search"
           />
         </form>
 
