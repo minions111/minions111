@@ -1,0 +1,3 @@
+## 2025-05-15 - [CommandBar Accessibility and Hook Safety]
+**Learning:** In terminal-inspired UIs, keyboard navigation is a core UX requirement. WAI-ARIA combobox patterns (roles `combobox`, `listbox`, `option`) combined with `aria-activedescendant` provide the most standard-compliant screen reader experience for suggestion lists. Additionally, Next.js 15 App Router components must be extremely careful with Hook order when using early returns; state and effects derived from potentially nullish data should be defined with defaults before any conditional bail-outs.
+**Action:** Always implement ArrowUp/ArrowDown navigation for autocomplete lists and verify Hook ordering in complex Page components before proceeding to builds.
