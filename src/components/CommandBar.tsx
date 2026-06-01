@@ -12,6 +12,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
   const [command, setCommand] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     if (command.length > 0) {
@@ -25,6 +26,28 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
       setShowSuggestions(false);
     }
   }, [command, commands]);
+
+  useEffect(() => {
+    setSelectedIndex(-1);
+  }, [command]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev + 1) % suggestions.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev - 1 + suggestions.length) % suggestions.length);
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      handleSelectSuggestion(suggestions[selectedIndex]);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+      setSelectedIndex(-1);
+    }
+  };
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -47,25 +70,51 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
         HELP
       </div>
       <div className="flex-1 relative">
-        <form onSubmit={handleSubmit} className="flex items-center bg-black border border-[#444] px-2 py-0.5">
+        <div
+          role="combobox"
+          aria-expanded={showSuggestions}
+          aria-haspopup="listbox"
+          aria-controls="command-suggestions"
+          aria-owns="command-suggestions"
+          className="flex items-center bg-black border border-[#444] px-2 py-0.5"
+        >
           <Search className="w-3 h-3 text-[#ffb900] mr-2" />
-          <input
-            type="text"
-            value={command}
-            onChange={(e) => setCommand(e.target.value.toUpperCase())}
-            onFocus={() => setShowSuggestions(suggestions.length > 0)}
-            className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
-            placeholder="Enter command or ticker..."
-          />
-        </form>
+          <form onSubmit={handleSubmit} className="flex-1">
+            <input
+              type="text"
+              value={command}
+              onChange={(e) => setCommand(e.target.value.toUpperCase())}
+              onFocus={() => setShowSuggestions(suggestions.length > 0)}
+              onKeyDown={handleKeyDown}
+              aria-label="Command or ticker"
+              aria-autocomplete="list"
+              aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
+              aria-controls="command-suggestions"
+              autoComplete="off"
+              spellCheck="false"
+              className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
+              placeholder="Enter command or ticker..."
+            />
+          </form>
+        </div>
 
         {showSuggestions && (
-          <div className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1">
+          <div
+            id="command-suggestions"
+            role="listbox"
+            className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1"
+          >
             {suggestions.map((s, i) => (
               <div
                 key={i}
+                id={`suggestion-${i}`}
+                role="option"
+                aria-selected={i === selectedIndex}
                 onClick={() => handleSelectSuggestion(s)}
-                className="p-2 text-[#ffb900] font-mono text-xs hover:bg-[#ffb900] hover:text-black cursor-pointer border-b border-[#111]"
+                onMouseEnter={() => setSelectedIndex(i)}
+                className={`p-2 text-[#ffb900] font-mono text-xs cursor-pointer border-b border-[#111] transition-colors ${
+                  i === selectedIndex ? 'bg-[#ffb900] text-black' : 'hover:bg-[#ffb900]/10'
+                }`}
               >
                 {s}
               </div>
