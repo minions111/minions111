@@ -1,0 +1,3 @@
+## 2025-05-14 - [CommandBar Accessibility & Hook Order]
+**Learning:** High-fidelity workstation simulations require 'fingers on keys' efficiency. Implementing a WAI-ARIA combobox pattern (role="combobox", aria-autocomplete="list") with Arrow key navigation is essential for terminal-style interfaces. Additionally, in Next.js 15, early returns before hooks (like `if (!isLoaded) return ...`) cause Error #310; hooks must be declared first with fallback state.
+**Action:** Always wrap command/search inputs in a combobox container and ensure all hooks are called before any conditional early returns in page components.
