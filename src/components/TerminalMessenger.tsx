@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, User, Shield, Send } from 'lucide-react';
 
 export const TerminalMessenger = () => {
   const [msg, setMsg] = useState('');
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [chat, setChat] = useState([
     { from: "TRDR_NY_82", text: "Watching the UST 10Y move here. Any flows in the long end?", time: "14:15" },
     { from: "SYS_MSG", text: "Your connection to 'INTERBANK_FX' has been established.", time: "14:12" },
@@ -17,6 +18,12 @@ export const TerminalMessenger = () => {
     setChat([...chat, { from: "YOU", text: msg.trim(), time: "Now" }]);
     setMsg('');
   };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [chat]);
 
   return (
     <div className="bg-[#050505] h-full flex flex-col font-mono text-xs overflow-hidden">
@@ -31,7 +38,7 @@ export const TerminalMessenger = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {chat.map((m, i) => (
           <div key={i} className="flex flex-col gap-1 border-l border-[#333] pl-3 py-1">
             <div className="flex justify-between items-center text-[9px]">
@@ -50,9 +57,14 @@ export const TerminalMessenger = () => {
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
             placeholder="Type message to workstation group..."
+            aria-label="Message text"
             className="flex-1 bg-transparent text-white p-2 outline-none"
           />
-          <button type="submit" className="text-[#ffb900] p-2 hover:text-white transition-colors">
+          <button
+            type="submit"
+            aria-label="Send message"
+            className="text-[#ffb900] p-2 hover:text-white transition-colors"
+          >
             <Send size={16} />
           </button>
         </form>
