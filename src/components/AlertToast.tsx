@@ -80,6 +80,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
               <div className="flex-1 uppercase font-bold">{alert.message}</div>
               <button
                 onClick={() => setAlerts(prev => prev.filter(a => a.id !== alert.id))}
+                aria-label="Dismiss alert"
                 className="hover:text-gray-300"
               >
                 <X size={14} />
