@@ -44,8 +44,10 @@ export const ConnectData = () => {
            </p>
            <div className="flex gap-4">
               <div className="flex-1 bg-black border border-[#444] flex items-center px-3 gap-3">
+                 <label htmlFor="finnhub-key" className="sr-only">Finnhub API Key</label>
                  <Key size={14} className="text-gray-600" />
                  <input
+                   id="finnhub-key"
                    type="password"
                    value={finnhubKey}
                    onChange={(e) => setFinnhubKey(e.target.value)}
@@ -67,8 +69,10 @@ export const ConnectData = () => {
            </p>
            <div className="flex gap-4">
               <div className="flex-1 bg-black border border-[#444] flex items-center px-3 gap-3">
+                 <label htmlFor="news-api-key" className="sr-only">NewsAPI Key</label>
                  <Key size={14} className="text-gray-600" />
                  <input
+                   id="news-api-key"
                    type="password"
                    value={newsApiKey}
                    onChange={(e) => setNewsApiKey(e.target.value)}
