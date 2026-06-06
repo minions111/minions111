@@ -1,0 +1,3 @@
+## 2025-05-15 - [Keyboard Navigation & ARIA in Terminal Command Bar]
+**Learning:** Institutional power users rely heavily on keyboard-first workflows. Implementing the ARIA combobox pattern with `selectedIndex` tracking provides a standard, predictable interaction model that satisfies both accessibility requirements and terminal-style UX expectations. Wrapping the input in a `role="combobox"` container with `aria-expanded` and `aria-controls` is more robust for screen readers than attributes on the input alone.
+**Action:** Always prioritize `selectedIndex` state for suggestion lists to enable ArrowUp/ArrowDown navigation and use `aria-activedescendant` for focus management in command-driven interfaces.
