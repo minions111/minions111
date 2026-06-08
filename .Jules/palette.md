@@ -1,0 +1,3 @@
+## 2025-05-14 - [Accessible Combobox Pattern for Terminal Interfaces]
+**Learning:** In terminal-style applications where command-driven navigation is central, basic inputs with suggestions are insufficient. Implementing the WAI-ARIA combobox pattern with full keyboard support (ArrowUp/Down/Enter/Escape) significantly improves the 'fingers-on-keys' experience for power users while providing essential accessibility for screen readers.
+**Action:** Always implement ARIA combobox attributes (role="combobox", aria-expanded, aria-controls, aria-activedescendant) when building suggestion-based inputs.
