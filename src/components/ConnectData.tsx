@@ -89,6 +89,7 @@ export const ConnectData = () => {
            <button
              onClick={() => window.location.reload()}
              className="bg-[#222] border border-[#333] text-gray-400 p-4 hover:bg-[#333] transition-colors"
+             aria-label="Reload workstation"
            >
              <RefreshCcw size={16} />
            </button>
