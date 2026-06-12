@@ -1,0 +1,3 @@
+## 2025-05-15 - [Keyboard Navigation & ARIA Combobox for CommandBar]
+**Learning:** For terminal-style workstation simulations, "fingers on keys" is the primary UX requirement. Implementing a full WAI-ARIA combobox pattern (roles, aria-activedescendant, and manual index management) significantly improves both power-user efficiency and screen reader accessibility. Resetting the `selectedIndex` to `-1` on input change is critical to maintain a consistent state.
+**Action:** Always wrap search/command inputs in a `role="combobox"` container and use `aria-activedescendant` to manage virtual focus without moving actual browser focus from the input.
