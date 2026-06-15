@@ -1,0 +1,3 @@
+## 2025-05-15 - [Institutional UX: Keyboard-First Command Bar]
+**Learning:** The 'fingers on keys' experience is a critical UX requirement for Bloomberg Terminal simulations. Power users expect rapid command entry without mouse interaction, necessitating full keyboard support (ArrowUp/Down/Enter) and ARIA combobox patterns for accessibility and automation.
+**Action:** Always implement ARIA-compliant keyboard navigation for terminal-style command inputs. Move ARIA attributes (aria-expanded, aria-controls) to a container with role="combobox" when using a role="textbox" (input) to satisfy modern accessibility standards.
