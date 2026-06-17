@@ -1,0 +1,3 @@
+## 2026-06-17 - [Institutional Command Bar Accessibility]
+**Learning:** For terminal-style command inputs, the WAI-ARIA combobox pattern is essential for keyboard navigation and screen reader support. Wrapping the input in a `role="combobox"` container (rather than using the role on the input itself) prevents conflicts with the input's native role and allows for proper management of `aria-expanded` and `aria-controls`.
+**Action:** Always use a wrapper for `role="combobox"`, link it to a `role="listbox"`, and use `aria-activedescendant` on the input to track selection. Reset selection state to `-1` on every query change to maintain a neutral focus state.
