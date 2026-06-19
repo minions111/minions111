@@ -12,6 +12,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
   const [command, setCommand] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     if (command.length > 0) {
@@ -24,6 +25,7 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
       setSuggestions([]);
       setShowSuggestions(false);
     }
+    setSelectedIndex(-1);
   }, [command, commands]);
 
   const handleSubmit = (e?: React.FormEvent) => {
@@ -39,6 +41,29 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
     onCommand(s);
     setCommand('');
     setShowSuggestions(false);
+    setSelectedIndex(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      if (showSuggestions && selectedIndex >= 0) {
+        e.preventDefault();
+        handleSelectSuggestion(suggestions[selectedIndex]);
+      } else {
+        handleSubmit();
+      }
+    } else if (showSuggestions) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex(prev => (prev + 1) % suggestions.length);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex(prev => (prev <= 0 ? suggestions.length - 1 : prev - 1));
+      } else if (e.key === 'Escape') {
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+      }
+    }
   };
 
   return (
@@ -47,25 +72,47 @@ export const CommandBar = ({ onCommand, commands = [] }: CommandBarProps) => {
         HELP
       </div>
       <div className="flex-1 relative">
-        <form onSubmit={handleSubmit} className="flex items-center bg-black border border-[#444] px-2 py-0.5">
+        <div
+          className="flex items-center bg-black border border-[#444] px-2 py-0.5"
+          role="combobox"
+          aria-expanded={showSuggestions}
+          aria-haspopup="listbox"
+          aria-controls="cmd-list"
+        >
           <Search className="w-3 h-3 text-[#ffb900] mr-2" />
           <input
+            id="command-input"
             type="text"
             value={command}
             onChange={(e) => setCommand(e.target.value.toUpperCase())}
             onFocus={() => setShowSuggestions(suggestions.length > 0)}
+            onKeyDown={handleKeyDown}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             className="bg-transparent text-[#ffb900] outline-none text-sm w-full font-mono"
             placeholder="Enter command or ticker..."
+            aria-autocomplete="list"
+            aria-controls="cmd-list"
+            aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
+            autoComplete="off"
           />
-        </form>
+        </div>
 
         {showSuggestions && (
-          <div className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1">
+          <div
+            id="cmd-list"
+            role="listbox"
+            className="absolute top-full left-0 right-0 bg-black border border-[#444] shadow-2xl mt-1"
+          >
             {suggestions.map((s, i) => (
               <div
                 key={i}
+                id={`suggestion-${i}`}
+                role="option"
+                aria-selected={i === selectedIndex}
                 onClick={() => handleSelectSuggestion(s)}
-                className="p-2 text-[#ffb900] font-mono text-xs hover:bg-[#ffb900] hover:text-black cursor-pointer border-b border-[#111]"
+                className={`p-2 text-[#ffb900] font-mono text-xs cursor-pointer border-b border-[#111] transition-colors ${
+                  i === selectedIndex ? "bg-[#ffb900] text-black" : "hover:bg-[#ffb900] hover:text-black"
+                }`}
               >
                 {s}
               </div>
