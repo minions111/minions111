@@ -296,33 +296,8 @@ export default function Home() {
     }
   }, [terminals, isLoaded]);
 
-  if (!isLoaded) {
-    return (
-      <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
-        <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
-          BLOOMBERG
-        </div>
-        <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
-          <div className="h-full bg-[#ffb900] animate-progress" />
-        </div>
-        <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
-          Terminal Pro Workstation v2025.1 | Authenticating...
-        </div>
-        <style jsx>{`
-          @keyframes progress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-          }
-          .animate-progress {
-            animation: progress 1.5s ease-in-out forwards;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  const view = terminals[activeTerminal].view;
-  const selectedTicker = terminals[activeTerminal].ticker;
+  const view = terminals[activeTerminal]?.view || 'MARKET';
+  const selectedTicker = terminals[activeTerminal]?.ticker || 'AAPL';
 
   const setView = (v: ViewType) => {
     setTerminals(prev => ({
@@ -641,17 +616,40 @@ export default function Home() {
 
       <CommandBar onCommand={handleCommand} commands={Object.keys(COMMAND_MAP)} />
 
-      <div className="flex-1 grid grid-cols-12 overflow-hidden">
-        {/* Left Panel: Market Data */}
-        <div className="col-span-3 h-full border-r border-[#333]">
-          <MarketGrid />
+      {!isLoaded ? (
+        <div className="flex-1 bg-black flex flex-col items-center justify-center font-mono">
+          <div className="text-[#ffb900] text-4xl font-bold tracking-tighter mb-4 animate-pulse">
+            BLOOMBERG
+          </div>
+          <div className="w-64 h-1 bg-[#222] rounded-full overflow-hidden">
+            <div className="h-full bg-[#ffb900] animate-progress" />
+          </div>
+          <div className="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">
+            Terminal Pro Workstation v2025.1 | Authenticating...
+          </div>
+          <style jsx>{`
+            @keyframes progress {
+              0% { width: 0%; }
+              100% { width: 100%; }
+            }
+            .animate-progress {
+              animation: progress 1.5s ease-in-out forwards;
+            }
+          `}</style>
         </div>
+      ) : (
+        <div className="flex-1 grid grid-cols-12 overflow-hidden">
+          {/* Left Panel: Market Data */}
+          <div className="col-span-3 h-full border-r border-[#333]">
+            <MarketGrid />
+          </div>
 
-        {/* Center/Right Panel: Dynamic View */}
-        <div className="col-span-9 flex flex-col h-full overflow-hidden">
-          {renderView()}
+          {/* Center/Right Panel: Dynamic View */}
+          <div className="col-span-9 flex flex-col h-full overflow-hidden">
+            {renderView()}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* News Ticker */}
       <NewsTicker />
