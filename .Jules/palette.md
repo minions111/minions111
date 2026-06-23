@@ -1,0 +1,3 @@
+## 2025-05-15 - [Institutional UX: Keyboard-First Command Navigation]
+**Learning:** In terminal-emulation workstations, the "fingers on keys" experience is the primary UX driver. Implementing a WAI-ARIA combobox pattern not only satisfies accessibility requirements for screen readers but also provides a robust state machine for keyboard navigation (Arrow keys + Enter), making the interface feel institutional and professional.
+**Action:** Always implement full ARIA combobox attributes (role="combobox", aria-autocomplete, aria-activedescendant) when building command-entry or suggestion-based inputs to support both accessibility and power-user workflows.
