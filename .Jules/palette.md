@@ -1,0 +1,3 @@
+## 2025-05-14 - [Institutional Keyboard Navigation and ARIA Combobox]
+**Learning:** The 'fingers on keys' experience is a critical UX requirement for institutional terminal simulations. Implementing a WAI-ARIA combobox pattern with full keyboard support (Arrow keys, Enter, Escape) significantly improves workstation efficiency. Decoupling selection resets from suggestion filtering is necessary to prevent state loss during high-frequency parent re-renders (e.g., clock updates).
+**Action:** Always implement the WAI-ARIA combobox pattern for command-entry interfaces, ensuring that `aria-activedescendant` and `aria-selected` are correctly managed alongside keyboard event handlers.

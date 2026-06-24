@@ -80,7 +80,7 @@ export const WebAPIIntegration = () => {
               <section>
                 <h2 className="text-[#ffb900] font-bold border-b border-[#333] pb-1 mb-4 uppercase">Authentication</h2>
                 <div className="bg-[#111] p-4 border border-[#222] text-gray-300 font-mono text-[10px]">
-                  <p className="text-[#00ff00] mb-2">// Authorize session via Bloomberg Terminal Token</p>
+                  <p className="text-[#00ff00] mb-2">{"// Authorize session via Bloomberg Terminal Token"}</p>
                   <p className="text-white">Authorization: Bearer {'<BBG_SESSION_TOKEN>'}</p>
                 </div>
               </section>
@@ -89,12 +89,12 @@ export const WebAPIIntegration = () => {
                 <h2 className="text-[#ffb900] font-bold border-b border-[#333] pb-1 mb-4 uppercase">Live Code Sample (JavaScript)</h2>
                 <div className="bg-black p-4 border border-[#333] rounded text-blue-300 font-mono overflow-x-auto">
 <pre className="text-[10px]">{`async function getMarketData(ticker) {
-  const response = await fetch(\`https://api.bloomberg.pro/v1/pricing/\${ticker}\`, {
+  const response = await fetch('https://api.bloomberg.pro/v1/pricing/' + ticker, {
     headers: { 'Authorization': 'Bearer PRO_TOKEN_123' }
   });
 
   const data = await response.json();
-  console.log(\`Price for \${ticker}: \${data.price}\`);
+  console.log('Price for ' + ticker + ': ' + data.price);
 }
 
 getMarketData('AAPL US Equity');`}</pre>
