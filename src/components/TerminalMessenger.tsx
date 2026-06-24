@@ -51,8 +51,13 @@ export const TerminalMessenger = () => {
             onChange={(e) => setMsg(e.target.value)}
             placeholder="Type message to workstation group..."
             className="flex-1 bg-transparent text-white p-2 outline-none"
+            aria-label="Message text"
           />
-          <button type="submit" className="text-[#ffb900] p-2 hover:text-white transition-colors">
+          <button
+            type="submit"
+            className="text-[#ffb900] p-2 hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-[#ffb900] rounded"
+            aria-label="Send message"
+          >
             <Send size={16} />
           </button>
         </form>
