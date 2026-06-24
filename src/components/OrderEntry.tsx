@@ -62,8 +62,9 @@ export const OrderEntry = () => {
 
         <div className="space-y-3">
           <div className="flex flex-col">
-            <label className="text-gray-500 uppercase text-[9px] mb-1">Ticker</label>
+            <label htmlFor="ticker-input" className="text-gray-500 uppercase text-[9px] mb-1">Ticker</label>
             <input
+              id="ticker-input"
               type="text"
               value={ticker}
               onChange={(e) => setTicker(e.target.value.toUpperCase())}
@@ -72,8 +73,9 @@ export const OrderEntry = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-500 uppercase text-[9px] mb-1">Shares</label>
+            <label htmlFor="shares-input" className="text-gray-500 uppercase text-[9px] mb-1">Shares</label>
             <input
+              id="shares-input"
               type="number"
               value={shares}
               onChange={(e) => setShares(e.target.value)}
