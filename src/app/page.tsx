@@ -296,6 +296,44 @@ export default function Home() {
     }
   }, [terminals, isLoaded]);
 
+  useEffect(() => {
+    setTime(new Date().toLocaleTimeString() + " NY");
+    const timer = setInterval(() => {
+      setTime(new Date().toLocaleTimeString() + " NY");
+    }, 1000);
+
+    const engine = PriceSimulationEngine.getInstance();
+    const unsubscribeLive = engine.subscribe((updates) => {
+      const first = Object.values(updates)[0];
+      if (first) setIsLive(first.isRealTime);
+    });
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      switch (e.key) {
+        case 'F1': e.preventDefault(); handleCommand('HELP'); break;
+        case 'F2': e.preventDefault(); handleCommand('GOVP'); break;
+        case 'F3': e.preventDefault(); handleCommand('CRPR'); break;
+        case 'F4': e.preventDefault(); handleCommand('MKT'); break;
+        case 'F5': e.preventDefault(); handleCommand('WL'); break;
+        case 'F8': e.preventDefault(); handleCommand('TICK'); break;
+        case 'F9': e.preventDefault(); handleCommand('MSG'); break;
+        case '1': if (e.altKey) handleCommand('T1'); break;
+        case '2': if (e.altKey) handleCommand('T2'); break;
+        case '3': if (e.altKey) handleCommand('T3'); break;
+        case '4': if (e.altKey) handleCommand('T4'); break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+      unsubscribeLive();
+    };
+  }, [activeTerminal]);
+
   if (!isLoaded) {
     return (
       <div className="h-screen bg-black flex flex-col items-center justify-center font-mono">
@@ -337,44 +375,6 @@ export default function Home() {
       [activeTerminal]: { ...prev[activeTerminal], ticker: t }
     }));
   };
-
-  useEffect(() => {
-    setTime(new Date().toLocaleTimeString() + " NY");
-    const timer = setInterval(() => {
-      setTime(new Date().toLocaleTimeString() + " NY");
-    }, 1000);
-
-    const engine = PriceSimulationEngine.getInstance();
-    const unsubscribeLive = engine.subscribe((updates) => {
-      const first = Object.values(updates)[0];
-      if (first) setIsLive(first.isRealTime);
-    });
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-
-      switch (e.key) {
-        case 'F1': e.preventDefault(); handleCommand('HELP'); break;
-        case 'F2': e.preventDefault(); handleCommand('GOVP'); break;
-        case 'F3': e.preventDefault(); handleCommand('CRPR'); break;
-        case 'F4': e.preventDefault(); handleCommand('MKT'); break;
-        case 'F5': e.preventDefault(); handleCommand('WL'); break;
-        case 'F8': e.preventDefault(); handleCommand('TICK'); break;
-        case 'F9': e.preventDefault(); handleCommand('MSG'); break;
-        case '1': if (e.altKey) handleCommand('T1'); break;
-        case '2': if (e.altKey) handleCommand('T2'); break;
-        case '3': if (e.altKey) handleCommand('T3'); break;
-        case '4': if (e.altKey) handleCommand('T4'); break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('keydown', handleKeyDown);
-      unsubscribeLive();
-    };
-  }, [activeTerminal, view]);
 
   const handleCommand = (cmd: string) => {
     const command = cmd.toUpperCase();
