@@ -1,0 +1,3 @@
+## 2025-05-14 - [CommandBar keyboard navigation and ARIA]
+**Learning:** Implementing the WAI-ARIA combobox pattern in the `CommandBar` significantly improves accessibility for screen reader users by explicitly defining the relationship between the search input and the suggestions list. Keyboard navigation (Arrow keys + Enter) provides a familiar "terminal-like" efficiency that matches the institutional design language of the Bloomberg workstation.
+**Action:** Always use `aria-activedescendant` to manage focus in custom dropdowns/comboboxes and ensure the `selectedIndex` is reset when the query changes to maintain a predictable user experience.
