@@ -1,0 +1,3 @@
+## 2025-05-14 - Enhanced CommandBar Keyboard Navigation and Accessibility
+**Learning:** Implementing the WAI-ARIA combobox pattern significantly improves the usability and accessibility of command-driven interfaces like the Bloomberg Terminal simulation. Using `aria-activedescendant` allows screen readers to announce the current selection without moving focus from the input, which is critical for high-speed terminal interactions.
+**Action:** Always wrap search/command inputs in a `role="combobox"` container and use `role="listbox"` for suggestions to comply with accessibility standards. Ensure the `selectedIndex` resets to `-1` on input change to maintain a neutral starting state for new queries.
