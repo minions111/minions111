@@ -321,8 +321,8 @@ export default function Home() {
     );
   }
 
-  const view = terminals[activeTerminal].view;
-  const selectedTicker = terminals[activeTerminal].ticker;
+  const view = terminals[activeTerminal]?.view || 'MARKET';
+  const selectedTicker = terminals[activeTerminal]?.ticker || 'AAPL';
 
   const setView = (v: ViewType) => {
     setTerminals(prev => ({
@@ -339,20 +339,16 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!isLoaded) return;
     setTime(new Date().toLocaleTimeString() + " NY");
-    const timer = setInterval(() => {
-      setTime(new Date().toLocaleTimeString() + " NY");
-    }, 1000);
-
+    const timer = setInterval(() => { setTime(new Date().toLocaleTimeString() + " NY"); }, 1000);
     const engine = PriceSimulationEngine.getInstance();
     const unsubscribeLive = engine.subscribe((updates) => {
       const first = Object.values(updates)[0];
       if (first) setIsLive(first.isRealTime);
     });
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-
       switch (e.key) {
         case 'F1': e.preventDefault(); handleCommand('HELP'); break;
         case 'F2': e.preventDefault(); handleCommand('GOVP'); break;
